@@ -1,0 +1,122 @@
+import type { CustomGroupOptionsI, CustomObjI } from '@/types/fabric.types'
+import makeAllObjCanvasUnselectable from '@/utils/fabricUtils/makeAllObjCanvasUnselectable'
+import getSvgPathFromStroke from '@/utils/getSvgPathFromStroke'
+import { fabric } from 'fabric'
+import getStroke from 'perfect-freehand'
+
+const DRAW_STROKE_ID = 'drawnObjects'
+
+type DrawStrokeOnCanvasArgs = {
+  canvas: fabric.Canvas | null
+  drawingMode: {
+    size: number
+    stroke: string
+    thinning: number
+    smoothing: number
+    streamline: number
+  }
+}
+
+let isMouseDown = false
+let position: number[][] = [[0, 0]]
+let drawnObjects: CustomObjI | fabric.Group | null = null
+
+const drawStrokeOnCanvas = ({ canvas, drawingMode }: DrawStrokeOnCanvasArgs) => {
+  if (!canvas) {
+    console.error('drawStrokeOnCanvas: canvas is null')
+    return
+  }
+
+  // Reset the canvas to default
+  canvas?.off('mouse:up')
+  canvas?.off('mouse:move')
+  canvas?.off('mouse:down')
+
+  canvas.on('mouse:down', (e) => {
+    isMouseDown = true
+    drawnObjects = null
+
+    const pointer = canvas.getPointer(e.e)
+    position = [[pointer.x, pointer.y]]
+  })
+
+  canvas.on('mouse:move', (e) => {
+    // canvas.selection = false
+    if (!isMouseDown) return
+
+    canvas.discardActiveObject()
+
+    const pointer = canvas.getPointer(e.e)
+    position.push([pointer.x, pointer.y])
+
+    const outlinePoints = getStroke(position, {
+      size: drawingMode.size,
+      thinning: drawingMode.thinning,
+      smoothing: drawingMode.smoothing,
+      streamline: drawingMode.streamline,
+
+      // size: 4,
+      // thinning: 0.3,
+      // smoothing: 0.99,
+      // streamline: 0.99,
+
+      easing(t) {
+        // Cubic equation for linear easing
+        t = Math.max(0, Math.min(1, t))
+        return t * t * (3 - 2 * t)
+      }
+    })
+    const pathData = getSvgPathFromStroke(outlinePoints)
+
+    fabric.loadSVGFromString(
+      `<svg>
+         <path fill="${drawingMode.stroke}" d="${pathData}" />
+      </svg>`,
+      (result) => {
+        // const obj = fabric.util.groupSVGElements(result)
+        const group = new fabric.Group(result, {
+          id: DRAW_STROKE_ID,
+          selectable: false,
+          hasRotatingPoint: false
+
+          // selectable: false // Disable selection of the group while drawing
+        } as CustomGroupOptionsI)
+
+        drawnObjects = group
+        canvas.add(group)
+      }
+    )
+
+    // canvas.selection = true
+  })
+
+  canvas.on('mouse:up', (e) => {
+    if (!isMouseDown) return
+
+    const activeObjects = canvas.getObjects() as CustomObjI[]
+    const obj = activeObjects.filter((o) => o?.id === DRAW_STROKE_ID)
+
+    if (obj.length > 0 && drawnObjects) {
+      for (let i = 0; i < obj.length; i++) {
+        canvas.remove(obj[i])
+      }
+
+      drawnObjects.setOptions({
+        id: '',
+        selectable: true,
+        // bringForward: true,
+        hasRotatingPoint: true
+        // hasControls: false
+      })
+
+      drawnObjects.bringForward(true)
+
+      canvas.add(drawnObjects)
+      canvas.renderAll()
+    }
+    makeAllObjCanvasUnselectable(canvas)
+    isMouseDown = false
+  })
+}
+
+export default drawStrokeOnCanvas

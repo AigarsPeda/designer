@@ -51,7 +51,7 @@ p {
   transform: translate(-50%, -50%);
 }
 
-.blob-container svg {
+.blob-container img {
   width: 35rem;
 }
 

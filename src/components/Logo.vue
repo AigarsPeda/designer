@@ -1,11 +1,16 @@
 <template>
   <RouterLink class="logo" to="/">
-    <img src="@/assets/images/logo.webp" alt="logo" />
+    <!-- <Blob /> -->
+    <!-- <img src="@/assets/images/logo.webp" alt="logo" /> -->
+    <img :src="svg" alt="my-logo" />
+    <!-- <svg></svg> -->
   </RouterLink>
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink } from "vue-router";
+import Blob from "./Blob.vue";
+import svg from "../assets/svg/blob.svg";
 </script>
 
 <style scoped>

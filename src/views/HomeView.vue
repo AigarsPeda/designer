@@ -3,7 +3,7 @@
     <div class="blob-container">
       <Blob />
       <div class="blob-content">
-        <RouterLink class="link" to="/design">START</RouterLink>
+        <RouterLink class="link" to="/design">Start</RouterLink>
       </div>
     </div>
   </main>
@@ -49,6 +49,10 @@ p {
   flex-direction: column;
   justify-content: center;
   transform: translate(-50%, -50%);
+}
+
+.blob-container svg {
+  width: 35rem;
 }
 
 .link {

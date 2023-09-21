@@ -5,13 +5,25 @@
         <vue-feather type="menu" size="24" class="menu" />
       </button>
       <header ref="headerRef">
-        <div v-if="uiStore.getCanvasMode === 'mainMenu'" :key="uiStore.getCanvasMode">
+        <div
+          v-if="
+            uiStore.getCanvasMode === 'mainMenu' ||
+            uiStore.getCanvasMode === 'panning'
+          "
+          :key="uiStore.getCanvasMode"
+        >
           <MainMenu />
         </div>
-        <div v-if="uiStore.getCanvasMode === 'square'" :key="uiStore.getCanvasMode">
+        <div
+          v-if="uiStore.getCanvasMode === 'square'"
+          :key="uiStore.getCanvasMode"
+        >
           <SquareMenu />
         </div>
-        <div v-if="uiStore.getCanvasMode === 'drawing'" :key="uiStore.getCanvasMode">
+        <div
+          v-if="uiStore.getCanvasMode === 'drawing'"
+          :key="uiStore.getCanvasMode"
+        >
           <DrawingMenu />
         </div>
       </header>
@@ -25,26 +37,26 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/Button.vue'
-import MainMenu from '@/components/MainMenu.vue'
-import DrawingMenu from '@/components/contextMenus/DrawingMenu.vue'
-import SquareMenu from '@/components/contextMenus/SquareMenu.vue'
-import useUIStore from '@/stores/useUIStore'
-import { ref } from 'vue'
-import VueFeather from 'vue-feather'
-import { RouterView, useRoute } from 'vue-router'
+import Button from "@/components/Button.vue";
+import MainMenu from "@/components/MainMenu.vue";
+import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
+import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
+import useUIStore from "@/stores/useUIStore";
+import { ref } from "vue";
+import VueFeather from "vue-feather";
+import { RouterView, useRoute } from "vue-router";
 
-const route = useRoute()
-const uiStore = useUIStore()
-const isMenuOpen = ref(false)
+const route = useRoute();
+const uiStore = useUIStore();
+const isMenuOpen = ref(false);
 
 const isNavBarVisible = () => {
-  return route.path !== '/' && route.path !== '/about'
-}
+  return route.path !== "/" && route.path !== "/about";
+};
 
 const handleMenuOpen = () => {
-  isMenuOpen.value = !isMenuOpen.value
-}
+  isMenuOpen.value = !isMenuOpen.value;
+};
 </script>
 
 <style scoped>
@@ -102,12 +114,14 @@ header {
     border-radius: 0 0.5rem 0.5rem 0;
     transition: all 0.3s ease-in-out;
     background: var(--color-background);
-    transform: v-bind('`${isMenuOpen ? ' translateX(0) ' : ' translateX(-100%) '}`');
+    transform: v-bind(
+      "`${isMenuOpen ?  'translateX(0)'  :  'translateX(-100%)' }`"
+    );
   }
 
   .over-lay {
-    opacity: v-bind('`${isMenuOpen ? ' 1 ' : ' 0 '}`');
-    display: v-bind('`${isMenuOpen ? ' block ' : ' none '}`');
+    opacity: v-bind("`${isMenuOpen ? ' 1 ' : ' 0 '}`");
+    display: v-bind("`${isMenuOpen ? ' block ' : ' none '}`");
   }
 }
 </style>

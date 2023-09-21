@@ -1,53 +1,56 @@
-import type { CustomGroupOptionsI, CustomObjI } from '@/types/fabric.types'
-import makeAllObjCanvasUnselectable from '@/utils/fabricUtils/makeAllObjCanvasUnselectable'
-import getSvgPathFromStroke from '@/utils/getSvgPathFromStroke'
-import { fabric } from 'fabric'
-import getStroke from 'perfect-freehand'
+import type { CustomGroupOptionsI, CustomObjI } from "@/types/fabric.types";
+import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
+import getSvgPathFromStroke from "@/utils/getSvgPathFromStroke";
+import { fabric } from "fabric";
+import getStroke from "perfect-freehand";
 
-const DRAW_STROKE_ID = 'drawnObjects'
+const DRAW_STROKE_ID = "drawnObjects";
 
 type DrawStrokeOnCanvasArgs = {
-  canvas: fabric.Canvas | null
+  canvas: fabric.Canvas | null;
   drawingMode: {
-    size: number
-    stroke: string
-    thinning: number
-    smoothing: number
-    streamline: number
-  }
-}
+    size: number;
+    stroke: string;
+    thinning: number;
+    smoothing: number;
+    streamline: number;
+  };
+};
 
-let isMouseDown = false
-let position: number[][] = [[0, 0]]
-let drawnObjects: CustomObjI | fabric.Group | null = null
+let isMouseDown = false;
+let position: number[][] = [[0, 0]];
+let drawnObjects: CustomObjI | fabric.Group | null = null;
 
-const drawStrokeOnCanvas = ({ canvas, drawingMode }: DrawStrokeOnCanvasArgs) => {
+const drawStrokeOnCanvas = ({
+  canvas,
+  drawingMode,
+}: DrawStrokeOnCanvasArgs) => {
   if (!canvas) {
-    console.error('drawStrokeOnCanvas: canvas is null')
-    return
+    console.error("drawStrokeOnCanvas: canvas is null");
+    return;
   }
 
   // Reset the canvas to default
-  canvas?.off('mouse:up')
-  canvas?.off('mouse:move')
-  canvas?.off('mouse:down')
+  canvas?.off("mouse:up");
+  canvas?.off("mouse:move");
+  canvas?.off("mouse:down");
 
-  canvas.on('mouse:down', (e) => {
-    isMouseDown = true
-    drawnObjects = null
+  canvas.on("mouse:down", (e) => {
+    isMouseDown = true;
+    drawnObjects = null;
 
-    const pointer = canvas.getPointer(e.e)
-    position = [[pointer.x, pointer.y]]
-  })
+    const pointer = canvas.getPointer(e.e);
+    position = [[pointer.x, pointer.y]];
+  });
 
-  canvas.on('mouse:move', (e) => {
+  canvas.on("mouse:move", (e) => {
     // canvas.selection = false
-    if (!isMouseDown) return
+    if (!isMouseDown) return;
 
-    canvas.discardActiveObject()
+    canvas.discardActiveObject();
 
-    const pointer = canvas.getPointer(e.e)
-    position.push([pointer.x, pointer.y])
+    const pointer = canvas.getPointer(e.e);
+    position.push([pointer.x, pointer.y]);
 
     const outlinePoints = getStroke(position, {
       size: drawingMode.size,
@@ -62,11 +65,11 @@ const drawStrokeOnCanvas = ({ canvas, drawingMode }: DrawStrokeOnCanvasArgs) => 
 
       easing(t) {
         // Cubic equation for linear easing
-        t = Math.max(0, Math.min(1, t))
-        return t * t * (3 - 2 * t)
-      }
-    })
-    const pathData = getSvgPathFromStroke(outlinePoints)
+        t = Math.max(0, Math.min(1, t));
+        return t * t * (3 - 2 * t);
+      },
+    });
+    const pathData = getSvgPathFromStroke(outlinePoints);
 
     fabric.loadSVGFromString(
       `<svg>
@@ -77,46 +80,46 @@ const drawStrokeOnCanvas = ({ canvas, drawingMode }: DrawStrokeOnCanvasArgs) => 
         const group = new fabric.Group(result, {
           id: DRAW_STROKE_ID,
           selectable: false,
-          hasRotatingPoint: false
+          hasRotatingPoint: false,
 
           // selectable: false // Disable selection of the group while drawing
-        } as CustomGroupOptionsI)
+        } as CustomGroupOptionsI);
 
-        drawnObjects = group
-        canvas.add(group)
+        drawnObjects = group;
+        canvas.add(group);
       }
-    )
+    );
 
     // canvas.selection = true
-  })
+  });
 
-  canvas.on('mouse:up', (e) => {
-    if (!isMouseDown) return
+  canvas.on("mouse:up", (e) => {
+    if (!isMouseDown) return;
 
-    const activeObjects = canvas.getObjects() as CustomObjI[]
-    const obj = activeObjects.filter((o) => o?.id === DRAW_STROKE_ID)
+    const activeObjects = canvas.getObjects() as CustomObjI[];
+    const obj = activeObjects.filter((o) => o?.id === DRAW_STROKE_ID);
 
     if (obj.length > 0 && drawnObjects) {
       for (let i = 0; i < obj.length; i++) {
-        canvas.remove(obj[i])
+        canvas.remove(obj[i]);
       }
 
       drawnObjects.setOptions({
-        id: '',
+        id: "",
         selectable: true,
         // bringForward: true,
-        hasRotatingPoint: true
+        hasRotatingPoint: true,
         // hasControls: false
-      })
+      });
 
-      drawnObjects.bringForward(true)
+      drawnObjects.bringForward(true);
 
-      canvas.add(drawnObjects)
-      canvas.renderAll()
+      canvas.add(drawnObjects);
+      canvas.renderAll();
     }
-    makeAllObjCanvasUnselectable(canvas)
-    isMouseDown = false
-  })
-}
+    makeAllObjCanvasUnselectable(canvas);
+    isMouseDown = false;
+  });
+};
 
-export default drawStrokeOnCanvas
+export default drawStrokeOnCanvas;

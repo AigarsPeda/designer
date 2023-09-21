@@ -1,7 +1,12 @@
-export type CanvaModeType = 'drawing' | 'panning' | 'mainMenu' | 'square'
+export type CanvaModeType =
+  | "drawing"
+  | "panning"
+  | "mainMenu"
+  | "square"
+  | "group";
 
 export interface UiStoreStateType {
-  offsetWidthInVW: number
-  isDotBackground: boolean
-  canvasMode: CanvaModeType
+  offsetWidthInVW: number;
+  isDotBackground: boolean;
+  canvasMode: CanvaModeType;
 }

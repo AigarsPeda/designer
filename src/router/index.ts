@@ -1,25 +1,35 @@
-import HomeView from '@/views/HomeView.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from "@/views/HomeView.vue";
+import { createRouter, createWebHashHistory } from "vue-router";
+
+const isProd = import.meta.env.PROD;
+const baseUrl = import.meta.env.BASE_URL;
+
+console.log("isProd", isProd, "baseUrl", baseUrl);
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(baseUrl),
+
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: "/",
+      // path: isProd ? "/designer/" : "/",
+      name: "home",
+      component: HomeView,
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('@/views/AboutView.vue')
+      path: "/about",
+      // path: isProd ? "/designer/about" : "/about",
+      name: "about",
+      component: () => import("@/views/AboutView.vue"),
     },
     {
-      path: '/design',
-      name: 'design',
-      component: () => import('@/views/DesignView.vue')
-    }
-  ]
-})
+      path: "/design",
+      // path: isProd ? "/designer/design" : "/design",
 
-export default router
+      name: "design",
+      component: () => import("@/views/DesignView.vue"),
+    },
+  ],
+});
+
+export default router;

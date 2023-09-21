@@ -11,6 +11,8 @@ import useUIStore from "@/stores/useUIStore";
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
+import handleContextMenu from "@/utils/fabricUtils/handleContextMenu";
+import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
@@ -31,6 +33,8 @@ const canvasRef = ref<fabric.Canvas | null>(null);
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   canvasRef.value = fabricCanvas;
   const center = fabricCanvas.getCenter();
+
+  // handleContextMenu({ canvas: fabricCanvas });
 
   // loadBgImageToCanvas(imgUrl(`../../src/assets/images/front.jpg`), fabricCanvas)
 
@@ -91,11 +95,13 @@ watch([uiStore, canvasStore], (newSate) => {
   const { getDrawingMode } = newSate[1];
   const { getIsDotBackground, getCanvasMode } = newSate[0];
 
-  if (getCanvasMode === "drawing") {
+  console.log("getCanvasMode --->", getCanvasMode);
+
+  if (isCanvasObjSelectable(getCanvasMode)) {
     makeAllObjCanvasUnselectable(canvasRef.value);
   }
 
-  if (getCanvasMode !== "drawing") {
+  if (!isCanvasObjSelectable(getCanvasMode)) {
     makeAllObjCanvasSelectable(canvasRef.value);
   }
 
@@ -105,12 +111,13 @@ watch([uiStore, canvasStore], (newSate) => {
         canvas: canvasRef.value,
         drawingMode: getDrawingMode,
       });
-
       break;
     case "panning":
       handleCanvasPanning({ canvas: canvasRef.value });
       break;
-
+    case "mainMenu":
+      handleContextMenu({ canvas: canvasRef.value });
+      break;
     default:
       resetCanvasMouseMoveUpDown(canvasRef.value);
       break;

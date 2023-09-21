@@ -12,7 +12,8 @@
         :isSelect="uiStore.getCanvasMode === 'drawing'"
         @click="
           uiStore.setCanvasMode({
-            canvasMode: uiStore.getCanvasMode === 'drawing' ? 'mainMenu' : 'drawing'
+            canvasMode:
+              uiStore.getCanvasMode === 'drawing' ? 'mainMenu' : 'drawing',
           })
         "
       >
@@ -26,7 +27,8 @@
         :isSelect="uiStore.getCanvasMode === 'square'"
         @click="
           uiStore.setCanvasMode({
-            canvasMode: uiStore.getCanvasMode === 'square' ? 'mainMenu' : 'square'
+            canvasMode:
+              uiStore.getCanvasMode === 'square' ? 'mainMenu' : 'square',
           })
         "
       >
@@ -40,7 +42,8 @@
         :isSelect="uiStore.getCanvasMode === 'panning'"
         @click="
           uiStore.setCanvasMode({
-            canvasMode: uiStore.getCanvasMode === 'panning' ? 'mainMenu' : 'panning'
+            canvasMode:
+              uiStore.getCanvasMode === 'panning' ? 'mainMenu' : 'panning',
           })
         "
       >
@@ -54,7 +57,7 @@
         :isSelect="uiStore.getIsDotBackground"
         @click="
           uiStore.setIsDotBackground({
-            isDotBackground: !uiStore.getIsDotBackground
+            isDotBackground: !uiStore.getIsDotBackground,
           })
         "
       >
@@ -67,13 +70,13 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/Button.vue'
-import Logo from '@/components/Logo.vue'
-import useUIStore from '@/stores/useUIStore'
-import VueFeather from 'vue-feather'
-import { RouterLink } from 'vue-router'
+import Button from "@/components/Button.vue";
+import Logo from "@/components/Logo.vue";
+import useUIStore from "@/stores/useUIStore";
+import VueFeather from "vue-feather";
+import { RouterLink } from "vue-router";
 
-const uiStore = useUIStore()
+const uiStore = useUIStore();
 </script>
 
 <style scoped>

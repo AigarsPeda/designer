@@ -1,36 +1,39 @@
-import type { CanvaModeType, UiStoreStateType } from '@/stores/types/UiStoreTypes'
-import { defineStore } from 'pinia'
+import type {
+  CanvaModeType,
+  UiStoreStateType,
+} from "@/stores/types/UiStoreTypes";
+import { defineStore } from "pinia";
 
-const useUIStore = defineStore('uiStore', {
+const useUIStore = defineStore("uiStore", {
   state: (): UiStoreStateType => ({
     offsetWidthInVW: 0,
-    canvasMode: 'mainMenu',
-    isDotBackground: false
+    canvasMode: "mainMenu",
+    isDotBackground: false,
   }),
 
   getters: {
     getCanvasMode({ canvasMode }: UiStoreStateType): CanvaModeType {
-      return canvasMode
+      return canvasMode;
     },
     getOffSetWidthInVW({ offsetWidthInVW }: UiStoreStateType): number {
-      return offsetWidthInVW
+      return offsetWidthInVW;
     },
 
     getIsDotBackground({ isDotBackground }: UiStoreStateType): boolean {
-      return isDotBackground
-    }
+      return isDotBackground;
+    },
   },
   actions: {
     saveOffSet({ offsetWidthInVW }: { offsetWidthInVW: number }) {
-      this.offsetWidthInVW = offsetWidthInVW
+      this.offsetWidthInVW = offsetWidthInVW;
     },
     setIsDotBackground({ isDotBackground }: { isDotBackground: boolean }) {
-      this.isDotBackground = isDotBackground
+      this.isDotBackground = isDotBackground;
     },
     setCanvasMode({ canvasMode }: { canvasMode: CanvaModeType }) {
-      this.canvasMode = canvasMode
-    }
-  }
-})
+      this.canvasMode = canvasMode;
+    },
+  },
+});
 
-export default useUIStore
+export default useUIStore;

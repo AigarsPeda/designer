@@ -1,13 +1,13 @@
-import { fabric } from 'fabric'
+import { fabric } from "fabric";
 
 export interface CustomObjI extends fabric.Object {
-  id: string
+  id: string;
 }
 
 export interface CustomGroupOptionsI extends fabric.IGroupOptions {
-  id: string
+  id: string;
 }
 
 export interface CustomGroupI extends fabric.Group {
-  id: string
+  id: string;
 }

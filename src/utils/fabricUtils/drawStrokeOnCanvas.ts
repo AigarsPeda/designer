@@ -1,6 +1,7 @@
 import type { CustomGroupOptionsI, CustomObjI } from "@/types/fabric.types";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import getSvgPathFromStroke from "@/utils/getSvgPathFromStroke";
+import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 import getStroke from "perfect-freehand";
 
@@ -105,8 +106,8 @@ const drawStrokeOnCanvas = ({
       }
 
       drawnObjects.setOptions({
-        id: "",
         selectable: true,
+        id: getUniqueId(),
         // bringForward: true,
         hasRotatingPoint: true,
         // hasControls: false

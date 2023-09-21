@@ -11,7 +11,7 @@ import useUIStore from "@/stores/useUIStore";
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
-import handleContextMenu from "@/utils/fabricUtils/handleContextMenu";
+import handleContextSelectDeselect from "@/utils/fabricUtils/handleContextSelectDeselect";
 import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
@@ -34,7 +34,7 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   canvasRef.value = fabricCanvas;
   const center = fabricCanvas.getCenter();
 
-  // handleContextMenu({ canvas: fabricCanvas });
+  //  handleContextSelectDeselect({ canvas: fabricCanvas });
 
   // loadBgImageToCanvas(imgUrl(`../../src/assets/images/front.jpg`), fabricCanvas)
 
@@ -95,8 +95,6 @@ watch([uiStore, canvasStore], (newSate) => {
   const { getDrawingMode } = newSate[1];
   const { getIsDotBackground, getCanvasMode } = newSate[0];
 
-  console.log("getCanvasMode --->", getCanvasMode);
-
   if (isCanvasObjSelectable(getCanvasMode)) {
     makeAllObjCanvasUnselectable(canvasRef.value);
   }
@@ -116,7 +114,30 @@ watch([uiStore, canvasStore], (newSate) => {
       handleCanvasPanning({ canvas: canvasRef.value });
       break;
     case "mainMenu":
-      handleContextMenu({ canvas: canvasRef.value });
+      handleContextSelectDeselect({
+        canvas: canvasRef.value,
+        action: (str, ids) => {
+          uiStore.setCanvasMode({
+            canvasMode: str,
+          });
+          canvasStore.setSelectedObjectIds({
+            selectedObjectIds: ids,
+          });
+        },
+      });
+      break;
+    case "ObjContextMenu":
+      handleContextSelectDeselect({
+        canvas: canvasRef.value,
+        action: (str, ids) => {
+          canvasStore.setSelectedObjectIds({
+            selectedObjectIds: ids,
+          });
+          uiStore.setCanvasMode({
+            canvasMode: str,
+          });
+        },
+      });
       break;
     default:
       resetCanvasMouseMoveUpDown(canvasRef.value);
@@ -145,4 +166,4 @@ span {
   justify-content: center;
 }
 </style>
-@/stores/useCanvasStore
+@/stores/useCanvasStore @/utils/fabricUtils/handleContextSelectDeselectDeselect

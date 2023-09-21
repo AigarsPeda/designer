@@ -1,15 +1,24 @@
 <template>
   <nav>
-    Square
+    ObjContextMenu
     <MenuBackButton />
     <div>
       <p>Not implemented yet</p>
+      <p>{{ canvasStore.getSelectedObjectIds }}</p>
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
+import useCanvasStore from "@/stores/useCanvasStore";
+import { watch } from "vue";
+
+const canvasStore = useCanvasStore();
+
+watch(canvasStore, (newVal) => {
+  console.log("newVal", newVal);
+});
 </script>
 
 <style scoped>

@@ -2,19 +2,7 @@
   <nav>
     <div class="nav-buttons">
       <Logo />
-      <Button
-        isFullWidth
-        title="Back"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode: 'mainMenu'
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="arrow-left" size="16" class="icon" />
-        </template>
-      </Button>
+      <MenuBackButton />
       <ul class="color-container">
         <li v-for="(color, index) in COLORS">
           <button
@@ -24,13 +12,13 @@
               canvasStore.setDrawingMode({
                 drawingMode: {
                   ...canvasStore.getDrawingMode,
-                  stroke: color
-                }
+                  stroke: color,
+                },
               })
             "
             :class="{
               'color-btn': true,
-              'color-btn_active': canvasStore.getDrawingMode.stroke === color
+              'color-btn_active': canvasStore.getDrawingMode.stroke === color,
             }"
           ></button>
         </li>
@@ -40,15 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import Button from '@/components/Button.vue'
-import Logo from '@/components/Logo.vue'
-import { COLORS } from '@/hardcoded'
-import useCanvasStore from '@/stores/useCanvasStore'
-import useUIStore from '@/stores/useUIStore'
-import VueFeather from 'vue-feather'
+import Button from "@/components/Button.vue";
+import Logo from "@/components/Logo.vue";
+import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
+import { COLORS } from "@/hardcoded";
+import useCanvasStore from "@/stores/useCanvasStore";
 
-const uiStore = useUIStore()
-const canvasStore = useCanvasStore()
+const canvasStore = useCanvasStore();
 </script>
 
 <style scoped>

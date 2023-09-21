@@ -3,7 +3,8 @@ export type CanvaModeType =
   | "panning"
   | "mainMenu"
   | "square"
-  | "group";
+  // | "group";
+  | "ObjContextMenu";
 
 export interface UiStoreStateType {
   offsetWidthInVW: number;

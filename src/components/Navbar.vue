@@ -6,25 +6,31 @@
       </button>
       <header ref="headerRef">
         <div
+          :key="uiStore.getCanvasMode"
           v-if="
             uiStore.getCanvasMode === 'mainMenu' ||
             uiStore.getCanvasMode === 'panning'
           "
-          :key="uiStore.getCanvasMode"
         >
           <MainMenu />
         </div>
         <div
-          v-if="uiStore.getCanvasMode === 'square'"
           :key="uiStore.getCanvasMode"
+          v-if="uiStore.getCanvasMode === 'square'"
         >
           <SquareMenu />
         </div>
         <div
-          v-if="uiStore.getCanvasMode === 'drawing'"
           :key="uiStore.getCanvasMode"
+          v-if="uiStore.getCanvasMode === 'drawing'"
         >
           <DrawingMenu />
+        </div>
+        <div
+          :key="uiStore.getCanvasMode"
+          v-if="uiStore.getCanvasMode === 'ObjContextMenu'"
+        >
+          <ObjContextMenu />
         </div>
       </header>
 
@@ -40,6 +46,7 @@
 import Button from "@/components/Button.vue";
 import MainMenu from "@/components/MainMenu.vue";
 import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
+import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
 import useUIStore from "@/stores/useUIStore";
 import { ref } from "vue";

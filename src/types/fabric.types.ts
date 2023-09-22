@@ -1,6 +1,7 @@
 import { fabric } from "fabric";
 
 export interface CustomObjI extends fabric.Object {
+  _objects?: fabric.Object[];
   id: string;
 }
 

@@ -3,35 +3,26 @@
     <div class="nav-buttons">
       <Logo />
       <MenuBackButton />
-      <ul class="color-container">
-        <li v-for="(color, index) in COLORS">
-          <button
-            :key="index"
-            :style="{ backgroundColor: color }"
-            @click="
-              canvasStore.setDrawingMode({
-                drawingMode: {
-                  ...canvasStore.getDrawingMode,
-                  stroke: color,
-                },
-              })
-            "
-            :class="{
-              'color-btn': true,
-              'color-btn_active': canvasStore.getDrawingMode.stroke === color,
-            }"
-          ></button>
-        </li>
-      </ul>
+      <ColorList
+        :selectedColor="canvasStore.getDrawingMode.stroke"
+        :handleColorClick="
+          (color) =>
+            canvasStore.setDrawingMode({
+              drawingMode: {
+                ...canvasStore.getDrawingMode,
+                stroke: color,
+              },
+            })
+        "
+      />
     </div>
   </nav>
 </template>
 
 <script setup lang="ts">
-import Button from "@/components/Button.vue";
+import ColorList from "@/components/ColorList.vue";
 import Logo from "@/components/Logo.vue";
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
-import { COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 
 const canvasStore = useCanvasStore();

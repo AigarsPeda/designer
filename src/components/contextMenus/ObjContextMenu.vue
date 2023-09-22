@@ -1,22 +1,20 @@
 <template>
   <nav>
-    ObjContextMenu
-    <MenuBackButton />
-    <div>
-      <p>Not implemented yet</p>
-      <p>{{ canvasStore.getSelectedObjectIds }}</p>
-    </div>
+    <ColorList
+      :selectedColor="fillColor"
+      :handleColorClick="(color) => handleFillColorChange(color)"
+    />
   </nav>
 </template>
 
 <script setup lang="ts">
-import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
+import ColorList from "@/components/ColorList.vue";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { CustomObjI } from "@/types/fabric.types";
+import { ref } from "vue";
 
+const fillColor = ref("");
 const canvasStore = useCanvasStore();
-
-console.log("canvasStore --->", canvasStore);
 
 const getSelectedObjInCanvas = () => {
   const selectedObjIds = canvasStore.getSelectedObjectIds;
@@ -26,21 +24,39 @@ const getSelectedObjInCanvas = () => {
     return selectedObjIds.includes(obj.id);
   });
 
-  console.log("selectedObj --->", selectedObj);
-  // return selectedObj;
+  return selectedObj;
 };
 
-getSelectedObjInCanvas();
+const handleFillColorChange = (color: string) => {
+  fillColor.value = color;
 
-// watch(canvasStore, (newVal) => {
-//   console.log("newVal --->", newVal);
-// });
+  const selectedObj = getSelectedObjInCanvas();
+
+  for (var i = 0; i < selectedObj.length; i++) {
+    const obj = selectedObj[i];
+
+    if (!obj._objects) {
+      console.error("obj does not have _objects property");
+      return;
+    }
+
+    for (var j = 0; j < obj._objects.length; j++) {
+      const obj2 = obj._objects[j];
+
+      obj2.set({
+        fill: color,
+      });
+    }
+  }
+
+  canvasStore.getSelectedCanvas?.renderAll();
+};
 </script>
 
 <style scoped>
 nav {
   gap: 0.5rem;
-  /* width: 5.5rem; */
+  width: 5.5rem;
   display: flex;
   padding: 0.5rem;
   flex-direction: column;

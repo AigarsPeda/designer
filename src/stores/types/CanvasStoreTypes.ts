@@ -8,6 +8,12 @@ export type DefaultDrawingMode = {
   streamline: number;
 };
 
+export type DefaultSquareMode = {
+  stroke: string;
+  background: string;
+  strokeWidth: number;
+};
+
 //declare state
 export interface StateType {
   selectedCanvas: fabric.Canvas | null;
@@ -17,6 +23,7 @@ export interface StateType {
   }[];
   defaultCanvasSate: {
     drawingMode: DefaultDrawingMode;
+    squareModeSettings: DefaultSquareMode;
   };
   selectedObjectIds: string[];
 }

@@ -12,6 +12,7 @@ import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
 import handleContextSelectDeselect from "@/utils/fabricUtils/handleContextSelectDeselect";
+import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
 import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
@@ -100,6 +101,7 @@ watch(
       getDrawingMode: canvasStore.getDrawingMode,
       getIsDotBackground: uiStore.getIsDotBackground,
       getSelectedCanvas: canvasStore.getSelectedCanvas,
+      getSquareModeSettings: canvasStore.getSquareModeSettings,
     };
   },
   (newSate) => {
@@ -108,6 +110,7 @@ watch(
       getDrawingMode,
       getSelectedCanvas,
       getIsDotBackground,
+      getSquareModeSettings,
     } = newSate;
 
     if (isCanvasObjSelectable(getCanvasMode)) {
@@ -127,6 +130,19 @@ watch(
         break;
       case "panning":
         handleCanvasPanning({ canvas: getSelectedCanvas });
+        break;
+      case "square":
+        console.log("getSquareModeSettings --->", getSquareModeSettings);
+        handleSquareDrawing({
+          canvas: getSelectedCanvas,
+          squareModeSettings: getSquareModeSettings,
+          endAction: () => {
+            uiStore.setCanvasMode({
+              canvasMode: "mainMenu",
+            });
+          },
+        });
+
         break;
       case "mainMenu":
       case "ObjContextMenu":

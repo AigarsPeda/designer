@@ -15,6 +15,7 @@ const handleContextSelectDeselect = ({
   canvas?.off("mouse:down");
 
   canvas?.on("mouse:up", (e) => {
+    console.log("mouse:up", e);
     const activeObj = canvas.getActiveObjects() as CustomObjI[];
 
     const ids = activeObj.map((obj) => {
@@ -25,7 +26,6 @@ const handleContextSelectDeselect = ({
     // console.log("targetType", targetType);
 
     if (ids.length > 0) {
-      console.log("ids", ids);
       action("ObjContextMenu", ids);
       return;
     }

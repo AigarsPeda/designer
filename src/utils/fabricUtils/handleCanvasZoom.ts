@@ -1,24 +1,24 @@
-import { fabric } from 'fabric'
+import { fabric } from "fabric";
 
 type HandleCanvasZoomArgs = {
-  canvas: fabric.Canvas
-}
+  canvas: fabric.Canvas;
+};
 
 const handleCanvasZoom = ({ canvas }: HandleCanvasZoomArgs) => {
-  canvas.on('mouse:wheel', (event) => {
-    const delta = event.e.deltaY
-    let zoom = canvas.getZoom()
+  canvas.on("mouse:wheel", (event) => {
+    const delta = event.e.deltaY;
+    let zoom = canvas.getZoom();
 
-    zoom *= 0.999 ** delta
+    zoom *= 0.999 ** delta;
 
-    if (zoom > 20) zoom = 20
-    if (zoom < 0.01) zoom = 0.01
+    if (zoom > 20) zoom = 20;
+    if (zoom < 0.01) zoom = 0.01;
 
-    canvas.zoomToPoint({ x: event.e.offsetX, y: event.e.offsetY }, zoom)
+    canvas.zoomToPoint({ x: event.e.offsetX, y: event.e.offsetY }, zoom);
 
-    event.e.preventDefault()
-    event.e.stopPropagation()
-  })
-}
+    event.e.preventDefault();
+    event.e.stopPropagation();
+  });
+};
 
-export default handleCanvasZoom
+export default handleCanvasZoom;

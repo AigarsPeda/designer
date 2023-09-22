@@ -1,5 +1,7 @@
+import { COLORS } from "@/hardcoded";
 import type {
   DefaultDrawingMode,
+  DefaultSquareMode,
   StateType,
 } from "@/stores/types/CanvasStoreTypes";
 import { fabric } from "fabric";
@@ -15,7 +17,12 @@ const useCanvasStore = defineStore("design", {
         thinning: 0.3,
         smoothing: 0.99,
         streamline: 0.99,
-        stroke: "#60a5fa",
+        stroke: COLORS[0],
+      },
+      squareModeSettings: {
+        background: "",
+        strokeWidth: 2,
+        stroke: COLORS[0],
       },
     },
     selectedObjectIds: [],
@@ -37,6 +44,9 @@ const useCanvasStore = defineStore("design", {
     getSelectedCanvas({ selectedCanvas }: StateType): fabric.Canvas | null {
       return selectedCanvas;
     },
+    getSquareModeSettings({ defaultCanvasSate }: StateType): DefaultSquareMode {
+      return defaultCanvasSate.squareModeSettings;
+    },
   },
   actions: {
     setCanvas({ id, canva }: { id: string; canva: fabric.Canvas }) {
@@ -54,6 +64,13 @@ const useCanvasStore = defineStore("design", {
     },
     setSelectedCanvas({ selectedCanvas }: { selectedCanvas: fabric.Canvas }) {
       this.selectedCanvas = selectedCanvas;
+    },
+    setSquareModeSettings({
+      squareModeSettings,
+    }: {
+      squareModeSettings: DefaultSquareMode;
+    }) {
+      this.defaultCanvasSate.squareModeSettings = squareModeSettings;
     },
   },
 });

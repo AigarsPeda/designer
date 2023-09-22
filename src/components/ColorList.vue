@@ -3,11 +3,14 @@
     <li v-for="(color, index) in COLORS">
       <button
         :key="index"
-        :style="{ backgroundColor: color }"
-        @click="handleColorClick(color)"
+        @click="handleColorClick(opacity ? `${color}${opacity}` : color)"
+        :style="{ backgroundColor: opacity ? `${color}${opacity}` : color }"
         :class="{
           'color-btn': true,
-          'color-btn_active': selectedColor === color,
+          'color-btn_active': opacity
+            ? removeLastTwoChar(selectedColor) === color
+            : selectedColor === color,
+          'color-btn_transparent': color === 'transparent',
         }"
       ></button>
     </li>
@@ -17,10 +20,15 @@
 <script setup lang="ts">
 import { COLORS } from "@/hardcoded";
 
-const props = defineProps<{
+defineProps<{
+  opacity?: string;
   selectedColor: string;
   handleColorClick: (color: string) => void;
 }>();
+
+const removeLastTwoChar = (str: string) => {
+  return str.slice(0, -2);
+};
 </script>
 
 <style scoped>
@@ -62,9 +70,13 @@ li {
   transition: all 0.2s ease-in-out;
 }
 
+.color-btn_transparent {
+  border: 1.5px solid #cbd5e1;
+}
+
 .color-btn_active {
-  border: 2px solid #374151;
   opacity: 1;
+  border: 1.5px solid #374151;
 }
 
 @media (hover: hover) {

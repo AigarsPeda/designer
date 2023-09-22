@@ -1,19 +1,20 @@
-import canvasBgCallback from '@/utils/svgUtils/canvasBgCallback'
+import canvasBgCallback from "@/utils/svgUtils/canvasBgCallback";
+import { fabric } from "fabric";
 
 type HandleCanvasBackgroundColorArgs = {
-  canvas: fabric.Canvas | null
-  backgroundColor: string | fabric.Pattern
-}
+  canvas: fabric.Canvas | null;
+  backgroundColor: string | fabric.Pattern;
+};
 
 const handleCanvasBackgroundColor = ({
   canvas,
-  backgroundColor
+  backgroundColor,
 }: HandleCanvasBackgroundColorArgs) => {
   if (!canvas) {
-    return
+    return;
   }
 
-  canvas.setBackgroundColor(backgroundColor, () => canvasBgCallback(canvas, 0))
-}
+  canvas.setBackgroundColor(backgroundColor, () => canvasBgCallback(canvas, 0));
+};
 
-export default handleCanvasBackgroundColor
+export default handleCanvasBackgroundColor;

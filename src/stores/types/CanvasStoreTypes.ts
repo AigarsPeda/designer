@@ -10,6 +10,7 @@ export type DefaultDrawingMode = {
 
 //declare state
 export interface StateType {
+  selectedCanvas: fabric.Canvas | null;
   canvas: {
     id: string;
     canva: fabric.Canvas;

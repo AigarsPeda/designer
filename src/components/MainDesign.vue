@@ -28,10 +28,12 @@ const imgUrl = (str: string) => {
 };
 
 const elRef = ref<HTMLDivElement | null>(null);
-const canvasRef = ref<fabric.Canvas | null>(null);
 
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
-  canvasRef.value = fabricCanvas;
+  canvasStore.setSelectedCanvas({
+    selectedCanvas: fabricCanvas,
+  });
+
   const center = fabricCanvas.getCenter();
 
   //  handleContextSelectDeselect({ canvas: fabricCanvas });
@@ -91,64 +93,67 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   console.log("handleCreated --->", fabricCanvas);
 };
 
-watch([uiStore, canvasStore], (newSate) => {
-  const { getDrawingMode } = newSate[1];
-  const { getIsDotBackground, getCanvasMode } = newSate[0];
+watch(
+  () => {
+    return {
+      getCanvasMode: uiStore.getCanvasMode,
+      getDrawingMode: canvasStore.getDrawingMode,
+      getIsDotBackground: uiStore.getIsDotBackground,
+      getSelectedCanvas: canvasStore.getSelectedCanvas,
+    };
+  },
+  (newSate) => {
+    const {
+      getCanvasMode,
+      getDrawingMode,
+      getSelectedCanvas,
+      getIsDotBackground,
+    } = newSate;
 
-  if (isCanvasObjSelectable(getCanvasMode)) {
-    makeAllObjCanvasUnselectable(canvasRef.value);
+    if (isCanvasObjSelectable(getCanvasMode)) {
+      makeAllObjCanvasUnselectable(getSelectedCanvas);
+    }
+
+    if (!isCanvasObjSelectable(getCanvasMode)) {
+      makeAllObjCanvasSelectable(getSelectedCanvas);
+    }
+
+    switch (uiStore.getCanvasMode) {
+      case "drawing":
+        drawStrokeOnCanvas({
+          canvas: getSelectedCanvas,
+          drawingMode: getDrawingMode,
+        });
+        break;
+      case "panning":
+        handleCanvasPanning({ canvas: getSelectedCanvas });
+        break;
+      case "mainMenu":
+      case "ObjContextMenu":
+        handleContextSelectDeselect({
+          canvas: getSelectedCanvas,
+          action: (str, ids) => {
+            uiStore.setCanvasMode({
+              canvasMode: str,
+            });
+            canvasStore.setSelectedObjectIds({
+              selectedObjectIds: ids,
+            });
+          },
+        });
+        break;
+
+      default:
+        resetCanvasMouseMoveUpDown(getSelectedCanvas);
+        break;
+    }
+
+    handleCanvasBackgroundColor({
+      canvas: getSelectedCanvas,
+      backgroundColor: getIsDotBackground ? dotPattern() : "transparent",
+    });
   }
-
-  if (!isCanvasObjSelectable(getCanvasMode)) {
-    makeAllObjCanvasSelectable(canvasRef.value);
-  }
-
-  switch (getCanvasMode) {
-    case "drawing":
-      drawStrokeOnCanvas({
-        canvas: canvasRef.value,
-        drawingMode: getDrawingMode,
-      });
-      break;
-    case "panning":
-      handleCanvasPanning({ canvas: canvasRef.value });
-      break;
-    case "mainMenu":
-      handleContextSelectDeselect({
-        canvas: canvasRef.value,
-        action: (str, ids) => {
-          uiStore.setCanvasMode({
-            canvasMode: str,
-          });
-          canvasStore.setSelectedObjectIds({
-            selectedObjectIds: ids,
-          });
-        },
-      });
-      break;
-    case "ObjContextMenu":
-      handleContextSelectDeselect({
-        canvas: canvasRef.value,
-        action: (str, ids) => {
-          canvasStore.setSelectedObjectIds({
-            selectedObjectIds: ids,
-          });
-          uiStore.setCanvasMode({
-            canvasMode: str,
-          });
-        },
-      });
-      break;
-    default:
-      resetCanvasMouseMoveUpDown(canvasRef.value);
-      break;
-  }
-
-  handleCanvasBackgroundColor({
-    canvas: canvasRef.value,
-    backgroundColor: getIsDotBackground ? dotPattern() : "transparent",
-  });
-});
+);
 </script>
 
 <style scoped>

@@ -8,6 +8,7 @@ import { defineStore } from "pinia";
 const useCanvasStore = defineStore("design", {
   state: (): StateType => ({
     canvas: [],
+    selectedCanvas: null,
     defaultCanvasSate: {
       drawingMode: {
         size: 4,
@@ -33,6 +34,9 @@ const useCanvasStore = defineStore("design", {
     getSelectedObjectIds({ selectedObjectIds }: StateType): string[] {
       return selectedObjectIds;
     },
+    getSelectedCanvas({ selectedCanvas }: StateType): fabric.Canvas | null {
+      return selectedCanvas;
+    },
   },
   actions: {
     setCanvas({ id, canva }: { id: string; canva: fabric.Canvas }) {
@@ -47,6 +51,9 @@ const useCanvasStore = defineStore("design", {
       selectedObjectIds: string[];
     }) {
       this.selectedObjectIds = selectedObjectIds;
+    },
+    setSelectedCanvas({ selectedCanvas }: { selectedCanvas: fabric.Canvas }) {
+      this.selectedCanvas = selectedCanvas;
     },
   },
 });

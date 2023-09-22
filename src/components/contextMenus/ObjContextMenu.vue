@@ -12,13 +12,29 @@
 <script setup lang="ts">
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
 import useCanvasStore from "@/stores/useCanvasStore";
-import { watch } from "vue";
+import type { CustomObjI } from "@/types/fabric.types";
 
 const canvasStore = useCanvasStore();
 
-watch(canvasStore, (newVal) => {
-  console.log("newVal", newVal);
-});
+console.log("canvasStore --->", canvasStore);
+
+const getSelectedObjInCanvas = () => {
+  const selectedObjIds = canvasStore.getSelectedObjectIds;
+  const canvasObj = canvasStore.getSelectedCanvas?.getObjects() as CustomObjI[];
+
+  const selectedObj = canvasObj.filter((obj) => {
+    return selectedObjIds.includes(obj.id);
+  });
+
+  console.log("selectedObj --->", selectedObj);
+  // return selectedObj;
+};
+
+getSelectedObjInCanvas();
+
+// watch(canvasStore, (newVal) => {
+//   console.log("newVal --->", newVal);
+// });
 </script>
 
 <style scoped>

@@ -25,6 +25,7 @@ const handleContextSelectDeselect = ({
     // console.log("targetType", targetType);
 
     if (ids.length > 0) {
+      console.log("ids", ids);
       action("ObjContextMenu", ids);
       return;
     }

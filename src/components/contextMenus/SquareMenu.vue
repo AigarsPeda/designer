@@ -88,7 +88,7 @@ const handleShapeChange = (shape: ShapeType) => {
 <style scoped>
 nav {
   gap: 0.5rem;
-  width: 5.5rem;
+  width: 10.2rem;
   display: flex;
   padding: 0.5rem;
   flex-direction: column;

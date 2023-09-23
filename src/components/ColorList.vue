@@ -8,9 +8,19 @@
         :class="{
           'color-btn': true,
           'color-btn_active': opacity
-            ? removeLastTwoChar(selectedColor) === color
+            ? removeLastTwoCharFromString(selectedColor) === color
             : selectedColor === color,
-          'color-btn_transparent': color === 'transparent',
+        }"
+      ></button>
+    </li>
+    <li>
+      <button
+        @click="handleColorClick(TRANSPARENT_COLOR)"
+        :style="{ backgroundColor: TRANSPARENT_COLOR }"
+        :class="{
+          'color-btn': true,
+          'color-btn_transparent': true,
+          'color-btn_active': selectedColor === TRANSPARENT_COLOR,
         }"
       ></button>
     </li>
@@ -18,17 +28,14 @@
 </template>
 
 <script setup lang="ts">
-import { COLORS } from "@/hardcoded";
+import { COLORS, TRANSPARENT_COLOR } from "@/hardcoded";
+import removeLastTwoCharFromString from "@/utils/removeLastTwoCharFromString";
 
 defineProps<{
   opacity?: string;
   selectedColor: string;
   handleColorClick: (color: string) => void;
 }>();
-
-const removeLastTwoChar = (str: string) => {
-  return str.slice(0, -2);
-};
 </script>
 
 <style scoped>
@@ -52,10 +59,9 @@ li {
 }
 
 .color-container {
-  gap: 0.5rem;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .color-btn {

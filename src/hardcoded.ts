@@ -6,8 +6,9 @@ export const COLORS = [
   "#4ade80",
   "#f472b6",
   "#4b5563",
-  "transparent",
 ];
+
+export const TRANSPARENT_COLOR = "transparent";
 
 const OPACITY = {
   "0": "00",

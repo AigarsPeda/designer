@@ -1,9 +1,10 @@
 <template>
   <nav>
-    <Logo />
+    <!-- <Logo /> -->
     <MenuBackButton />
     <p class="info">Stroke</p>
     <ColorList
+      :colors="COLORS"
       :selectedColor="canvasStore.getSquareModeSettings.stroke"
       :handleColorClick="
         (color) =>
@@ -17,7 +18,7 @@
     />
     <p class="info">Background</p>
     <ColorList
-      :opacity="SHAPE_BACKGROUND_OPACITY"
+      :colors="BACKGROUND_COLORS"
       :selectedColor="canvasStore.getSquareModeSettings.background"
       :handleColorClick="
         (color) =>
@@ -32,32 +33,22 @@
     <div class="nav-buttons">
       <Button
         isFullWidth
-        title="Hexagon"
-        @click="handleShapeChange('hexagon')"
-        :isSelect="selectedShape === 'hexagon'"
+        title="Rounded"
+        @click="handleShapeChange('rounded')"
+        :isSelect="selectedShape === 'rounded'"
       >
         <template #icon>
-          <vue-feather type="hexagon" size="16" class="icon" />
+          <ReRoundedCorner class="icon" />
         </template>
       </Button>
       <Button
         isFullWidth
-        title="Square"
-        @click="handleShapeChange('square')"
-        :isSelect="selectedShape === 'square'"
+        title="Sharp"
+        @click="handleShapeChange('sharp')"
+        :isSelect="selectedShape === 'sharp'"
       >
         <template #icon>
-          <vue-feather type="square" size="16" class="icon" />
-        </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Triangle"
-        @click="handleShapeChange('triangle')"
-        :isSelect="selectedShape === 'triangle'"
-      >
-        <template #icon>
-          <vue-feather type="triangle" size="16" class="icon" />
+          <PxSharpCorner class="icon" />
         </template>
       </Button>
     </div>
@@ -69,19 +60,26 @@ import Button from "@/components/Button.vue";
 import ColorList from "@/components/ColorList.vue";
 import Logo from "@/components/Logo.vue";
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
-import { SHAPE_BACKGROUND_OPACITY } from "@/hardcoded";
+import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
+import { PxSharpCorner, ReRoundedCorner } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
-import VueFeather from "vue-feather";
 
-type ShapeType = "square" | "triangle" | "hexagon";
+type ShapeType = "rounded" | "sharp";
 
 const canvasStore = useCanvasStore();
 
-const selectedShape = ref<ShapeType>("square");
+const selectedShape = ref<ShapeType>("rounded");
 
 const handleShapeChange = (shape: ShapeType) => {
   selectedShape.value = shape;
+  canvasStore.setSquareModeSettings({
+    squareModeSettings: {
+      ...canvasStore.getSquareModeSettings,
+      rx: shape === "rounded" ? 10 : 0,
+      ry: shape === "rounded" ? 10 : 0,
+    },
+  });
 };
 </script>
 
@@ -93,6 +91,10 @@ nav {
   padding: 0.5rem;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.icon {
+  font-size: 2em;
 }
 
 .info {
@@ -107,6 +109,6 @@ nav {
   gap: 0.5rem;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  /* flex-direction: column; */
 }
 </style>

@@ -1,15 +1,13 @@
 <template>
   <ul class="color-container">
-    <li v-for="(color, index) in COLORS">
+    <li v-for="(color, index) in colors">
       <button
         :key="index"
-        @click="handleColorClick(opacity ? `${color}${opacity}` : color)"
-        :style="{ backgroundColor: opacity ? `${color}${opacity}` : color }"
+        @click="handleColorClick(color)"
+        :style="{ backgroundColor: color }"
         :class="{
           'color-btn': true,
-          'color-btn_active': opacity
-            ? removeLastTwoCharFromString(selectedColor) === color
-            : selectedColor === color,
+          'color-btn_active': selectedColor === color,
         }"
       ></button>
     </li>
@@ -28,11 +26,10 @@
 </template>
 
 <script setup lang="ts">
-import { COLORS, TRANSPARENT_COLOR } from "@/hardcoded";
-import removeLastTwoCharFromString from "@/utils/removeLastTwoCharFromString";
+import { TRANSPARENT_COLOR } from "@/hardcoded";
 
 defineProps<{
-  opacity?: string;
+  colors: string[];
   selectedColor: string;
   handleColorClick: (color: string) => void;
 }>();

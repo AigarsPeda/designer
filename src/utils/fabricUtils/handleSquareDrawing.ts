@@ -34,6 +34,8 @@ const handleSquareDrawing = ({
     if (!myRect) return;
 
     myRect.set({
+      rx: squareModeSettings.rx,
+      ry: squareModeSettings.ry,
       stroke: squareModeSettings.stroke,
       fill: squareModeSettings.background,
       strokeWidth: squareModeSettings.strokeWidth,
@@ -68,6 +70,8 @@ const handleSquareDrawing = ({
       hasRotatingPoint: true,
       width: pointer.x - origX,
       height: pointer.y - origY,
+      rx: squareModeSettings.rx,
+      ry: squareModeSettings.ry,
       stroke: squareModeSettings.stroke,
       fill: squareModeSettings.background,
       strokeWidth: squareModeSettings.strokeWidth,

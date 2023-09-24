@@ -9,6 +9,8 @@ export type DefaultDrawingMode = {
 };
 
 export type DefaultSquareMode = {
+  rx: number;
+  ry: number;
   stroke: string;
   background: string;
   strokeWidth: number;

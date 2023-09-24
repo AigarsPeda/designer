@@ -2,13 +2,14 @@
   <nav>
     <p class="info">Stroke</p>
     <ColorList
+      :colors="COLORS"
       :selectedColor="strokeColor"
       :handleColorClick="(color) => handleStrokeColorChange(color)"
     />
     <p class="info">Background</p>
     <ColorList
       :selectedColor="fillColor"
-      :opacity="SHAPE_BACKGROUND_OPACITY"
+      :colors="BACKGROUND_COLORS"
       :handleColorClick="(color) => handleFillColorChange(color)"
     />
   </nav>
@@ -16,9 +17,8 @@
 
 <script setup lang="ts">
 import ColorList from "@/components/ColorList.vue";
-import { SHAPE_BACKGROUND_OPACITY } from "@/hardcoded";
+import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
-import type { CustomObjI } from "@/types/fabric.types";
 import { ref } from "vue";
 
 const fillColor = ref("");
@@ -26,27 +26,15 @@ const strokeColor = ref("");
 
 const canvasStore = useCanvasStore();
 
-const getSelectedObjInCanvas = () => {
-  const selectedObjIds = canvasStore.getSelectedObjectIds;
-  const canvasObj = canvasStore.getSelectedCanvas?.getObjects() as CustomObjI[];
-
-  const selectedObj = canvasObj.filter((obj) => {
-    return selectedObjIds.includes(obj.id);
-  });
-
-  return selectedObj;
-};
-
 const handleStrokeColorChange = (color: string) => {
   strokeColor.value = color;
 
-  const selectedObj = getSelectedObjInCanvas();
+  const selectedObj = canvasStore.getSelectedObjInCanvas;
 
   for (var i = 0; i < selectedObj.length; i++) {
     const obj = selectedObj[i];
 
     obj.set({
-      // fill: color,
       stroke: color,
     });
 
@@ -68,7 +56,7 @@ const handleStrokeColorChange = (color: string) => {
 const handleFillColorChange = (color: string) => {
   fillColor.value = color;
 
-  const selectedObj = getSelectedObjInCanvas();
+  const selectedObj = canvasStore.getSelectedObjInCanvas;
 
   for (var i = 0; i < selectedObj.length; i++) {
     const obj = selectedObj[i];

@@ -8,6 +8,16 @@ export const COLORS = [
   "#4b5563",
 ];
 
+export const BACKGROUND_COLORS = [
+  "#93c5fd",
+  "#d8b4fe",
+  "#fca5a5",
+  "#fde047",
+  "#86efac",
+  "#f9a8d4",
+  "#d1d5db",
+];
+
 export const TRANSPARENT_COLOR = "transparent";
 
 const OPACITY = {

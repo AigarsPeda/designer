@@ -5,33 +5,9 @@
         <vue-feather type="menu" size="24" class="menu" />
       </button>
       <header ref="headerRef">
-        <div
-          :key="uiStore.getCanvasMode"
-          v-if="
-            uiStore.getCanvasMode === 'mainMenu' ||
-            uiStore.getCanvasMode === 'panning'
-          "
-        >
-          <MainMenu />
-        </div>
-        <div
-          :key="uiStore.getCanvasMode"
-          v-if="uiStore.getCanvasMode === 'square'"
-        >
-          <SquareMenu />
-        </div>
-        <div
-          :key="uiStore.getCanvasMode"
-          v-if="uiStore.getCanvasMode === 'drawing'"
-        >
-          <DrawingMenu />
-        </div>
-        <div
-          :key="uiStore.getCanvasMode"
-          v-if="uiStore.getCanvasMode === 'ObjContextMenu'"
-        >
-          <ObjContextMenu />
-        </div>
+        <Transition name="fade" mode="out-in">
+          <component :is="activeComponent"></component>
+        </Transition>
       </header>
 
       <button class="over-lay" @click="handleMenuOpen"></button>
@@ -49,9 +25,11 @@ import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
 import useUIStore from "@/stores/useUIStore";
-import { ref } from "vue";
+import { ref, shallowRef, watch } from "vue";
 import VueFeather from "vue-feather";
 import { RouterView, useRoute } from "vue-router";
+
+const activeComponent = shallowRef(MainMenu);
 
 const route = useRoute();
 const uiStore = useUIStore();
@@ -64,6 +42,27 @@ const isNavBarVisible = () => {
 const handleMenuOpen = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+watch(
+  () => {
+    return {
+      getCanvasMode: uiStore.getCanvasMode,
+    };
+  },
+  (newSate) => {
+    const { getCanvasMode } = newSate;
+
+    if (getCanvasMode === "mainMenu") {
+      activeComponent.value = MainMenu;
+    } else if (getCanvasMode === "square") {
+      activeComponent.value = SquareMenu;
+    } else if (getCanvasMode === "drawing") {
+      activeComponent.value = DrawingMenu;
+    } else if (getCanvasMode === "ObjContextMenu") {
+      activeComponent.value = ObjContextMenu;
+    }
+  }
+);
 </script>
 
 <style scoped>
@@ -94,6 +93,16 @@ header {
   border: 1.5px solid var(--color-border);
 }
 
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
 .over-lay {
   top: 0;
   left: 0;
@@ -102,7 +111,7 @@ header {
   height: 100vh;
   display: none;
   position: absolute;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.25s ease-in-out;
   background: rgba(51, 65, 85, 0.403);
 }
 

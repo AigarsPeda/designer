@@ -4,6 +4,7 @@ import type {
   DefaultSquareMode,
   StateType,
 } from "@/stores/types/CanvasStoreTypes";
+import type { CustomObjI } from "@/types/fabric.types";
 import { fabric } from "fabric";
 import { defineStore } from "pinia";
 
@@ -23,6 +24,8 @@ const useCanvasStore = defineStore("design", {
         background: "",
         strokeWidth: 2,
         stroke: COLORS[0],
+        rx: 10,
+        ry: 10,
       },
     },
     selectedObjectIds: [],
@@ -32,20 +35,27 @@ const useCanvasStore = defineStore("design", {
     getDrawingMode(): DefaultDrawingMode {
       return this.defaultCanvasSate.drawingMode;
     },
-    getCanvasLength({ canvas }: StateType): number {
+    getCanvasLength({ canvas }: StateType) {
       return canvas.length;
     },
-    getCanvasIds({ canvas }: StateType): string[] {
+    getCanvasIds({ canvas }: StateType) {
       return canvas.map(({ id }) => id);
     },
-    getSelectedObjectIds({ selectedObjectIds }: StateType): string[] {
+    getSelectedObjectIds({ selectedObjectIds }: StateType) {
       return selectedObjectIds;
     },
-    getSelectedCanvas({ selectedCanvas }: StateType): fabric.Canvas | null {
+    getSelectedCanvas({ selectedCanvas }: StateType) {
       return selectedCanvas;
     },
-    getSquareModeSettings({ defaultCanvasSate }: StateType): DefaultSquareMode {
+    getSquareModeSettings({ defaultCanvasSate }: StateType) {
       return defaultCanvasSate.squareModeSettings;
+    },
+    getSelectedObjInCanvas({ selectedCanvas, selectedObjectIds }: StateType) {
+      const canvasObj = selectedCanvas?.getObjects() as CustomObjI[];
+
+      return canvasObj.filter((obj) => {
+        return selectedObjectIds.includes(obj.id);
+      });
     },
   },
   actions: {

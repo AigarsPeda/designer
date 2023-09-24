@@ -1,9 +1,10 @@
 <template>
   <nav>
     <div class="nav-buttons">
-      <Logo />
+      <!-- <Logo /> -->
       <MenuBackButton />
       <ColorList
+        :colors="COLORS"
         :selectedColor="canvasStore.getDrawingMode.stroke"
         :handleColorClick="
           (color) =>
@@ -23,6 +24,7 @@
 import ColorList from "@/components/ColorList.vue";
 import Logo from "@/components/Logo.vue";
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
+import { COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 
 const canvasStore = useCanvasStore();

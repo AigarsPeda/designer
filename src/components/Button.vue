@@ -6,47 +6,52 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { onMounted, ref } from "vue";
 
 const props = defineProps<{
-  title: string
-  isSelect?: boolean
-  onClick: () => void
-  isFullWidth?: boolean
-  type?: 'button' | 'submit' | 'reset'
-  color?: 'green' | 'purple' | 'red'
-}>()
+  title: string;
+  isSelect?: boolean;
+  onClick: () => void;
+  isFullWidth?: boolean;
+  color?: "green" | "purple" | "red";
+  type?: "button" | "submit" | "reset";
+}>();
 
-const selectedColor = computed(() => {
-  if (props.color === 'green') {
-    return {
-      color: '#fff',
-      hover: '#15803d',
-      backgroundColor: '#059669'
-    }
-  }
-  if (props.color === 'purple') {
-    return {
-      color: '#fff',
-      hover: '#7e22ce',
-      backgroundColor: '#7e22ce'
-    }
-  }
+const stylesRef = ref({
+  color: "#0f172a",
+  hover: "#cbd5e1",
+  backgroundColor: "transparent",
+  selectedBackgroundColor: "#cbd5e1",
+});
 
-  if (props.color === 'red') {
-    return {
-      color: '#fff',
-      hover: '#b91c1c',
-      backgroundColor: '#dc2626'
-    }
+onMounted(() => {
+  if (props.color === "green") {
+    stylesRef.value = {
+      color: "#fff",
+      hover: "#15803d",
+      backgroundColor: "#059669",
+      selectedBackgroundColor: "#15803d",
+    };
   }
 
-  return {
-    color: '#0f172a',
-    hover: '#cbd5e1',
-    backgroundColor: '#e2e8f0'
+  if (props.color === "purple") {
+    stylesRef.value = {
+      color: "#fff",
+      hover: "#7e22ce",
+      backgroundColor: "#7e22ce",
+      selectedBackgroundColor: "#7e22ce",
+    };
   }
-})
+
+  if (props.color === "red") {
+    stylesRef.value = {
+      color: "#fff",
+      hover: "#b91c1c",
+      backgroundColor: "#dc2626",
+      selectedBackgroundColor: "#b91c1c",
+    };
+  }
+});
 </script>
 
 <style scoped>
@@ -62,15 +67,17 @@ const selectedColor = computed(() => {
   padding: 0.5rem 0.7rem;
   justify-content: center;
   transition: all 0.2s ease-in-out;
-  color: v-bind('`${selectedColor.color}`');
-  width: v-bind('`${props.isFullWidth ? ' 100% ' : ' auto '}`');
-  font-weight: v-bind('`${props.isSelect ? ' bold ' : ' normal '}`');
-  background-color: v-bind('`${props.isSelect && selectedColor.backgroundColor }`');
+  color: v-bind("`${stylesRef.color}`");
+  width: v-bind("`${props.isFullWidth ? " 100% " : " auto "}`");
+  font-weight: v-bind("`${props.isSelect ? " bold " : " normal "}`");
+  background-color: v-bind(
+    "`${props.isSelect ? stylesRef.selectedBackgroundColor : stylesRef.backgroundColor }`"
+  );
 }
 
 @media (hover: hover) {
   .btn:hover {
-    background-color: v-bind('`${selectedColor.hover}`');
+    background-color: v-bind("`${stylesRef.hover}`");
   }
 }
 

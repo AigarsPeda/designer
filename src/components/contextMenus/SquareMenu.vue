@@ -1,6 +1,5 @@
 <template>
   <nav>
-    <!-- <Logo /> -->
     <MenuBackButton />
     <p class="info">Stroke</p>
     <ColorList
@@ -30,45 +29,23 @@
           })
       "
     />
-    <div class="nav-buttons">
-      <Button
-        isFullWidth
-        title="Rounded"
-        @click="handleShapeChange('rounded')"
-        :isSelect="selectedShape === 'rounded'"
-      >
-        <template #icon>
-          <ReRoundedCorner class="icon" />
-        </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Sharp"
-        @click="handleShapeChange('sharp')"
-        :isSelect="selectedShape === 'sharp'"
-      >
-        <template #icon>
-          <PxSharpCorner class="icon" />
-        </template>
-      </Button>
-    </div>
+    <SquareOption
+      :selectedShape="selectedShape"
+      :handleShapeChange="handleShapeChange"
+    />
   </nav>
 </template>
 
 <script setup lang="ts">
-import Button from "@/components/Button.vue";
 import ColorList from "@/components/ColorList.vue";
-import Logo from "@/components/Logo.vue";
+import SquareOption from "@/components/SquareOption.vue";
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
-import { PxSharpCorner, ReRoundedCorner } from "@kalimahapps/vue-icons";
+import type { ShapeType } from "@/types/shape.types";
 import { ref } from "vue";
 
-type ShapeType = "rounded" | "sharp";
-
 const canvasStore = useCanvasStore();
-
 const selectedShape = ref<ShapeType>("rounded");
 
 const handleShapeChange = (shape: ShapeType) => {
@@ -86,29 +63,16 @@ const handleShapeChange = (shape: ShapeType) => {
 <style scoped>
 nav {
   gap: 0.5rem;
-  width: 10.2rem;
   display: flex;
+  width: 10.2rem;
   padding: 0.5rem;
   flex-direction: column;
   justify-content: space-between;
-}
-
-.icon {
-  font-size: 2em;
 }
 
 .info {
   font-weight: 500;
   color: #64748b;
   font-size: 0.65rem;
-}
-
-.nav-buttons {
-  gap: 0.5rem;
-  width: 100%;
-  gap: 0.5rem;
-  display: flex;
-  align-items: center;
-  /* flex-direction: column; */
 }
 </style>

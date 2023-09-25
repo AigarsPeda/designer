@@ -1,16 +1,24 @@
-import dotSVGBackGround from '@/utils/svgUtils/backgrounds/dotSVGBackGround'
-import inlineSVGString from '@/utils/svgUtils/inlineSVGString'
-import { fabric } from 'fabric'
+import dotSVGBackGround from "@/utils/svgUtils/backgrounds/dotSVGBackGround";
+import inlineSVGString from "@/utils/svgUtils/inlineSVGString";
+import { fabric } from "fabric";
 
-const dotPattern = () => {
+type DotPatternArgs = {
+  fill?: string;
+  objColor?: string;
+};
+
+const dotPattern = ({ fill, objColor }: DotPatternArgs) => {
   const pattern = new fabric.Pattern({
     source: inlineSVGString({
-      svgString: dotSVGBackGround({})
+      svgString: dotSVGBackGround({
+        fill: fill,
+        circleColor: objColor,
+      }),
     }),
-    repeat: 'repeat'
-  })
+    repeat: "repeat",
+  });
 
-  return pattern
-}
+  return pattern;
+};
 
-export default dotPattern
+export default dotPattern;

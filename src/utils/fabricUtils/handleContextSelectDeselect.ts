@@ -15,7 +15,6 @@ const handleContextSelectDeselect = ({
   canvas?.off("mouse:down");
 
   canvas?.on("mouse:up", (e) => {
-    console.log("mouse:up", e);
     const activeObj = canvas.getActiveObjects() as CustomObjI[];
 
     const ids = activeObj.map((obj) => {

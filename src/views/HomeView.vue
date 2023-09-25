@@ -2,16 +2,14 @@
   <main>
     <div class="blob-container">
       <Blob />
-      <div class="blob-content">
-        <RouterLink class="link" to="/design">Start</RouterLink>
-      </div>
+      <RouterLink class="link" to="/design">Start</RouterLink>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import Blob from "@/components/Blob.vue";
+import { RouterLink } from "vue-router";
 </script>
 
 <style scoped>
@@ -21,56 +19,42 @@ main {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-}
-
-p {
-  font-weight: 700;
-  color: #f9fafb;
-  font-size: 1.2rem;
+  background-image: radial-gradient(#bbbbbb 0.75px, transparent 0.75px),
+    radial-gradient(#bbbbbb 0.75px, #ffffff 0.75px);
+  background-size: 30px 30px;
+  background-position:
+    0 0,
+    15px 15px;
 }
 
 .blob-container {
-  position: relative;
-  background-color: #f8fafc;
-  width: 100%;
-  height: 100%;
+  opacity: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.blob-content {
-  top: 50%;
-  left: 50%;
-  display: flex;
-  position: absolute;
-  text-align: center;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  transform: translate(-50%, -50%);
 }
 
 .blob-container img {
-  width: 35rem;
+  width: 15rem;
 }
 
 .link {
   margin-top: 1rem;
   font-weight: 600;
-  color: #ffffff;
-  font-size: 1.4rem;
+  color: #2d2d2d;
+  font-size: 1.6rem;
   letter-spacing: 0.1em;
   text-decoration: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.1rem 0.1rem;
   transition: all 0.2s ease-in-out;
-  font-family: "Nunito", sans-serif;
+  font-family: "Montserrat", sans-serif;
   border-bottom: 3px solid transparent;
 }
 
 @media (hover: hover) {
   .link:hover {
-    border-bottom: 3px solid #f9fafb;
+    border-bottom: 3px solid #2d2d2d;
   }
 }
 </style>

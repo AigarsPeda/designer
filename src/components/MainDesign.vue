@@ -90,8 +90,6 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   );
 
   // fabricCanvas.add(circle, triangle, line, test, textObj)
-
-  console.log("handleCreated --->", fabricCanvas);
 };
 
 watch(
@@ -132,7 +130,6 @@ watch(
         handleCanvasPanning({ canvas: getSelectedCanvas });
         break;
       case "square":
-        console.log("getSquareModeSettings --->", getSquareModeSettings);
         handleSquareDrawing({
           canvas: getSelectedCanvas,
           squareModeSettings: getSquareModeSettings,
@@ -166,7 +163,7 @@ watch(
 
     handleCanvasBackgroundColor({
       canvas: getSelectedCanvas,
-      backgroundColor: getIsDotBackground ? dotPattern() : "transparent",
+      backgroundColor: getIsDotBackground ? dotPattern({}) : "transparent",
     });
   }
 );

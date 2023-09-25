@@ -5,65 +5,72 @@
 </template>
 
 <script setup lang="ts">
-import useCanvasStore from '@/stores/useCanvasStore'
-import useUIStore from '@/stores/useUIStore'
-import drawStrokeOnCanvas from '@/utils/fabricUtils/drawStrokeOnCanvas'
-import handleCanvasBackgroundColor from '@/utils/fabricUtils/handleCanvasBackgroundColor'
-import handleCanvasPanning from '@/utils/fabricUtils/handleCanvasPanning'
-import handleCanvasResize from '@/utils/fabricUtils/handleCanvasResize'
-import handleCanvasZoom from '@/utils/fabricUtils/handleCanvasZoom'
-import resetCanvasMouseMoveUpDown from '@/utils/fabricUtils/resetCanvasMouseMoveUpDown'
-import dotPattern from '@/utils/svgUtils/patterns/dotPattern'
-import { fabric } from 'fabric'
-import { onMounted, ref, watch } from 'vue'
+import useCanvasStore from "@/stores/useCanvasStore";
+import useUIStore from "@/stores/useUIStore";
+import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
+import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
+import { fabric } from "fabric";
+import { onMounted, ref } from "vue";
 
-const uiStore = useUIStore()
-const canvasStore = useCanvasStore()
+const uiStore = useUIStore();
+const canvasStore = useCanvasStore();
 
 const props = defineProps<{
-  id: string
-}>()
+  id: string;
+}>();
 
-const canvasRef = ref<fabric.Canvas | null>(null)
-const containerRef = ref<HTMLDivElement | null>(null)
-const lastContainerSizeRef = ref({ width: 0, height: 0 })
-const canvasReference = ref<HTMLCanvasElement | null>(null)
+const canvasRef = ref<fabric.Canvas | null>(null);
+const containerRef = ref<HTMLDivElement | null>(null);
+const lastContainerSizeRef = ref({ width: 0, height: 0 });
+const canvasReference = ref<HTMLCanvasElement | null>(null);
 
 const emit = defineEmits<{
-  (e: 'mouse:dblclick'): void
-  (e: 'canvas-created', canvas: fabric.Canvas): void
-}>()
+  (e: "mouse:dblclick"): void;
+  (e: "canvas-created", canvas: fabric.Canvas): void;
+}>();
 
 onMounted(() => {
   const canvas = new fabric.Canvas(canvasReference.value, {
     width: containerRef.value?.offsetWidth || 500,
-    height: containerRef.value?.offsetHeight || 500
-  })
+    height: containerRef.value?.offsetHeight || 500,
+  });
 
   if (!canvas) {
-    return
+    return;
   }
 
-  canvasRef.value = canvas
-  emit('canvas-created', canvas)
-  canvas.on('mouse:dblclick', () => {
-    emit('mouse:dblclick')
-  })
+  canvasRef.value = canvas;
+  emit("canvas-created", canvas);
+  canvas.on("mouse:dblclick", () => {
+    emit("mouse:dblclick");
+  });
 
   lastContainerSizeRef.value = {
     width: containerRef.value?.offsetWidth || 500,
-    height: containerRef.value?.offsetHeight || 500
-  }
+    height: containerRef.value?.offsetHeight || 500,
+  };
 
-  handleCanvasZoom({ canvas })
+  handleCanvasZoom({ canvas });
 
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     handleCanvasResize({
       canvas,
-      containerRef: containerRef.value
-    })
-  })
-})
+      containerRef: containerRef.value,
+    });
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace") {
+      const activeObj = canvas.getActiveObject();
+
+      if (!activeObj) {
+        return;
+      }
+
+      canvas.remove(activeObj);
+    }
+  });
+});
 </script>
 
 <style scoped>

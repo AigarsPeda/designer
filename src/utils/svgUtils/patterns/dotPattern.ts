@@ -8,7 +8,7 @@ type DotPatternArgs = {
 };
 
 const dotPattern = ({ fill, objColor }: DotPatternArgs) => {
-  const pattern = new fabric.Pattern({
+  return new fabric.Pattern({
     source: inlineSVGString({
       svgString: dotSVGBackGround({
         fill: fill,
@@ -17,8 +17,6 @@ const dotPattern = ({ fill, objColor }: DotPatternArgs) => {
     }),
     repeat: "repeat",
   });
-
-  return pattern;
 };
 
 export default dotPattern;

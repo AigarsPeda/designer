@@ -1,8 +1,8 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
 import getUniqueId from "@/utils/getUniqueId";
+import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
-import dotPattern from "../svgUtils/patterns/dotPattern";
 
 type SquareDrawingArgs = {
   endAction: () => void;
@@ -76,8 +76,9 @@ const handleSquareDrawing = ({
       stroke: squareModeSettings.stroke,
       fill: squareModeSettings.background,
       // fill: dotPattern({
-      //   fill: squareModeSettings.background,
       //   objColor: squareModeSettings.stroke,
+      //   // fill: squareModeSettings.background,
+      //   // objColor: squareModeSettings.stroke,
       // }),
       strokeWidth: squareModeSettings.strokeWidth,
     }) as CustomRectI;

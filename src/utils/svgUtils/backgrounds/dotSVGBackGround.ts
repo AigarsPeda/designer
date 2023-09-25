@@ -1,9 +1,8 @@
 type DotSVGBackGroundArgs = {
   size?: number;
-  radius?: number;
   fill?: string;
+  radius?: number;
   circleColor?: string;
-  // circleStyle?: string
   circlePositions?: number[][];
 };
 
@@ -21,7 +20,7 @@ const cPositions = [
 const dotSVGBackGround = ({
   size = cSize,
   radius = cRadius,
-  fill = "#ffffff",
+  fill = "transparent",
   circleColor = "#64748b",
   circlePositions = cPositions,
 }: DotSVGBackGroundArgs) => {

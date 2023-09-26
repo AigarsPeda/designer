@@ -13,11 +13,14 @@ const updateCanvasRect = ({
   squareSettings,
 }: UpdateCanvasRectArgs) => {
   rect.set({
-    fill: pattern,
     rx: squareSettings.rx,
     ry: squareSettings.ry,
     stroke: squareSettings.stroke,
     strokeWidth: squareSettings.strokeWidth,
+    fill:
+      squareSettings.backgroundPattern === "none"
+        ? squareSettings.background
+        : pattern,
   });
 
   return rect;

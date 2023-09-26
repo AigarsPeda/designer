@@ -8,12 +8,16 @@ export type DefaultDrawingMode = {
   streamline: number;
 };
 
+export type BackGroundPatternTypes = "none" | "dots";
+
 export type DefaultSquareMode = {
   rx: number;
   ry: number;
   stroke: string;
   background: string;
   strokeWidth: number;
+  backgroundPattern: BackGroundPatternTypes;
+  // background: BackGroundTypes;
 };
 
 //declare state

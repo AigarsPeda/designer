@@ -6,9 +6,8 @@ type DotSVGBackGroundArgs = {
   circlePositions?: number[][];
 };
 
-const cSize = 25;
-const cRadius = 0.5;
-// const cStyle = `fill:#64748b;stroke:#64748b;stroke-width:0.5;`;
+const cSize = 30;
+const cRadius = 1;
 
 const cPositions = [
   [cSize, 0],
@@ -24,7 +23,7 @@ const dotSVGBackGround = ({
   circleColor = "#64748b",
   circlePositions = cPositions,
 }: DotSVGBackGroundArgs) => {
-  const cStyle = `fill:${circleColor};stroke:${circleColor};stroke-width:0.5;`;
+  const cStyle = `fill:${circleColor};stroke:${circleColor};stroke-width:0.6;`;
 
   return `
   <svg width="${size / 2}" height="${size / 2}" viewBox="0 0 ${size / 2} ${

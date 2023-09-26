@@ -26,6 +26,7 @@ const useCanvasStore = defineStore("design", {
         stroke: COLORS[0],
         rx: 10,
         ry: 10,
+        backgroundPattern: "none",
       },
     },
     selectedObjectIds: [],

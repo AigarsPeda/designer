@@ -3,18 +3,36 @@
     <p class="info">Stroke</p>
     <ColorList
       :colors="COLORS"
-      :selectedColor="strokeColor"
-      :handleColorClick="(color) => handleStrokeColorChange(color)"
+      :selectedColor="canvasStore.getSquareModeSettings.stroke"
+      :handleColorClick="
+        (color) =>
+          canvasStore.setSquareModeSettings({
+            squareModeSettings: {
+              ...canvasStore.getSquareModeSettings,
+              stroke: color,
+            },
+          })
+      "
     />
     <p class="info">Background</p>
     <ColorList
-      :selectedColor="fillColor"
+      :selectedColor="canvasStore.getSquareModeSettings.background"
       :colors="BACKGROUND_COLORS"
-      :handleColorClick="(color) => handleFillColorChange(color)"
+      :handleColorClick="
+        (color) =>
+          canvasStore.setSquareModeSettings({
+            squareModeSettings: {
+              ...canvasStore.getSquareModeSettings,
+              background: color,
+            },
+          })
+      "
     />
     <SquareOption
-      :selectedShape="selectedShape"
       :handleShapeChange="handleShapeChange"
+      :selectedShape="
+        canvasStore.getSquareModeSettings.rx === 10 ? 'rounded' : 'sharp'
+      "
     />
   </nav>
 </template>
@@ -25,92 +43,69 @@ import SquareOption from "@/components/SquareOption.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { ShapeType } from "@/types/shape.types";
-import { ref } from "vue";
+import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
+import findPattern from "@/utils/fabricUtils/findPattern";
+import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
+import { watch } from "vue";
 
-const fillColor = ref("");
-const strokeColor = ref("");
 const canvasStore = useCanvasStore();
-const selectedShape = ref<ShapeType>(null);
+const pasterns = createAllPatterns();
 
 const handleShapeChange = (shape: ShapeType) => {
-  selectedShape.value = shape;
-  const selectedObj = canvasStore.getSelectedObjInCanvas;
-  console.log("handleShapeChange", selectedObj);
-
-  for (let i = 0; i < selectedObj.length; i++) {
-    const element = selectedObj[i];
-
-    element.setOptions({
+  canvasStore.setSquareModeSettings({
+    squareModeSettings: {
+      ...canvasStore.getSquareModeSettings,
       rx: shape === "rounded" ? 10 : 0,
       ry: shape === "rounded" ? 10 : 0,
-    });
-
-    // if (element.type === "rect") {
-    //   console.error("element is not rect");
-    //   // element.set({
-    //   //   rx: shape === "rounded" ? 10 : 0,
-    //   //   ry: shape === "rounded" ? 10 : 0,
-    //   // });
-    //   continue;
-    // }
-  }
-
-  canvasStore.getSelectedCanvas?.renderAll();
+    },
+  });
 };
 
-const handleStrokeColorChange = (color: string) => {
-  strokeColor.value = color;
+watch(
+  () => {
+    return {
+      selectedObj: canvasStore.getSelectedObjInCanvas,
+      getSelectedCanvas: canvasStore.getSelectedCanvas,
+      getSquareModeSettings: canvasStore.getSquareModeSettings,
+    };
+  },
+  (newSate) => {
+    const { selectedObj, getSelectedCanvas, getSquareModeSettings } = newSate;
 
-  const selectedObj = canvasStore.getSelectedObjInCanvas;
+    for (let i = 0; i < selectedObj.length; i++) {
+      const element = selectedObj[i];
 
-  for (let i = 0; i < selectedObj.length; i++) {
-    const obj = selectedObj[i];
+      if (element.type === "group") {
+        const group = element as unknown as fabric.Group;
 
-    obj.set({
-      stroke: color,
-    });
+        for (var j = 0; j < group._objects.length; j++) {
+          const obj2 = group._objects[j];
 
-    if (obj._objects) {
-      console.error("obj does not have _objects property");
-      for (var j = 0; j < obj._objects.length; j++) {
-        const obj2 = obj._objects[j];
+          obj2.set({
+            fill: getSquareModeSettings.stroke,
+          });
+        }
+        continue;
+      }
 
-        obj2.set({
-          fill: color,
+      if (element.type === "rect") {
+        const rect = element as fabric.Rect;
+        updateCanvasRect({
+          rect,
+          squareSettings: getSquareModeSettings,
+          pattern: findPattern({
+            pasterns,
+            stroke: getSquareModeSettings.stroke,
+            background: getSquareModeSettings.background,
+          }),
         });
+        continue;
       }
     }
+
+    getSelectedCanvas?.renderAll();
   }
-
-  canvasStore.getSelectedCanvas?.renderAll();
-};
-
-const handleFillColorChange = (color: string) => {
-  fillColor.value = color;
-
-  const selectedObj = canvasStore.getSelectedObjInCanvas;
-
-  for (let i = 0; i < selectedObj.length; i++) {
-    const obj = selectedObj[i];
-
-    obj.set({
-      fill: color,
-    });
-
-    if (obj._objects) {
-      console.error("obj does not have _objects property");
-      for (var j = 0; j < obj._objects.length; j++) {
-        const obj2 = obj._objects[j];
-
-        obj2.set({
-          fill: color,
-        });
-      }
-    }
-  }
-
-  canvasStore.getSelectedCanvas?.renderAll();
-};
+);
 </script>
 
 <style scoped>

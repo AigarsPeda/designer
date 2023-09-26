@@ -1,7 +1,9 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
+import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
+import findPattern from "@/utils/fabricUtils/findPattern";
+import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
 import getUniqueId from "@/utils/getUniqueId";
-import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 
 type SquareDrawingArgs = {
@@ -9,6 +11,8 @@ type SquareDrawingArgs = {
   canvas: fabric.Canvas | null;
   squareModeSettings: DefaultSquareMode;
 };
+
+const pasterns = createAllPatterns();
 
 let id = "";
 let origX = 0;
@@ -34,12 +38,14 @@ const handleSquareDrawing = ({
 
     if (!myRect) return;
 
-    myRect.set({
-      rx: squareModeSettings.rx,
-      ry: squareModeSettings.ry,
-      stroke: squareModeSettings.stroke,
-      fill: squareModeSettings.background,
-      strokeWidth: squareModeSettings.strokeWidth,
+    updateCanvasRect({
+      rect: myRect,
+      squareSettings: squareModeSettings,
+      pattern: findPattern({
+        pasterns,
+        stroke: squareModeSettings.stroke,
+        background: squareModeSettings.background,
+      }),
     });
 
     canvas.renderAll();
@@ -74,13 +80,12 @@ const handleSquareDrawing = ({
       rx: squareModeSettings.rx,
       ry: squareModeSettings.ry,
       stroke: squareModeSettings.stroke,
-      fill: squareModeSettings.background,
-      // fill: dotPattern({
-      //   objColor: squareModeSettings.stroke,
-      //   // fill: squareModeSettings.background,
-      //   // objColor: squareModeSettings.stroke,
-      // }),
       strokeWidth: squareModeSettings.strokeWidth,
+      fill: findPattern({
+        pasterns,
+        stroke: squareModeSettings.stroke,
+        background: squareModeSettings.background,
+      }),
     }) as CustomRectI;
 
     rect.id = getUniqueId();

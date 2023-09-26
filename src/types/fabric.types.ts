@@ -6,6 +6,7 @@ export interface CustomObjI extends fabric.Object {
 }
 
 export interface CustomRectI extends fabric.Rect {
+  _objects?: fabric.Object[];
   id: string;
 }
 

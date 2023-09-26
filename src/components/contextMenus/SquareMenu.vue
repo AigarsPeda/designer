@@ -30,8 +30,10 @@
       "
     />
     <SquareOption
-      :selectedShape="selectedShape"
       :handleShapeChange="handleShapeChange"
+      :selectedShape="
+        canvasStore.getSquareModeSettings.rx === 10 ? 'rounded' : 'sharp'
+      "
     />
   </nav>
 </template>
@@ -43,13 +45,10 @@ import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { ShapeType } from "@/types/shape.types";
-import { ref } from "vue";
 
 const canvasStore = useCanvasStore();
-const selectedShape = ref<ShapeType>("rounded");
 
 const handleShapeChange = (shape: ShapeType) => {
-  selectedShape.value = shape;
   canvasStore.setSquareModeSettings({
     squareModeSettings: {
       ...canvasStore.getSquareModeSettings,

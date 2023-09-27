@@ -8,6 +8,20 @@
     <div class="nav-buttons">
       <Button
         isFullWidth
+        title="Selection"
+        :isSelect="uiStore.getCanvasMode === 'mainMenu'"
+        @click="
+          uiStore.setCanvasMode({
+            canvasMode: 'mainMenu',
+          })
+        "
+      >
+        <template #icon>
+          <vue-feather type="mouse-pointer" size="16" class="icon" />
+        </template>
+      </Button>
+      <Button
+        isFullWidth
         title="Draw"
         :isSelect="uiStore.getCanvasMode === 'drawing'"
         @click="

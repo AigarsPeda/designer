@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import MainDesign from '@/components/MainDesign.vue'
+import MainCanvas from "@/components/MainCanvas.vue";
 </script>
 
 <template>
   <main>
-    <MainDesign />
+    <MainCanvas />
   </main>
 </template>

@@ -5,12 +5,12 @@
       <MenuBackButton />
       <ColorList
         :colors="COLORS"
-        :selectedColor="canvasStore.getDrawingMode.stroke"
+        :selectedColor="canvasStore.getDrawingSettings.stroke"
         :handleColorClick="
           (color) =>
-            canvasStore.setDrawingMode({
-              drawingMode: {
-                ...canvasStore.getDrawingMode,
+            canvasStore.setDrawingSettings({
+              drawingSettings: {
+                ...canvasStore.getDrawingSettings,
                 stroke: color,
               },
             })

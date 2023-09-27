@@ -20,6 +20,7 @@ import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMove
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
+import backSpaceEventListener from "../utils/fabricUtils/backSpaceEventListener";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
@@ -96,7 +97,7 @@ watch(
   () => {
     return {
       getCanvasMode: uiStore.getCanvasMode,
-      getDrawingMode: canvasStore.getDrawingMode,
+      getDrawingSettings: canvasStore.getDrawingSettings,
       getIsDotBackground: uiStore.getIsDotBackground,
       getSelectedCanvas: canvasStore.getSelectedCanvas,
       getSquareModeSettings: canvasStore.getSquareModeSettings,
@@ -105,7 +106,7 @@ watch(
   (newSate) => {
     const {
       getCanvasMode,
-      getDrawingMode,
+      getDrawingSettings,
       getSelectedCanvas,
       getIsDotBackground,
       getSquareModeSettings,
@@ -123,7 +124,7 @@ watch(
       case "drawing":
         drawStrokeOnCanvas({
           canvas: getSelectedCanvas,
-          drawingMode: getDrawingMode,
+          getDrawingSettings: getDrawingSettings,
         });
         break;
       case "panning":

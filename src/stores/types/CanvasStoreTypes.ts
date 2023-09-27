@@ -1,6 +1,6 @@
 import { fabric } from "fabric";
 
-export type DefaultDrawingMode = {
+export type DrawingSettingsType = {
   size: number;
   stroke: string;
   thinning: number;
@@ -22,13 +22,14 @@ export type DefaultSquareMode = {
 
 //declare state
 export interface StateType {
+  isTextToObject: boolean;
   selectedCanvas: fabric.Canvas | null;
   canvas: {
     id: string;
     canva: fabric.Canvas;
   }[];
   defaultCanvasSate: {
-    drawingMode: DefaultDrawingMode;
+    drawingSettings: DrawingSettingsType;
     squareModeSettings: DefaultSquareMode;
   };
   selectedObjectIds: string[];

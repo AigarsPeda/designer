@@ -1,7 +1,7 @@
 import { COLORS } from "@/hardcoded";
 import type {
-  DefaultDrawingMode,
   DefaultSquareMode,
+  DrawingSettingsType,
   StateType,
 } from "@/stores/types/CanvasStoreTypes";
 import type { CustomObjI } from "@/types/fabric.types";
@@ -12,8 +12,9 @@ const useCanvasStore = defineStore("design", {
   state: (): StateType => ({
     canvas: [],
     selectedCanvas: null,
+    isTextToObject: false,
     defaultCanvasSate: {
-      drawingMode: {
+      drawingSettings: {
         size: 4,
         thinning: 0.3,
         smoothing: 0.99,
@@ -33,8 +34,8 @@ const useCanvasStore = defineStore("design", {
   }),
 
   getters: {
-    getDrawingMode(): DefaultDrawingMode {
-      return this.defaultCanvasSate.drawingMode;
+    getDrawingSettings(): DrawingSettingsType {
+      return this.defaultCanvasSate.drawingSettings;
     },
     getCanvasLength({ canvas }: StateType) {
       return canvas.length;
@@ -58,13 +59,20 @@ const useCanvasStore = defineStore("design", {
         return selectedObjectIds.includes(obj.id);
       });
     },
+    getIsTextToObject({ isTextToObject }: StateType) {
+      return isTextToObject;
+    },
   },
   actions: {
     setCanvas({ id, canva }: { id: string; canva: fabric.Canvas }) {
       this.canvas.push({ id, canva });
     },
-    setDrawingMode({ drawingMode }: { drawingMode: DefaultDrawingMode }) {
-      this.defaultCanvasSate.drawingMode = drawingMode;
+    setDrawingSettings({
+      drawingSettings,
+    }: {
+      drawingSettings: DrawingSettingsType;
+    }) {
+      this.defaultCanvasSate.drawingSettings = drawingSettings;
     },
     setSelectedObjectIds({
       selectedObjectIds,
@@ -82,6 +90,9 @@ const useCanvasStore = defineStore("design", {
       squareModeSettings: DefaultSquareMode;
     }) {
       this.defaultCanvasSate.squareModeSettings = squareModeSettings;
+    },
+    setIsTextToObject({ isTextToObject }: { isTextToObject: boolean }) {
+      this.isTextToObject = isTextToObject;
     },
   },
 });

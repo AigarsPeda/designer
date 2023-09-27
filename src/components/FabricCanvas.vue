@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
+import backSpaceEventListener from "@/utils/fabricUtils/backSpaceEventListener";
 import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
 import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
 import { fabric } from "fabric";
@@ -59,17 +60,19 @@ onMounted(() => {
     });
   });
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Backspace") {
-      const activeObj = canvas.getActiveObject();
+  backSpaceEventListener(canvas);
 
-      if (!activeObj) {
-        return;
-      }
+  // window.addEventListener("keydown", (e) => {
+  //   if (e.key === "Backspace") {
+  //     const activeObj = canvas.getActiveObject();
 
-      canvas.remove(activeObj);
-    }
-  });
+  //     if (!activeObj) {
+  //       return;
+  //     }
+
+  //     canvas.remove(activeObj);
+  //   }
+  // });
 });
 </script>
 

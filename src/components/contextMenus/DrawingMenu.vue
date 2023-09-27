@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
 import ColorList from "@/components/ColorList.vue";
-import Logo from "@/components/Logo.vue";
 import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
 import { COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";

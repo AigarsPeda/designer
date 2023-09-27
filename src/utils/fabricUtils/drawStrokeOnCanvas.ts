@@ -9,7 +9,7 @@ const DRAW_STROKE_ID = "drawnObjects";
 
 type DrawStrokeOnCanvasArgs = {
   canvas: fabric.Canvas | null;
-  getDrawingSettings: {
+  drawingSettings: {
     size: number;
     stroke: string;
     thinning: number;
@@ -24,7 +24,7 @@ let drawnObjects: CustomObjI | fabric.Group | null = null;
 
 const drawStrokeOnCanvas = ({
   canvas,
-  getDrawingSettings,
+  drawingSettings,
 }: DrawStrokeOnCanvasArgs) => {
   if (!canvas) {
     console.error("drawStrokeOnCanvas: canvas is null");
@@ -54,10 +54,10 @@ const drawStrokeOnCanvas = ({
     position.push([pointer.x, pointer.y]);
 
     const outlinePoints = getStroke(position, {
-      size: getDrawingSettings.size,
-      thinning: getDrawingSettings.thinning,
-      smoothing: getDrawingSettings.smoothing,
-      streamline: getDrawingSettings.streamline,
+      size: drawingSettings.size,
+      thinning: drawingSettings.thinning,
+      smoothing: drawingSettings.smoothing,
+      streamline: drawingSettings.streamline,
 
       // size: 4,
       // thinning: 0.3,
@@ -74,7 +74,7 @@ const drawStrokeOnCanvas = ({
 
     fabric.loadSVGFromString(
       `<svg>
-         <path fill="${getDrawingSettings.stroke}" d="${pathData}" />
+         <path fill="${drawingSettings.stroke}" d="${pathData}" />
       </svg>`,
       (result) => {
         // const obj = fabric.util.groupSVGElements(result)

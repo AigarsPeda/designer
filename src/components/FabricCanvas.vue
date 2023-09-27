@@ -11,7 +11,7 @@ import backSpaceEventListener from "@/utils/fabricUtils/backSpaceEventListener";
 import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
 import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
 import { fabric } from "fabric";
-import { onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
@@ -29,6 +29,18 @@ const emit = defineEmits<{
   (e: "mouse:dblclick"): void;
   (e: "canvas-created", canvas: fabric.Canvas): void;
 }>();
+
+// const listener = (e: KeyboardEvent) => {
+//   if (e.key === "Backspace") {
+//     const activeObj = canvasRef.value?.getActiveObject();
+
+//     if (!activeObj) {
+//       return;
+//     }
+
+//     canvasRef.value?.remove(activeObj);
+//   }
+// };
 
 onMounted(() => {
   const canvas = new fabric.Canvas(canvasReference.value, {
@@ -60,20 +72,26 @@ onMounted(() => {
     });
   });
 
-  backSpaceEventListener(canvas);
+  // backSpaceEventListener(canvas, true);
 
-  // window.addEventListener("keydown", (e) => {
-  //   if (e.key === "Backspace") {
-  //     const activeObj = canvas.getActiveObject();
+  // backSpaceEventListener(getSelectedCanvas);
 
-  //     if (!activeObj) {
-  //       return;
-  //     }
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace") {
+      const activeObj = canvasRef.value?.getActiveObject();
 
-  //     canvas.remove(activeObj);
-  //   }
-  // });
+      if (!activeObj) {
+        return;
+      }
+
+      canvasRef.value?.remove(activeObj);
+    }
+  });
 });
+
+// onBeforeUnmount(() => {
+//   window.removeEventListener("keydown", listener);
+// });
 </script>
 
 <style scoped>

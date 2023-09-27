@@ -20,7 +20,6 @@ import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMove
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
-import backSpaceEventListener from "../utils/fabricUtils/backSpaceEventListener";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
@@ -97,17 +96,17 @@ watch(
   () => {
     return {
       getCanvasMode: uiStore.getCanvasMode,
-      getDrawingSettings: canvasStore.getDrawingSettings,
       getIsDotBackground: uiStore.getIsDotBackground,
       getSelectedCanvas: canvasStore.getSelectedCanvas,
+      getDrawingSettings: canvasStore.getDrawingSettings,
       getSquareModeSettings: canvasStore.getSquareModeSettings,
     };
   },
   (newSate) => {
     const {
       getCanvasMode,
-      getDrawingSettings,
       getSelectedCanvas,
+      getDrawingSettings,
       getIsDotBackground,
       getSquareModeSettings,
     } = newSate;
@@ -124,7 +123,7 @@ watch(
       case "drawing":
         drawStrokeOnCanvas({
           canvas: getSelectedCanvas,
-          getDrawingSettings: getDrawingSettings,
+          drawingSettings: getDrawingSettings,
         });
         break;
       case "panning":
@@ -134,9 +133,12 @@ watch(
         handleSquareDrawing({
           canvas: getSelectedCanvas,
           squareModeSettings: getSquareModeSettings,
-          endAction: () => {
+          endAction: (id) => {
             uiStore.setCanvasMode({
-              canvasMode: "mainMenu",
+              canvasMode: "ObjContextMenu",
+            });
+            canvasStore.setSelectedObjectIds({
+              selectedObjectIds: [id],
             });
           },
         });

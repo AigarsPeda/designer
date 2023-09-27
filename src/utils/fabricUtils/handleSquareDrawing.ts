@@ -7,7 +7,7 @@ import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
 type SquareDrawingArgs = {
-  endAction: () => void;
+  endAction: (id: string) => void;
   canvas: fabric.Canvas | null;
   squareModeSettings: DefaultSquareMode;
 };
@@ -32,32 +32,32 @@ const handleSquareDrawing = ({
   canvas?.off("mouse:move");
   canvas?.off("mouse:down");
 
-  if (id) {
-    const canvasObj = canvas.getObjects() as CustomRectI[];
-    const myRect = canvasObj.find((obj) => obj.id === id);
+  // if (id) {
+  //   const canvasObj = canvas.getObjects() as CustomRectI[];
+  //   const myRect = canvasObj.find((obj) => obj.id === id);
 
-    if (!myRect) return;
+  //   if (!myRect) return;
 
-    updateCanvasRect({
-      rect: myRect,
-      squareSettings: squareModeSettings,
-      pattern: findPattern({
-        pasterns,
-        stroke: squareModeSettings.stroke,
-        background: squareModeSettings.background,
-      }),
-    });
+  //   updateCanvasRect({
+  //     rect: myRect,
+  //     squareSettings: squareModeSettings,
+  //     pattern: findPattern({
+  //       pasterns,
+  //       stroke: squareModeSettings.stroke,
+  //       background: squareModeSettings.background,
+  //     }),
+  //   });
 
-    canvas.renderAll();
-  }
+  //   canvas.renderAll();
+  // }
 
   canvas.on("mouse:down", (e) => {
-    if (id !== "") {
-      id = "";
+    // if (id !== "") {
+    //   id = "";
 
-      endAction();
-      return;
-    }
+    //   endAction();
+    //   return;
+    // }
 
     isDown = true;
 
@@ -118,12 +118,28 @@ const handleSquareDrawing = ({
   });
 
   canvas.on("mouse:up", (o) => {
-    const canvasObj = canvas.getObjects() as CustomRectI[];
-    const myRect = canvasObj.find((obj) => obj.id === id);
+    // const canvasObj = canvas.getObjects() as CustomRectI[];
 
-    if (!myRect) return;
+    // for (let i = 0; i < canvasObj.length; i++) {
+    //   const element = canvasObj[i];
+
+    //   element
+
+    //   // element.setOptions({
+    //   //   selectable: true,
+    //   //   hasRotatingPoint: true,
+
+    //   // });
+
+    // }
+
+    // const myRect = canvasObj.find((obj) => obj.id === id);
+
+    // if (!myRect) return;
 
     isDown = false;
+    endAction(id);
+    id = "";
   });
 };
 

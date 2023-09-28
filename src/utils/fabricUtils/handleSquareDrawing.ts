@@ -118,25 +118,6 @@ const handleSquareDrawing = ({
   });
 
   canvas.on("mouse:up", (o) => {
-    // const canvasObj = canvas.getObjects() as CustomRectI[];
-
-    // for (let i = 0; i < canvasObj.length; i++) {
-    //   const element = canvasObj[i];
-
-    //   element
-
-    //   // element.setOptions({
-    //   //   selectable: true,
-    //   //   hasRotatingPoint: true,
-
-    //   // });
-
-    // }
-
-    // const myRect = canvasObj.find((obj) => obj.id === id);
-
-    // if (!myRect) return;
-
     isDown = false;
     endAction(id);
     id = "";

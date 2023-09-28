@@ -76,17 +76,17 @@ onMounted(() => {
 
   // backSpaceEventListener(getSelectedCanvas);
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Backspace") {
-      const activeObj = canvasRef.value?.getActiveObject();
+  // window.addEventListener("keydown", (e) => {
+  //   if (e.key === "Backspace") {
+  //     const activeObj = canvasRef.value?.getActiveObject();
 
-      if (!activeObj) {
-        return;
-      }
+  //     if (!activeObj) {
+  //       return;
+  //     }
 
-      canvasRef.value?.remove(activeObj);
-    }
-  });
+  //     canvasRef.value?.remove(activeObj);
+  //   }
+  // });
 });
 
 // onBeforeUnmount(() => {

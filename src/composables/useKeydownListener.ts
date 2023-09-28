@@ -26,7 +26,6 @@ const useKeydownListener = (handler: (event: KeyboardEvent) => void) => {
     removeListener();
   });
 
-  // Return the functions for adding and removing the listener
   return { addListener, removeListener };
 };
 

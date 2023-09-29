@@ -9,6 +9,7 @@ import FabricCanvas from "@/components/FabricCanvas.vue";
 import useKeydownListener from "@/composables/useKeydownListener";
 import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
+import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActiveCanvasObjWithBackspace";
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
@@ -93,18 +94,6 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   // fabricCanvas.add(circle, triangle, line, test, textObj)
 };
 
-const backspaceListener = (e: KeyboardEvent, canvas: fabric.Canvas) => {
-  if (e.key === "Backspace") {
-    const activeObj = canvas.getActiveObject();
-
-    if (!activeObj) {
-      return;
-    }
-
-    canvas.remove(activeObj);
-  }
-};
-
 const { addListener, removeListener } = useKeydownListener((e) => {
   const canvas = canvasStore.getSelectedCanvas;
 
@@ -112,7 +101,7 @@ const { addListener, removeListener } = useKeydownListener((e) => {
     return;
   }
 
-  backspaceListener(e, canvas);
+  deleteActiveCanvasObjWithBackspace(e, canvas);
 });
 
 watch(
@@ -171,6 +160,7 @@ watch(
         // case "ObjContextMenu":
 
         handleContextSelectDeselect({
+          removeListener,
           canvas: getSelectedCanvas,
           action: (str, ids) => {
             uiStore.setCanvasMode({
@@ -185,6 +175,7 @@ watch(
       case "ObjContextMenu":
         addListener();
         handleContextSelectDeselect({
+          removeListener,
           canvas: getSelectedCanvas,
           action: (str, ids) => {
             uiStore.setCanvasMode({

@@ -1,19 +1,25 @@
 import type { CanvaModeType } from "@/stores/types/UiStoreTypes";
-import type { CustomObjI } from "@/types/fabric.types";
+import type { CustomITextI, CustomObjI } from "@/types/fabric.types";
+import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
 type HandleContextSelectDeselectArgs = {
   canvas: fabric.Canvas | null;
+  // addListener: () => void;
+  removeListener: () => void;
   action: (str: CanvaModeType, ids: string[]) => void;
 };
 
 let timer = 0;
 const TIMER = 200;
 let doubleClick = false;
+// let textObject: CustomITextI | null = null;
 
 const handleContextSelectDeselect = ({
   canvas,
   action,
+  // addListener,
+  removeListener,
 }: HandleContextSelectDeselectArgs) => {
   canvas?.off("mouse:up");
   canvas?.off("mouse:move");
@@ -36,6 +42,7 @@ const handleContextSelectDeselect = ({
       });
 
       if (ids.length > 0) {
+        // addListener();
         action("ObjContextMenu", ids);
         return;
       }
@@ -46,39 +53,57 @@ const handleContextSelectDeselect = ({
 
   canvas?.on("mouse:dblclick", (e) => {
     const target = canvas.findTarget(e.e, true);
+    console.log("double clicked type ---->", target?.type);
 
     if (doubleClick) {
       return;
     }
 
-    console.log("target", target);
+    // Entering text if double click on text
+    if (target?.type === "i-text") {
+      removeListener();
+      const text = target as CustomITextI;
 
-    // get target middle
-    const targetMiddle = {
-      x: (target?.left || 0) + (target?.width || 0) / 2,
-      y: (target?.top || 0) + (target?.height || 0) / 2,
-    };
+      if (text?.isEditing) {
+        return;
+      }
 
-    // text
+      text.enterEditing();
+    }
 
-    const textObject = new fabric.IText("Enter text here...", {
-      fontSize: 16,
-      left: targetMiddle.x,
-      top: targetMiddle.y,
-      // radius: 10,
-      // borderRadius: "25px",
-      hasRotatingPoint: true,
-      editable: true,
-      selected: true,
-    });
+    // Adding text if double click on rect
+    if (target?.type === "rect" || !target) {
+      // get target middle
+      // const targetMiddle = {
+      //   x: (target?.left || 0) + (target?.width || 0) / 2,
+      //   y: (target?.top || 0) + (target?.height || 0) / 2,
+      // };
 
-    canvas?.add(textObject);
-    textObject.enterEditing();
-    textObject.bringToFront();
-    canvas.discardActiveObject();
+      const targetMiddle = {
+        x: e.pointer?.x || 0,
+        y: e.pointer?.y || 0,
+      };
+
+      // text
+
+      const textObject = new fabric.IText("Double click to edit text", {
+        fontSize: 16,
+        editable: true,
+        selected: true,
+        fontWeight: "bold",
+        top: targetMiddle.y,
+        left: targetMiddle.x,
+        hasRotatingPoint: true,
+        fontFamily: "Montserrat",
+      }) as CustomITextI;
+
+      textObject.id = getUniqueId();
+      canvas.discardActiveObject();
+      textObject.bringToFront();
+      canvas?.add(textObject);
+    }
 
     doubleClick = true;
-    console.log("dblclick", e);
 
     setTimeout(() => {
       doubleClick = false;

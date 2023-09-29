@@ -7,7 +7,6 @@ const useKeydownListener = (handler: (event: KeyboardEvent) => void) => {
     if (!savedHandler.value) {
       return;
     }
-
     window.addEventListener("keydown", savedHandler.value);
   };
 

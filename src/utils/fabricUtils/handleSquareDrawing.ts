@@ -2,7 +2,6 @@ import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
 import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
-import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 

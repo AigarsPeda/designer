@@ -17,3 +17,7 @@ export interface CustomGroupOptionsI extends fabric.IGroupOptions {
 export interface CustomGroupI extends fabric.Group {
   id: string;
 }
+
+export interface CustomITextI extends fabric.IText {
+  id: string;
+}

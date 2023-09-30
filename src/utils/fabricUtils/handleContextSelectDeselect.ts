@@ -39,7 +39,6 @@ const handleContextSelectDeselect = ({
       });
 
       if (ids.length > 0) {
-        // addListener();
         action("ObjContextMenu", ids);
         return;
       }
@@ -77,8 +76,8 @@ const handleContextSelectDeselect = ({
       // };
 
       const targetMiddle = {
-        x: e.pointer?.x || 0,
         y: e.pointer?.y || 0,
+        x: (e.pointer?.x || 0) - 100,
       };
 
       // text
@@ -90,15 +89,17 @@ const handleContextSelectDeselect = ({
         fontWeight: "bold",
         top: targetMiddle.y,
         left: targetMiddle.x,
-        hasRotatingPoint: false,
+        hasRotatingPoint: true,
         fontFamily: "Montserrat",
       }) as CustomITextI;
 
       textObject.id = getUniqueId();
       textObject.bringToFront();
+      // textObject.enterEditing();
       canvas?.add(textObject);
       // canvas.discardActiveObject();
       canvas.setActiveObject(textObject);
+      canvas.renderAll();
 
       action("ObjContextMenu", [textObject.id]);
     }

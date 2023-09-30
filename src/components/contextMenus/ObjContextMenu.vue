@@ -37,15 +37,15 @@ import ColorList from "@/components/ColorList.vue";
 import SquareOption from "@/components/SquareOption.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
-import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
-import findPattern from "@/utils/fabricUtils/findPattern";
-import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
-import { watch } from "vue";
 import type {
   CustomGroupI,
   CustomITextI,
   CustomRectI,
-} from "../../types/fabric.types";
+} from "@/types/fabric.types";
+import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
+import findPattern from "@/utils/fabricUtils/findPattern";
+import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
+import { watch } from "vue";
 
 const canvasStore = useCanvasStore();
 const pasterns = createAllPatterns();

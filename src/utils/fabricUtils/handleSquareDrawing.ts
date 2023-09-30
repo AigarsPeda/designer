@@ -97,13 +97,12 @@ const handleSquareDrawing = ({
     if (!square) {
       return;
     }
-
+    id = "";
     // square.setCoords();
     canvas.add(square);
 
     isDown = false;
     endAction(id);
-    id = "";
   });
 };
 

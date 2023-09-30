@@ -25,73 +25,12 @@ import { ref, watch } from "vue";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
-
-const imgUrl = (str: string) => {
-  return new URL(str, import.meta.url);
-};
-
 const elRef = ref<HTMLDivElement | null>(null);
 
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   canvasStore.setSelectedCanvas({
     selectedCanvas: fabricCanvas,
   });
-
-  const center = fabricCanvas.getCenter();
-
-  //  handleContextSelectDeselect({ canvas: fabricCanvas });
-
-  // loadBgImageToCanvas(imgUrl(`../../src/assets/images/front.jpg`), fabricCanvas)
-
-  const circle = new fabric.Circle({
-    radius: 20,
-    fill: "#4f46e5",
-    top: center.top + 100,
-    left: center.left + 100,
-  });
-  const triangle = new fabric.Triangle({
-    width: 60,
-    height: 70,
-    fill: "#c026d3",
-    top: center.top + 50,
-    left: center.left + 50,
-  });
-
-  const textObj = new fabric.IText("Test text", {
-    fontSize: 22,
-    top: center.top,
-    left: center.left,
-    hasControls: true,
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontFamily: "Helvetica",
-  });
-
-  // start
-  // left = 80 top = 10,
-
-  // end
-  // left = 200, top = 150
-  const line = new fabric.Line([80, 10, 200, 150], {
-    stroke: "#374151",
-  });
-
-  const test = new fabric.Polyline(
-    [
-      { x: 80, y: 10 },
-      { x: 200, y: 150 },
-      { x: 500, y: 250 },
-    ],
-    {
-      stroke: "#ea580c",
-      fill: "transparent",
-      strokeWidth: 5,
-      strokeLineCap: "round",
-      strokeLineJoin: "round",
-    }
-  );
-
-  // fabricCanvas.add(circle, triangle, line, test, textObj)
 };
 
 const { addListener, removeListener } = useKeydownListener((e) => {
@@ -154,11 +93,8 @@ watch(
             });
           },
         });
-
         break;
       case "mainMenu":
-        // case "ObjContextMenu":
-
         handleContextSelectDeselect({
           removeListener,
           canvas: getSelectedCanvas,
@@ -216,4 +152,3 @@ span {
   justify-content: center;
 }
 </style>
-@/stores/useCanvasStore @/utils/fabricUtils/handleContextSelectDeselectDeselect

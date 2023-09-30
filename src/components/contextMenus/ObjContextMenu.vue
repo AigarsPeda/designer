@@ -41,6 +41,11 @@ import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
 import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
 import { watch } from "vue";
+import type {
+  CustomGroupI,
+  CustomITextI,
+  CustomRectI,
+} from "../../types/fabric.types";
 
 const canvasStore = useCanvasStore();
 const pasterns = createAllPatterns();
@@ -60,7 +65,7 @@ watch(
       const element = selectedObj[i];
 
       if (element.type === "group") {
-        const group = element as unknown as fabric.Group;
+        const group = element as CustomGroupI;
 
         for (var j = 0; j < group._objects.length; j++) {
           const obj2 = group._objects[j];
@@ -73,7 +78,7 @@ watch(
       }
 
       if (element.type === "rect") {
-        const rect = element as fabric.Rect;
+        const rect = element as CustomRectI;
         updateCanvasRect({
           rect,
           squareSettings: getSquareModeSettings,
@@ -82,6 +87,15 @@ watch(
             stroke: getSquareModeSettings.stroke,
             background: getSquareModeSettings.background,
           }),
+        });
+        continue;
+      }
+
+      if (element.type === "i-text") {
+        const text = element as CustomITextI;
+        text.set({
+          fill: getSquareModeSettings.stroke,
+          // stroke: getSquareModeSettings.stroke,
         });
         continue;
       }

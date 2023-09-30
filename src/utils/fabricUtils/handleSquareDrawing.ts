@@ -6,8 +6,8 @@ import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
 type SquareDrawingArgs = {
-  endAction: (id: string) => void;
   canvas: fabric.Canvas | null;
+  endAction: (id: string) => void;
   squareModeSettings: DefaultSquareMode;
 };
 
@@ -31,33 +31,7 @@ const handleSquareDrawing = ({
   canvas?.off("mouse:move");
   canvas?.off("mouse:down");
 
-  // if (id) {
-  //   const canvasObj = canvas.getObjects() as CustomRectI[];
-  //   const myRect = canvasObj.find((obj) => obj.id === id);
-
-  //   if (!myRect) return;
-
-  //   updateCanvasRect({
-  //     rect: myRect,
-  //     squareSettings: squareModeSettings,
-  //     pattern: findPattern({
-  //       pasterns,
-  //       stroke: squareModeSettings.stroke,
-  //       background: squareModeSettings.background,
-  //     }),
-  //   });
-
-  //   canvas.renderAll();
-  // }
-
   canvas.on("mouse:down", (e) => {
-    // if (id !== "") {
-    //   id = "";
-
-    //   endAction();
-    //   return;
-    // }
-
     isDown = true;
 
     const pointer = canvas.getPointer(e.e);
@@ -91,6 +65,7 @@ const handleSquareDrawing = ({
     id = rect.id;
 
     canvas.add(rect);
+    canvas.setActiveObject(rect);
   });
 
   canvas.on("mouse:move", (o) => {
@@ -117,6 +92,15 @@ const handleSquareDrawing = ({
   });
 
   canvas.on("mouse:up", (o) => {
+    const square = canvas.getActiveObject();
+
+    if (!square) {
+      return;
+    }
+
+    // square.setCoords();
+    canvas.add(square);
+
     isDown = false;
     endAction(id);
     id = "";

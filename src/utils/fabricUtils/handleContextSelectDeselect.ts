@@ -4,21 +4,18 @@ import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
 type HandleContextSelectDeselectArgs = {
-  canvas: fabric.Canvas | null;
-  // addListener: () => void;
   removeListener: () => void;
+  canvas: fabric.Canvas | null;
   action: (str: CanvaModeType, ids: string[]) => void;
 };
 
 let timer = 0;
 const TIMER = 200;
 let doubleClick = false;
-// let textObject: CustomITextI | null = null;
 
 const handleContextSelectDeselect = ({
   canvas,
   action,
-  // addListener,
   removeListener,
 }: HandleContextSelectDeselectArgs) => {
   canvas?.off("mouse:up");
@@ -93,14 +90,17 @@ const handleContextSelectDeselect = ({
         fontWeight: "bold",
         top: targetMiddle.y,
         left: targetMiddle.x,
-        hasRotatingPoint: true,
+        hasRotatingPoint: false,
         fontFamily: "Montserrat",
       }) as CustomITextI;
 
       textObject.id = getUniqueId();
-      canvas.discardActiveObject();
       textObject.bringToFront();
       canvas?.add(textObject);
+      // canvas.discardActiveObject();
+      canvas.setActiveObject(textObject);
+
+      action("ObjContextMenu", [textObject.id]);
     }
 
     doubleClick = true;

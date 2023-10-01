@@ -38,9 +38,9 @@ import Button from "@/components/Button.vue";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { ShapeType } from "@/types/shape.types";
 import {
-  FlGridDots,
-  PxSharpCorner,
-  ReRoundedCorner,
+FlGridDots,
+PxSharpCorner,
+ReRoundedCorner,
 } from "@kalimahapps/vue-icons";
 
 const canvasStore = useCanvasStore();

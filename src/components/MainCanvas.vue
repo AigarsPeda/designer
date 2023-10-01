@@ -1,6 +1,12 @@
 <template>
   <div class="design-canvas-container" ref="elRef">
-    <FabricCanvas @canvas-created="handleCanvasCreated" :id="'1'" />
+    <FabricCanvas
+      :id="'1'"
+      @canvas-created="handleCanvasCreated"
+      @selection-created="handleObjSelected"
+      @selection-updated="handleObjSelected"
+      @selection-cleared="handleObjSelectedCleared"
+    />
   </div>
 </template>
 
@@ -13,7 +19,6 @@ import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActive
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
-import handleContextSelectDeselect from "@/utils/fabricUtils/handleContextSelectDeselect";
 import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
 import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
@@ -27,12 +32,6 @@ const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
 const elRef = ref<HTMLDivElement | null>(null);
 
-const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
-  canvasStore.setSelectedCanvas({
-    selectedCanvas: fabricCanvas,
-  });
-};
-
 const { addListener, removeListener } = useKeydownListener((e) => {
   const canvas = canvasStore.getSelectedCanvas;
 
@@ -42,6 +41,28 @@ const { addListener, removeListener } = useKeydownListener((e) => {
 
   deleteActiveCanvasObjWithBackspace(e, canvas);
 });
+
+const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
+  canvasStore.setSelectedCanvas({
+    selectedCanvas: fabricCanvas,
+  });
+};
+
+const handleObjSelected = (opt: fabric.IEvent) => {
+  console.log("obj selected --->", opt);
+  addListener();
+  uiStore.setCanvasMode({
+    canvasMode: "ObjContextMenu",
+  });
+};
+
+const handleObjSelectedCleared = (opt: fabric.IEvent) => {
+  console.log("obj cleared --->", opt);
+  removeListener();
+  uiStore.setCanvasMode({
+    canvasMode: "mainMenu",
+  });
+};
 
 watch(
   () => {
@@ -61,6 +82,8 @@ watch(
       getIsDotBackground,
       getSquareModeSettings,
     } = newSate;
+
+    resetCanvasMouseMoveUpDown(getSelectedCanvas);
 
     if (isCanvasObjSelectable(getCanvasMode)) {
       makeAllObjCanvasUnselectable(getSelectedCanvas);
@@ -84,44 +107,37 @@ watch(
         handleSquareDrawing({
           canvas: getSelectedCanvas,
           squareModeSettings: getSquareModeSettings,
-          endAction: (id) => {
-            uiStore.setCanvasMode({
-              canvasMode: "ObjContextMenu",
-            });
-            canvasStore.setSelectedObjectIds({
-              selectedObjectIds: [id],
-            });
-          },
         });
         break;
       case "mainMenu":
-        handleContextSelectDeselect({
-          removeListener,
-          canvas: getSelectedCanvas,
-          action: (str, ids) => {
-            uiStore.setCanvasMode({
-              canvasMode: str,
-            });
-            canvasStore.setSelectedObjectIds({
-              selectedObjectIds: ids,
-            });
-          },
-        });
+        // handleContextSelectDeselect({
+        //   removeListener,
+        //   canvas: getSelectedCanvas,
+        //   action: (str, ids) => {
+        //     // uiStore.setCanvasMode({
+        //     //   canvasMode: str,
+        //     // });
+        //     // canvasStore.setSelectedObjectIds({
+        //     //   selectedObjectIds: ids,
+        //     // });
+        //   },
+        // });
         break;
       case "ObjContextMenu":
-        addListener();
-        handleContextSelectDeselect({
-          removeListener,
-          canvas: getSelectedCanvas,
-          action: (str, ids) => {
-            uiStore.setCanvasMode({
-              canvasMode: str,
-            });
-            canvasStore.setSelectedObjectIds({
-              selectedObjectIds: ids,
-            });
-          },
-        });
+        // addListener();
+        // addListener();
+        // handleContextSelectDeselect({
+        //   removeListener,
+        //   canvas: getSelectedCanvas,
+        //   action: (str, ids) => {
+        //     uiStore.setCanvasMode({
+        //       canvasMode: str,
+        //     });
+        //     canvasStore.setSelectedObjectIds({
+        //       selectedObjectIds: ids,
+        //     });
+        //   },
+        // });
         break;
 
       default:

@@ -5,16 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import useCanvasStore from "@/stores/useCanvasStore";
-import useUIStore from "@/stores/useUIStore";
-import backSpaceEventListener from "@/utils/fabricUtils/backSpaceEventListener";
 import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
 import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
 import { fabric } from "fabric";
-import { onBeforeUnmount, onMounted, ref } from "vue";
-
-const uiStore = useUIStore();
-const canvasStore = useCanvasStore();
+import { onMounted, ref } from "vue";
 
 const props = defineProps<{
   id: string;
@@ -26,21 +20,12 @@ const lastContainerSizeRef = ref({ width: 0, height: 0 });
 const canvasReference = ref<HTMLCanvasElement | null>(null);
 
 const emit = defineEmits<{
-  (e: "mouse:dblclick"): void;
+  // (e: "mouse:dblclick"): void;
   (e: "canvas-created", canvas: fabric.Canvas): void;
+  (e: "selection-created", opt: fabric.IEvent): void;
+  (e: "selection-cleared", opt: fabric.IEvent): void;
+  (e: "selection-updated", opt: fabric.IEvent): void;
 }>();
-
-// const listener = (e: KeyboardEvent) => {
-//   if (e.key === "Backspace") {
-//     const activeObj = canvasRef.value?.getActiveObject();
-
-//     if (!activeObj) {
-//       return;
-//     }
-
-//     canvasRef.value?.remove(activeObj);
-//   }
-// };
 
 onMounted(() => {
   const canvas = new fabric.Canvas(canvasReference.value, {
@@ -54,8 +39,17 @@ onMounted(() => {
 
   canvasRef.value = canvas;
   emit("canvas-created", canvas);
-  canvas.on("mouse:dblclick", () => {
-    emit("mouse:dblclick");
+
+  canvas.on("selection:created", (opt) => {
+    emit("selection-created", opt);
+  });
+
+  canvas.on("selection:updated", (opt) => {
+    emit("selection-updated", opt);
+  });
+
+  canvas.on("selection:cleared", (opt) => {
+    emit("selection-cleared", opt);
   });
 
   lastContainerSizeRef.value = {
@@ -71,27 +65,7 @@ onMounted(() => {
       containerRef: containerRef.value,
     });
   });
-
-  // backSpaceEventListener(canvas, true);
-
-  // backSpaceEventListener(getSelectedCanvas);
-
-  // window.addEventListener("keydown", (e) => {
-  //   if (e.key === "Backspace") {
-  //     const activeObj = canvasRef.value?.getActiveObject();
-
-  //     if (!activeObj) {
-  //       return;
-  //     }
-
-  //     canvasRef.value?.remove(activeObj);
-  //   }
-  // });
 });
-
-// onBeforeUnmount(() => {
-//   window.removeEventListener("keydown", listener);
-// });
 </script>
 
 <style scoped>

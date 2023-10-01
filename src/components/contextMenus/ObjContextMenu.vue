@@ -53,13 +53,18 @@ const pasterns = createAllPatterns();
 watch(
   () => {
     return {
-      selectedObj: canvasStore.getSelectedObjInCanvas,
+      // selectedObj: canvasStore.getSelectedObjInCanvas,
       getSelectedCanvas: canvasStore.getSelectedCanvas,
       getSquareModeSettings: canvasStore.getSquareModeSettings,
     };
   },
   (newSate) => {
-    const { selectedObj, getSelectedCanvas, getSquareModeSettings } = newSate;
+    const { getSelectedCanvas, getSquareModeSettings } = newSate;
+    const selectedObj = getSelectedCanvas?.getActiveObjects();
+
+    if (!selectedObj) {
+      return;
+    }
 
     for (let i = 0; i < selectedObj.length; i++) {
       const element = selectedObj[i];
@@ -99,6 +104,8 @@ watch(
         });
         continue;
       }
+
+      getSelectedCanvas?.add(element);
     }
 
     getSelectedCanvas?.renderAll();

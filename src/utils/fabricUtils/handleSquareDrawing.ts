@@ -2,12 +2,12 @@ import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
 import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
+import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
 type SquareDrawingArgs = {
   canvas: fabric.Canvas | null;
-  endAction: (id: string) => void;
   squareModeSettings: DefaultSquareMode;
 };
 
@@ -20,16 +20,13 @@ let isDown = false;
 
 const handleSquareDrawing = ({
   canvas,
-  endAction,
   squareModeSettings,
 }: SquareDrawingArgs) => {
   if (!canvas) {
     return;
   }
 
-  canvas?.off("mouse:up");
-  canvas?.off("mouse:move");
-  canvas?.off("mouse:down");
+  // resetCanvasMouseMoveUpDown(canvas);
 
   canvas.on("mouse:down", (e) => {
     isDown = true;
@@ -43,11 +40,13 @@ const handleSquareDrawing = ({
       angle: 0,
       top: origY,
       left: origX,
-      evented: true,
+      evented: false,
       originY: "top",
       originX: "left",
-      selectable: true,
-      hasRotatingPoint: true,
+      selectable: false,
+      // scaleX: 1,
+      // scaleY: 1,
+      hasRotatingPoint: false,
       width: pointer.x - origX,
       height: pointer.y - origY,
       rx: squareModeSettings.rx,
@@ -65,44 +64,54 @@ const handleSquareDrawing = ({
     id = rect.id;
 
     canvas.add(rect);
-    canvas.setActiveObject(rect);
+    canvas.renderAll();
+    // canvas.setActiveObject(rect);
   });
 
   canvas.on("mouse:move", (o) => {
     if (!isDown || !id) return;
     const pointer = canvas.getPointer(o.e);
-    const canvasObj = canvas.getObjects() as CustomRectI[];
-    const myRect = canvasObj.find((obj) => obj.id === id);
+    const allObj = canvas.getObjects() as CustomRectI[];
+    const square = allObj.find((obj) => obj.id === id);
+    // const square = canvas.getActiveObject();
 
-    if (!myRect) return;
+    if (!square) return;
 
     if (origX > pointer.x) {
-      myRect.set({ left: Math.abs(pointer.x) });
+      square.set({ left: Math.abs(pointer.x) });
     }
     if (origY > pointer.y) {
-      myRect.set({ top: Math.abs(pointer.y) });
+      square.set({ top: Math.abs(pointer.y) });
     }
 
-    myRect.setOptions({
+    square.setOptions({
       width: Math.abs(origX - pointer.x),
       height: Math.abs(origY - pointer.y),
     });
 
+    square.setCoords();
     canvas.renderAll();
   });
 
   canvas.on("mouse:up", (o) => {
-    const square = canvas.getActiveObject();
+    isDown = false;
+
+    const allObj = canvas.getObjects() as CustomRectI[];
+    const square = allObj.find((obj) => obj.id === id);
 
     if (!square) {
       return;
     }
-    id = "";
-    // square.setCoords();
-    canvas.add(square);
 
-    isDown = false;
-    endAction(id);
+    canvas.remove(square);
+    square.setOptions({
+      evented: true,
+      selectable: true,
+      hasRotatingPoint: true,
+    });
+
+    square.setCoords();
+    canvas.add(square);
   });
 };
 

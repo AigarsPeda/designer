@@ -1,5 +1,6 @@
 import type { CustomGroupOptionsI, CustomObjI } from "@/types/fabric.types";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
+import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
 import getSvgPathFromStroke from "@/utils/getSvgPathFromStroke";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
@@ -32,9 +33,7 @@ const drawStrokeOnCanvas = ({
   }
 
   // Reset the canvas to default
-  canvas?.off("mouse:up");
-  canvas?.off("mouse:move");
-  canvas?.off("mouse:down");
+  // resetCanvasMouseMoveUpDown(canvas);
 
   canvas.on("mouse:down", (e) => {
     isMouseDown = true;
@@ -58,12 +57,6 @@ const drawStrokeOnCanvas = ({
       thinning: drawingSettings.thinning,
       smoothing: drawingSettings.smoothing,
       streamline: drawingSettings.streamline,
-
-      // size: 4,
-      // thinning: 0.3,
-      // smoothing: 0.99,
-      // streamline: 0.99,
-
       easing(t) {
         // Cubic equation for linear easing
         t = Math.max(0, Math.min(1, t));

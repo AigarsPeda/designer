@@ -1,3 +1,4 @@
+import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
 import { fabric } from "fabric";
 
 type HandleCanvasPanningArgs = {
@@ -14,11 +15,9 @@ const handleCanvasPanning = ({ canvas }: HandleCanvasPanningArgs) => {
   }
 
   // Reset the canvas to default
-  canvas?.off("mouse:up");
-  canvas?.off("mouse:move");
-  canvas?.off("mouse:down");
+  // resetCanvasMouseMoveUpDown(canvas);
 
-  const test = canvas.on("mouse:down", (e) => {
+  canvas.on("mouse:down", (e) => {
     isPanning = true;
 
     if (e && e.e && e.e.type === "touchstart") {

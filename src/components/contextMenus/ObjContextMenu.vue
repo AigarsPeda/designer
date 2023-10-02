@@ -16,8 +16,8 @@
     />
     <p class="info">Background</p>
     <ColorList
-      :selectedColor="canvasStore.getSquareModeSettings.background"
       :colors="BACKGROUND_COLORS"
+      :selectedColor="canvasStore.getSquareModeSettings.background"
       :handleColorClick="
         (color) =>
           canvasStore.setSquareModeSettings({

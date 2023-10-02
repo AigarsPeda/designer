@@ -76,16 +76,15 @@ const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
     fontFamily: "Montserrat",
   }) as CustomITextI;
 
-  // removeListener();
   textObject.id = getUniqueId();
-  // textObject.bringToFront();
-  // textObject.enterEditing();
-  // canvasStore.getSelectedCanvas?.discardActiveObject();
+  // textObject.setCoords();
+  textObject.bringToFront();
 
+  // canvasStore.getSelectedCanvas?.discardActiveObject();
   canvasStore.getSelectedCanvas?.add(textObject);
-  canvasStore.getSelectedCanvas?.bringForward(textObject);
-  canvasStore.getSelectedCanvas?.setActiveObject(textObject);
+  // canvasStore.getSelectedCanvas?.bringForward(textObject);
   canvasStore.getSelectedCanvas?.renderAll();
+  canvasStore.getSelectedCanvas?.setActiveObject(textObject);
 };
 
 const handleMouseDown = (event: fabric.IEvent<MouseEvent>) => {

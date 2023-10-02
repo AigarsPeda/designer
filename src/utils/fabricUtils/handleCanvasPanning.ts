@@ -1,4 +1,3 @@
-import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
 import { fabric } from "fabric";
 
 type HandleCanvasPanningArgs = {

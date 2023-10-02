@@ -53,7 +53,6 @@ const pasterns = createAllPatterns();
 watch(
   () => {
     return {
-      // selectedObj: canvasStore.getSelectedObjInCanvas,
       getSelectedCanvas: canvasStore.getSelectedCanvas,
       getSquareModeSettings: canvasStore.getSquareModeSettings,
     };

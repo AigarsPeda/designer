@@ -2,10 +2,12 @@
   <div class="design-canvas-container" ref="elRef">
     <FabricCanvas
       :id="'1'"
+      @mouse-down="handleMouseDown"
+      @mouse-dblclick="handleDoubleClick"
       @canvas-created="handleCanvasCreated"
       @selection-created="handleObjSelected"
       @selection-updated="handleObjSelected"
-      @selection-cleared="handleObjSelectedCleared"
+      @selection-cleared="handleObjSelectionCleared"
     />
   </div>
 </template>
@@ -15,6 +17,7 @@ import FabricCanvas from "@/components/FabricCanvas.vue";
 import useKeydownListener from "@/composables/useKeydownListener";
 import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
+import type { CustomITextI } from "@/types/fabric.types";
 import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActiveCanvasObjWithBackspace";
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
@@ -24,6 +27,7 @@ import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
+import getUniqueId from "@/utils/getUniqueId";
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
@@ -42,23 +46,77 @@ const { addListener, removeListener } = useKeydownListener((e) => {
   deleteActiveCanvasObjWithBackspace(e, canvas);
 });
 
+const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
+  console.log("double click", e);
+
+  // isTextEditing.value = true;
+
+  if (e.target && e.target.type === "i-text") {
+    const text = e.target as CustomITextI;
+    text.enterEditing();
+    removeListener();
+    return;
+  }
+
+  const targetMiddle = {
+    y: e.pointer?.y || 0,
+    x: (e.pointer?.x || 0) - 100,
+  };
+
+  const textObject = new fabric.IText("Double click to edit text", {
+    fontSize: 16,
+    evented: true,
+    editable: true,
+    selected: true,
+    hasControls: true,
+    fontWeight: "bold",
+    top: targetMiddle.y,
+    left: targetMiddle.x,
+    hasRotatingPoint: true,
+    fontFamily: "Montserrat",
+  }) as CustomITextI;
+
+  // removeListener();
+  textObject.id = getUniqueId();
+  // textObject.bringToFront();
+  // textObject.enterEditing();
+  // canvasStore.getSelectedCanvas?.discardActiveObject();
+
+  canvasStore.getSelectedCanvas?.add(textObject);
+  canvasStore.getSelectedCanvas?.bringForward(textObject);
+  canvasStore.getSelectedCanvas?.setActiveObject(textObject);
+  canvasStore.getSelectedCanvas?.renderAll();
+};
+
+const handleMouseDown = (event: fabric.IEvent<MouseEvent>) => {
+  console.log("mouse down", event);
+
+  // if (event.target && event.target.type === "i-text") {
+  //   console.log("removeListener()");
+  //   const text = event.target as CustomITextI;
+  //   text.isEditing && removeListener();
+  // }
+};
+
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   canvasStore.setSelectedCanvas({
     selectedCanvas: fabricCanvas,
   });
 };
 
-const handleObjSelected = (opt: fabric.IEvent) => {
-  console.log("obj selected --->", opt);
+const handleObjSelected = (event: fabric.IEvent<MouseEvent>) => {
+  console.log("selection", event);
+  // TODO: Depending on selected object add or remove listener
+
   addListener();
+
   uiStore.setCanvasMode({
     canvasMode: "ObjContextMenu",
   });
 };
 
-const handleObjSelectedCleared = (opt: fabric.IEvent) => {
-  console.log("obj cleared --->", opt);
-  removeListener();
+const handleObjSelectionCleared = (event: fabric.IEvent<MouseEvent>) => {
+  console.log("selection cleared", event);
   uiStore.setCanvasMode({
     canvasMode: "mainMenu",
   });
@@ -108,36 +166,6 @@ watch(
           canvas: getSelectedCanvas,
           squareModeSettings: getSquareModeSettings,
         });
-        break;
-      case "mainMenu":
-        // handleContextSelectDeselect({
-        //   removeListener,
-        //   canvas: getSelectedCanvas,
-        //   action: (str, ids) => {
-        //     // uiStore.setCanvasMode({
-        //     //   canvasMode: str,
-        //     // });
-        //     // canvasStore.setSelectedObjectIds({
-        //     //   selectedObjectIds: ids,
-        //     // });
-        //   },
-        // });
-        break;
-      case "ObjContextMenu":
-        // addListener();
-        // addListener();
-        // handleContextSelectDeselect({
-        //   removeListener,
-        //   canvas: getSelectedCanvas,
-        //   action: (str, ids) => {
-        //     uiStore.setCanvasMode({
-        //       canvasMode: str,
-        //     });
-        //     canvasStore.setSelectedObjectIds({
-        //       selectedObjectIds: ids,
-        //     });
-        //   },
-        // });
         break;
 
       default:

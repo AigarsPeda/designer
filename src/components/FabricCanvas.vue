@@ -20,11 +20,12 @@ const lastContainerSizeRef = ref({ width: 0, height: 0 });
 const canvasReference = ref<HTMLCanvasElement | null>(null);
 
 const emit = defineEmits<{
-  // (e: "mouse:dblclick"): void;
   (e: "canvas-created", canvas: fabric.Canvas): void;
-  (e: "selection-created", opt: fabric.IEvent): void;
-  (e: "selection-cleared", opt: fabric.IEvent): void;
-  (e: "selection-updated", opt: fabric.IEvent): void;
+  (e: "mouse-down", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "mouse-dblclick", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "selection-created", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "selection-cleared", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "selection-updated", opt: fabric.IEvent<MouseEvent>): void;
 }>();
 
 onMounted(() => {
@@ -52,12 +53,33 @@ onMounted(() => {
     emit("selection-cleared", opt);
   });
 
+  canvas.on("mouse:dblclick", (opt) => {
+    emit("mouse-dblclick", opt);
+  });
+
+  canvas.on("mouse:down:before", (opt) => {
+    emit("mouse-down", opt);
+  });
+
   lastContainerSizeRef.value = {
     width: containerRef.value?.offsetWidth || 500,
     height: containerRef.value?.offsetHeight || 500,
   };
 
   handleCanvasZoom({ canvas });
+
+  // // add listener for mouse click
+  // window.addEventListener("mousedown", (e) => {
+  //   if (!canvas) {
+  //     return;
+  //   }
+
+  //   const obj = canvas.findTarget(e, true);
+
+  //   console.log("mouse down", obj);
+
+  //   emit("mouse-down", obj);
+  // });
 
   window.addEventListener("resize", () => {
     handleCanvasResize({

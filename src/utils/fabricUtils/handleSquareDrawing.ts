@@ -2,7 +2,6 @@ import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
 import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
-import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
@@ -25,8 +24,6 @@ const handleSquareDrawing = ({
   if (!canvas) {
     return;
   }
-
-  // resetCanvasMouseMoveUpDown(canvas);
 
   canvas.on("mouse:down", (e) => {
     isDown = true;
@@ -89,7 +86,7 @@ const handleSquareDrawing = ({
       height: Math.abs(origY - pointer.y),
     });
 
-    square.setCoords();
+    // square.setCoords();
     canvas.renderAll();
   });
 
@@ -112,6 +109,7 @@ const handleSquareDrawing = ({
 
     square.setCoords();
     canvas.add(square);
+    canvas.setActiveObject(square);
   });
 };
 

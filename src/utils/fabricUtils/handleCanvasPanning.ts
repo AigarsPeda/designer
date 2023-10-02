@@ -14,9 +14,6 @@ const handleCanvasPanning = ({ canvas }: HandleCanvasPanningArgs) => {
     return;
   }
 
-  // Reset the canvas to default
-  // resetCanvasMouseMoveUpDown(canvas);
-
   canvas.on("mouse:down", (e) => {
     isPanning = true;
 

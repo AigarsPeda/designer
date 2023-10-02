@@ -32,9 +32,6 @@ const drawStrokeOnCanvas = ({
     return;
   }
 
-  // Reset the canvas to default
-  // resetCanvasMouseMoveUpDown(canvas);
-
   canvas.on("mouse:down", (e) => {
     isMouseDown = true;
     drawnObjects = null;

@@ -38,9 +38,9 @@ import Button from "@/components/Button.vue";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { ShapeType } from "@/types/shape.types";
 import {
-FlGridDots,
-PxSharpCorner,
-ReRoundedCorner,
+  FlGridDots,
+  PxSharpCorner,
+  ReRoundedCorner,
 } from "@kalimahapps/vue-icons";
 
 const canvasStore = useCanvasStore();
@@ -73,10 +73,9 @@ const handleBackgroundChange = () => {
   font-size: 2em;
 }
 .nav-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
   gap: 0.5rem;
-  /* grid-row-gap: 0.5rem; */
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: repeat(2, 1fr);
 }
 </style>

@@ -41,8 +41,6 @@ const handleSquareDrawing = ({
       originY: "top",
       originX: "left",
       selectable: false,
-      // scaleX: 1,
-      // scaleY: 1,
       hasRotatingPoint: false,
       width: pointer.x - origX,
       height: pointer.y - origY,

@@ -20,6 +20,7 @@ import useUIStore from "@/stores/useUIStore";
 import type { CustomITextI } from "@/types/fabric.types";
 import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActiveCanvasObjWithBackspace";
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
+import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
 import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
@@ -27,7 +28,6 @@ import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
-import getUniqueId from "@/utils/getUniqueId";
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
@@ -63,28 +63,11 @@ const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
     x: (e.pointer?.x || 0) - 100,
   };
 
-  const textObject = new fabric.IText("Double click to edit text", {
-    fontSize: 16,
-    evented: true,
-    editable: true,
-    selected: true,
-    hasControls: true,
-    fontWeight: "bold",
-    top: targetMiddle.y,
-    left: targetMiddle.x,
-    hasRotatingPoint: true,
-    fontFamily: "Montserrat",
-  }) as CustomITextI;
-
-  textObject.id = getUniqueId();
-  // textObject.setCoords();
-  textObject.bringToFront();
-
-  // canvasStore.getSelectedCanvas?.discardActiveObject();
-  canvasStore.getSelectedCanvas?.add(textObject);
-  // canvasStore.getSelectedCanvas?.bringForward(textObject);
-  canvasStore.getSelectedCanvas?.renderAll();
-  canvasStore.getSelectedCanvas?.setActiveObject(textObject);
+  handleAddITextToCanvas({
+    position: targetMiddle,
+    text: "Double click to edit text",
+    canvas: canvasStore.getSelectedCanvas,
+  });
 };
 
 const handleMouseDown = (event: fabric.IEvent<MouseEvent>) => {

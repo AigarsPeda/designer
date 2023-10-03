@@ -13,13 +13,14 @@ const props = defineProps<{
   isSelect?: boolean;
   onClick: () => void;
   isFullWidth?: boolean;
-  color?: "green" | "purple" | "red";
   type?: "button" | "submit" | "reset";
+  color?: "green" | "purple" | "red" | "red-text";
 }>();
 
 const stylesRef = ref({
-  color: "#0f172a",
-  hover: "#cbd5e1",
+  textColor: "#0f172a",
+  bgHover: "#cbd5e1",
+  textHaverColor: "#0f172a",
   backgroundColor: "transparent",
   selectedBackgroundColor: "#cbd5e1",
 });
@@ -27,8 +28,9 @@ const stylesRef = ref({
 onMounted(() => {
   if (props.color === "green") {
     stylesRef.value = {
-      color: "#fff",
-      hover: "#15803d",
+      textColor: "#fff",
+      bgHover: "#15803d",
+      textHaverColor: "#fff",
       backgroundColor: "#059669",
       selectedBackgroundColor: "#15803d",
     };
@@ -36,8 +38,9 @@ onMounted(() => {
 
   if (props.color === "purple") {
     stylesRef.value = {
-      color: "#fff",
-      hover: "#7e22ce",
+      textColor: "#fff",
+      bgHover: "#7e22ce",
+      textHaverColor: "#fff",
       backgroundColor: "#7e22ce",
       selectedBackgroundColor: "#7e22ce",
     };
@@ -45,10 +48,21 @@ onMounted(() => {
 
   if (props.color === "red") {
     stylesRef.value = {
-      color: "#fff",
-      hover: "#b91c1c",
+      textColor: "#fff",
+      bgHover: "#b91c1c",
+      textHaverColor: "#fff",
       backgroundColor: "#dc2626",
       selectedBackgroundColor: "#b91c1c",
+    };
+  }
+
+  if (props.color === "red-text") {
+    stylesRef.value = {
+      textColor: "#dc2626",
+      bgHover: "#dc2626",
+      textHaverColor: "#fff",
+      backgroundColor: "transparent",
+      selectedBackgroundColor: "#f87171",
     };
   }
 });
@@ -67,7 +81,7 @@ onMounted(() => {
   padding: 0.5rem 0.7rem;
   justify-content: center;
   transition: all 0.2s ease-in-out;
-  color: v-bind("`${stylesRef.color}`");
+  color: v-bind("`${stylesRef.textColor}`");
   width: v-bind("`${props.isFullWidth ? " 100% " : " auto "}`");
   font-weight: v-bind("`${props.isSelect ? " bold " : " normal "}`");
   background-color: v-bind(
@@ -77,7 +91,8 @@ onMounted(() => {
 
 @media (hover: hover) {
   .btn:hover {
-    background-color: v-bind("`${stylesRef.hover}`");
+    color: v-bind("`${stylesRef.textHaverColor}`");
+    background-color: v-bind("`${stylesRef.bgHover}`");
   }
 }
 

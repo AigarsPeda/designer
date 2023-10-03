@@ -29,10 +29,13 @@
       "
     />
     <SquareOption />
+    <div class="divider" />
+    <AdditionOptions />
   </nav>
 </template>
 
 <script setup lang="ts">
+import AdditionOptions from "@/components/AdditionOptions.vue";
 import ColorList from "@/components/ColorList.vue";
 import SquareOption from "@/components/SquareOption.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
@@ -99,7 +102,6 @@ watch(
         const text = element as CustomITextI;
         text.set({
           fill: getSquareModeSettings.stroke,
-          // stroke: getSquareModeSettings.stroke,
         });
         continue;
       }
@@ -120,6 +122,12 @@ nav {
   padding: 0.5rem;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.divider {
+  width: 100%;
+  height: 1.5px;
+  background-color: #64748b;
 }
 
 .info {

@@ -50,6 +50,11 @@
           <vue-feather type="square" size="16" class="icon" />
         </template>
       </Button>
+      <Button isFullWidth title="Text" @click="addText">
+        <template #icon>
+          <vue-feather type="type" size="16" class="icon" />
+        </template>
+      </Button>
       <Button
         isFullWidth
         title="Move"
@@ -86,11 +91,31 @@
 <script setup lang="ts">
 import Button from "@/components/Button.vue";
 import Logo from "@/components/Logo.vue";
+import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
+import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import VueFeather from "vue-feather";
 import { RouterLink } from "vue-router";
 
 const uiStore = useUIStore();
+const canvasStore = useCanvasStore();
+
+const addText = () => {
+  const center = canvasStore.getSelectedCanvas?.getCenter();
+
+  if (!center) {
+    return;
+  }
+
+  handleAddITextToCanvas({
+    position: {
+      y: center.top,
+      x: center.left,
+    },
+    text: "Double click to edit text",
+    canvas: canvasStore.getSelectedCanvas,
+  });
+};
 </script>
 
 <style scoped>

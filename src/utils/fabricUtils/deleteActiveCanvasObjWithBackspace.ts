@@ -1,17 +1,12 @@
 import { fabric } from "fabric";
+import handleDeleteSelectedCanvasObj from "@/utils/fabricUtils/handleDeleteSelectedCanvasObj";
 
 const deleteActiveCanvasObjWithBackspace = (
   e: KeyboardEvent,
   canvas: fabric.Canvas
 ) => {
   if (e.key === "Backspace") {
-    const activeObj = canvas.getActiveObject();
-
-    if (!activeObj) {
-      return;
-    }
-
-    canvas.remove(activeObj);
+    handleDeleteSelectedCanvasObj(canvas);
   }
 };
 

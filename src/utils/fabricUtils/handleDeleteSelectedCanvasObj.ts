@@ -8,11 +8,10 @@ const handleDeleteSelectedCanvasObj = (canvas: fabric.Canvas | null) => {
   }
 
   for (let i = 0; i < selectedObj.length; i++) {
-    const element = selectedObj[i];
-
-    canvas?.remove(element);
+    canvas?.remove(selectedObj[i]);
   }
 
+  canvas?.discardActiveObject();
   canvas?.renderAll();
 };
 

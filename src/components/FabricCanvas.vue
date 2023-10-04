@@ -61,25 +61,27 @@ onMounted(() => {
     emit("mouse-down", opt);
   });
 
+  canvas.on("object:modified", (opt) => {
+    opt.target?.set({
+      opacity: 1, // Set opacity back to 1
+    });
+
+    canvas.renderAll();
+  });
+
+  canvas.on("object:moving", (opt) => {
+    opt.target?.set({
+      opacity: 0.75,
+    });
+    canvas.renderAll();
+  });
+
   lastContainerSizeRef.value = {
     width: containerRef.value?.offsetWidth || 500,
     height: containerRef.value?.offsetHeight || 500,
   };
 
   handleCanvasZoom({ canvas });
-
-  // // add listener for mouse click
-  // window.addEventListener("mousedown", (e) => {
-  //   if (!canvas) {
-  //     return;
-  //   }
-
-  //   const obj = canvas.findTarget(e, true);
-
-  //   console.log("mouse down", obj);
-
-  //   emit("mouse-down", obj);
-  // });
 
   window.addEventListener("resize", () => {
     handleCanvasResize({

@@ -98,7 +98,6 @@ const handleObjSelected = (event: fabric.IEvent<MouseEvent>) => {
 };
 
 const handleObjSelectionCleared = (event: fabric.IEvent<MouseEvent>) => {
-  console.log("selection cleared", event);
   uiStore.setCanvasMode({
     canvasMode: "mainMenu",
   });

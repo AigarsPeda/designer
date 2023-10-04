@@ -30,6 +30,7 @@ const emit = defineEmits<{
 
 onMounted(() => {
   const canvas = new fabric.Canvas(canvasReference.value, {
+    preserveObjectStacking: true,
     width: containerRef.value?.offsetWidth || 500,
     height: containerRef.value?.offsetHeight || 500,
   });
@@ -106,4 +107,3 @@ onMounted(() => {
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 </style>
-../utils/fabricUtils/resetCanvasMouseMoveUpDown

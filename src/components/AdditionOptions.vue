@@ -3,7 +3,7 @@
     <Button
       isFullWidth
       title="Send to back"
-      @click="console.log('send to back')"
+      @click="handleSendToBack(canvasStore.getSelectedCanvas)"
     >
       <template #icon>
         <BsLayersHalf class="icon" />
@@ -12,7 +12,7 @@
     <Button
       isFullWidth
       title="Bring to front"
-      @click="console.log('bring to front')"
+      @click="handleBringToFront(canvasStore.getSelectedCanvas)"
     >
       <template #icon>
         <BsLayersFill class="icon" />
@@ -42,6 +42,22 @@ import {
 import handleDeleteSelectedCanvasObj from "@/utils/fabricUtils/handleDeleteSelectedCanvasObj";
 
 const canvasStore = useCanvasStore();
+
+const handleBringToFront = (canvas: fabric.Canvas | null) => {
+  const activeObj = canvas?.getActiveObject();
+  if (activeObj) {
+    activeObj.bringForward();
+    canvas?.renderAll();
+  }
+};
+
+const handleSendToBack = (canvas: fabric.Canvas | null) => {
+  const activeObj = canvas?.getActiveObject();
+  if (activeObj) {
+    activeObj.sendBackwards();
+    canvas?.renderAll();
+  }
+};
 </script>
 
 <style scoped>

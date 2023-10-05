@@ -80,45 +80,6 @@ const drawStrokeOnCanvas = ({
     path.id = objId;
 
     canvas.add(path);
-    // canvas.renderAll();
-
-    // fabric.loadSVGFromString(
-    //   `<svg>
-    //      <path fill="${drawingSettings.stroke}" d="${pathData}" />
-    //   </svg>`,
-    //   (result) => {
-    //     // TODO: How to remove the previous object? Or how to update the object and add only the new path?
-    //     // const activeObjects = canvas.getObjects() as CustomObjI[];
-    //     // const obj = activeObjects.filter((o) => o?.id === objId);
-
-    //     // if (obj.length > 0) {
-    //     //   for (let i = 0; i < obj.length; i++) {
-    //     //     canvas.remove(obj[i]);
-    //     //   }
-    //     // }
-
-    //     const path = new fabric.Path(pathData, {
-    //       fill: drawingSettings.stroke,
-    //       id: objId,
-    //       cornerSize: 6,
-    //       evented: true,
-    //       selectable: true,
-    //       hasRotatingPoint: true,
-    //     });
-
-    //     // const group = new fabric.Group(result, {
-    //     //   id: objId,
-    //     //   cornerSize: 6,
-    //     //   evented: true,
-    //     //   selectable: true,
-    //     //   hasRotatingPoint: true,
-    //     // } as CustomGroupOptionsI);
-
-    //     canvas.add(path);
-
-    //     // canvas.add(group);
-    //   }
-    // );
   });
 
   canvas.on("mouse:up", (e) => {
@@ -131,7 +92,6 @@ const drawStrokeOnCanvas = ({
       const element = objToSelect[i];
 
       element.set({
-        // cornerSize: 6,
         evented: true,
         selectable: true,
         hasRotatingPoint: true,

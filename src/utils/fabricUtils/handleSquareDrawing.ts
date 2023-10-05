@@ -19,7 +19,7 @@ let origX = 0;
 let origY = 0;
 let isDown = false;
 
-const debouncedScalingHandler = debounce(scalingObjAndPreservingCorners, 50);
+// const debouncedScalingHandler = debounce(scalingObjAndPreservingCorners, 50);
 
 const handleSquareDrawing = ({
   canvas,
@@ -62,7 +62,7 @@ const handleSquareDrawing = ({
     }) as CustomRectI;
 
     // When scaling, preserving corners
-    rect.on("scaling", (event) => debouncedScalingHandler(event));
+    rect.on("scaling", (event) => scalingObjAndPreservingCorners(event));
 
     rect.id = getUniqueId();
     id = rect.id;

@@ -5,6 +5,10 @@ export interface CustomObjI extends fabric.Object {
   id: string;
 }
 
+export interface CustomPathI extends fabric.Path {
+  id: string;
+}
+
 export interface CustomRectI extends fabric.Rect {
   _objects?: fabric.Object[];
   id: string;

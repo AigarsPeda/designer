@@ -15,18 +15,18 @@ const useCanvasStore = defineStore("design", {
     isTextToObject: false,
     defaultCanvasSate: {
       drawingSettings: {
-        size: 4,
+        size: 6,
         thinning: 0.3,
         smoothing: 0.99,
         streamline: 0.99,
         stroke: COLORS[0],
       },
       squareModeSettings: {
+        rx: 10,
+        ry: 10,
         background: "",
         strokeWidth: 2,
         stroke: COLORS[0],
-        rx: 10,
-        ry: 10,
         backgroundPattern: "none",
       },
     },

@@ -77,6 +77,10 @@ onMounted(() => {
     canvas.renderAll();
   });
 
+  // canvas.on("object:scaling", (opt) => {
+  //   console.log(opt);
+  // });
+
   lastContainerSizeRef.value = {
     width: containerRef.value?.offsetWidth || 500,
     height: containerRef.value?.offsetHeight || 500,

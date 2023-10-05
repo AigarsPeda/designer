@@ -1,7 +1,9 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
+import debounce from "@/utils/debounce";
 import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
+import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
@@ -16,6 +18,8 @@ let id = "";
 let origX = 0;
 let origY = 0;
 let isDown = false;
+
+const debouncedScalingHandler = debounce(scalingObjAndPreservingCorners, 50);
 
 const handleSquareDrawing = ({
   canvas,
@@ -41,11 +45,13 @@ const handleSquareDrawing = ({
       originY: "top",
       originX: "left",
       selectable: false,
+      noScaleCache: false, // for scaling preserving corners
       hasRotatingPoint: false,
       width: pointer.x - origX,
       height: pointer.y - origY,
       rx: squareModeSettings.rx,
       ry: squareModeSettings.ry,
+      cornerSize: 6,
       stroke: squareModeSettings.stroke,
       strokeWidth: squareModeSettings.strokeWidth,
       fill: findPattern({
@@ -55,12 +61,13 @@ const handleSquareDrawing = ({
       }),
     }) as CustomRectI;
 
+    // When scaling, preserving corners
+    rect.on("scaling", (event) => debouncedScalingHandler(event));
+
     rect.id = getUniqueId();
     id = rect.id;
 
-    canvas.add(rect);
-    canvas.renderAll();
-    // canvas.setActiveObject(rect);
+    canvas.add(rect).renderAll();
   });
 
   canvas.on("mouse:move", (o) => {
@@ -68,7 +75,6 @@ const handleSquareDrawing = ({
     const pointer = canvas.getPointer(o.e);
     const allObj = canvas.getObjects() as CustomRectI[];
     const square = allObj.find((obj) => obj.id === id);
-    // const square = canvas.getActiveObject();
 
     if (!square) return;
 
@@ -84,7 +90,6 @@ const handleSquareDrawing = ({
       height: Math.abs(origY - pointer.y),
     });
 
-    // square.setCoords();
     canvas.renderAll();
   });
 

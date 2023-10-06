@@ -91,11 +91,16 @@ const drawStrokeOnCanvas = ({
     for (let i = 0; i < objToSelect.length; i++) {
       const element = objToSelect[i];
 
+      // Without this, the object is not deletable
+      canvas.remove(element);
+
       element.set({
         evented: true,
         selectable: true,
         hasRotatingPoint: true,
       });
+
+      element.setCoords();
 
       canvas.add(element);
       canvas.renderAll();

@@ -3,7 +3,7 @@ export type CanvaModeType =
   | "panning"
   | "mainMenu"
   | "square"
-  // | "group";
+  | "line"
   | "ObjContextMenu";
 
 export interface UiStoreStateType {

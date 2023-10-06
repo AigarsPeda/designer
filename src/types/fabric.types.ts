@@ -25,3 +25,7 @@ export interface CustomGroupI extends fabric.Group {
 export interface CustomITextI extends fabric.IText {
   id: string;
 }
+
+export interface CustomLineI extends fabric.Line {
+  id: string;
+}

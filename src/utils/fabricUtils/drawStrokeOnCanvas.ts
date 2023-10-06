@@ -1,5 +1,4 @@
 import type { CustomObjI, CustomPathI } from "@/types/fabric.types";
-import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import getSvgPathFromStroke from "@/utils/getSvgPathFromStroke";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
@@ -91,24 +90,13 @@ const drawStrokeOnCanvas = ({
     for (let i = 0; i < objToSelect.length; i++) {
       const element = objToSelect[i];
 
-      // Without this, the object is not deletable
-      canvas.remove(element);
-
-      element.set({
-        evented: true,
-        selectable: true,
-        hasRotatingPoint: true,
-      });
-
       element.setCoords();
-
       canvas.add(element);
-      canvas.renderAll();
     }
 
     objId = "";
     isMouseDown = false;
-    makeAllObjCanvasUnselectable(canvas);
+    // makeAllObjCanvasUnselectable(canvas);
   });
 };
 

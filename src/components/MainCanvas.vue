@@ -23,6 +23,7 @@ import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
+import handleLineDrawing from "@/utils/fabricUtils/handleLineDrawing";
 import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
 import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
@@ -125,10 +126,12 @@ watch(
     resetCanvasMouseMoveUpDown(getSelectedCanvas);
 
     if (isCanvasObjSelectable(getCanvasMode)) {
+      console.log("unselectable");
       makeAllObjCanvasUnselectable(getSelectedCanvas);
     }
 
     if (!isCanvasObjSelectable(getCanvasMode)) {
+      console.log("selectable");
       makeAllObjCanvasSelectable(getSelectedCanvas);
     }
 
@@ -144,6 +147,12 @@ watch(
         break;
       case "square":
         handleSquareDrawing({
+          canvas: getSelectedCanvas,
+          squareModeSettings: getSquareModeSettings,
+        });
+        break;
+      case "line":
+        handleLineDrawing({
           canvas: getSelectedCanvas,
           squareModeSettings: getSquareModeSettings,
         });

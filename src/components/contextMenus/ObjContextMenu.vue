@@ -80,6 +80,14 @@ watch(
       //   continue;
       // }
 
+      if (element.type === "line") {
+        const line = element as CustomITextI;
+        line.set({
+          stroke: getSquareModeSettings.stroke,
+        });
+        continue;
+      }
+
       if (element.type === "path") {
         const path = element as CustomRectI;
         path.set({

@@ -3,8 +3,10 @@ const makeAllObjCanvasUnselectable = (canvas: fabric.Canvas | null) => {
     console.error("makeAllObjCanvasUnselectable: canvas is null");
     return;
   }
-  canvas.selection = false;
+
   canvas.discardActiveObject();
+  canvas.selection = false;
+
   canvas.forEachObject((obj) => {
     obj.setOptions({
       evented: false,

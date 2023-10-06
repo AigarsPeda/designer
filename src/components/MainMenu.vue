@@ -37,6 +37,20 @@
       </Button>
       <Button
         isFullWidth
+        title="Line"
+        :isSelect="uiStore.getCanvasMode === 'line'"
+        @click="
+          uiStore.setCanvasMode({
+            canvasMode: uiStore.getCanvasMode === 'line' ? 'mainMenu' : 'line',
+          })
+        "
+      >
+        <template #icon>
+          <vue-feather type="minus" size="16" class="icon" />
+        </template>
+      </Button>
+      <Button
+        isFullWidth
         title="Square"
         :isSelect="uiStore.getCanvasMode === 'square'"
         @click="

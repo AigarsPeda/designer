@@ -51,6 +51,21 @@
       </Button>
       <Button
         isFullWidth
+        title="Arrow"
+        :isSelect="uiStore.getCanvasMode === 'arrow'"
+        @click="
+          uiStore.setCanvasMode({
+            canvasMode:
+              uiStore.getCanvasMode === 'arrow' ? 'mainMenu' : 'arrow',
+          })
+        "
+      >
+        <template #icon>
+          <vue-feather type="arrow-right" size="16" class="icon" />
+        </template>
+      </Button>
+      <Button
+        isFullWidth
         title="Square"
         :isSelect="uiStore.getCanvasMode === 'square'"
         @click="

@@ -14,6 +14,7 @@
           })
       "
     />
+
     <p class="info">Background</p>
     <ColorList
       :colors="BACKGROUND_COLORS"
@@ -92,7 +93,6 @@ watch(
         const path = element as CustomRectI;
         path.set({
           fill: getSquareModeSettings.background,
-          // stroke: getSquareModeSettings.stroke,
         });
         continue;
       }
@@ -110,8 +110,6 @@ watch(
         });
         continue;
       }
-
-      console.log(element.type);
 
       if (element.type === "i-text") {
         const text = element as CustomITextI;

@@ -32,6 +32,7 @@ import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMove
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
+import handleArrowDrawing from "../utils/fabricUtils/handleArrowDrawing";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
@@ -153,6 +154,12 @@ watch(
         break;
       case "line":
         handleLineDrawing({
+          canvas: getSelectedCanvas,
+          squareModeSettings: getSquareModeSettings,
+        });
+        break;
+      case "arrow":
+        handleArrowDrawing({
           canvas: getSelectedCanvas,
           squareModeSettings: getSquareModeSettings,
         });

@@ -15,6 +15,7 @@
           })
       "
     />
+    <!-- <div v-if="uiStore.getCanvasMode === 'square'"> -->
     <p class="info">Background</p>
     <ColorList
       :colors="BACKGROUND_COLORS"
@@ -31,6 +32,7 @@
     />
 
     <SquareOption />
+    <!-- </div> -->
   </nav>
 </template>
 
@@ -41,6 +43,7 @@ import MenuBackButton from "@/components/contextMenus/MenuBackButton.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 
+// const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
 </script>
 

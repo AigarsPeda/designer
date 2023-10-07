@@ -1,7 +1,7 @@
+import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomLineI } from "@/types/fabric.types";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
-import type { DefaultSquareMode } from "../../stores/types/CanvasStoreTypes";
 
 type HandleLineDrawingArgs = {
   canvas: fabric.Canvas | null;
@@ -19,7 +19,7 @@ const handleLineDrawing = ({
     return;
   }
 
-  canvas.on("mouse:down", function (o) {
+  canvas.on("mouse:down", (o) => {
     isDown = true;
     id = getUniqueId();
 
@@ -71,7 +71,7 @@ const handleLineDrawing = ({
     canvas.renderAll();
   });
 
-  canvas.on("mouse:up", (o) => {
+  canvas.on("mouse:up", () => {
     if (!isDown) return;
     isDown = false; // Moving this to button makes it so you can't draw multiple lines
 
@@ -80,6 +80,15 @@ const handleLineDrawing = ({
 
     for (let i = 0; i < objToSelect.length; i++) {
       const element = objToSelect[i];
+
+      canvas.remove(element);
+
+      // element?.setOptions({
+      //   evented: true,
+      //   selectable: true,
+      //   hasControls: true,
+      //   hasRotatingPoint: true,
+      // });
 
       element.setCoords();
       canvas.add(element);

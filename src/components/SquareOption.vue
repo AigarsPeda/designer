@@ -74,6 +74,7 @@ const handleBackgroundChange = () => {
 }
 .nav-buttons {
   gap: 0.5rem;
+  padding-top: 0.5rem;
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: repeat(2, 1fr);

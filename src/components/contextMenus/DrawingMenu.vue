@@ -1,7 +1,6 @@
 <template>
   <nav>
     <div class="nav-buttons">
-      <!-- <Logo /> -->
       <MenuBackButton />
       <ColorList
         :colors="COLORS"

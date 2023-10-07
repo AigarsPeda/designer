@@ -1,9 +1,10 @@
 export type CanvaModeType =
+  | "line"
+  | "arrow"
+  | "square"
   | "drawing"
   | "panning"
   | "mainMenu"
-  | "square"
-  | "line"
   | "ObjContextMenu";
 
 export interface UiStoreStateType {

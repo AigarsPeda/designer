@@ -4,7 +4,8 @@ const isCanvasObjSelectable = (getCanvasMode: CanvaModeType) => {
   return (
     getCanvasMode === "drawing" ||
     getCanvasMode === "panning" ||
-    getCanvasMode === "line"
+    getCanvasMode === "line" ||
+    getCanvasMode === "arrow"
   );
 };
 

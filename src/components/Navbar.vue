@@ -54,7 +54,11 @@ watch(
 
     if (getCanvasMode === "mainMenu") {
       activeComponent.value = MainMenu;
-    } else if (getCanvasMode === "square" || getCanvasMode === "line") {
+    } else if (
+      getCanvasMode === "square" ||
+      getCanvasMode === "arrow" ||
+      getCanvasMode === "line"
+    ) {
       activeComponent.value = SquareMenu;
     } else if (getCanvasMode === "drawing") {
       activeComponent.value = DrawingMenu;

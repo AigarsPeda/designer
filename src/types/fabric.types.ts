@@ -29,3 +29,7 @@ export interface CustomITextI extends fabric.IText {
 export interface CustomLineI extends fabric.Line {
   id: string;
 }
+
+export interface CustomPolylineI extends fabric.Polyline {
+  id: string;
+}

@@ -1,5 +1,9 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
-import type { CustomLineI } from "@/types/fabric.types";
+import type {
+  CustomLineI,
+  CustomObjI,
+  CustomPolylineI,
+} from "@/types/fabric.types";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
@@ -75,14 +79,6 @@ const handleArrowDrawing = ({
     isDown = false;
 
     const pointer = canvas.getPointer(event.e);
-    const obj = canvas.getObjects() as CustomLineI[];
-    const objToSelect = obj.filter((o) => o?.id === id);
-
-    for (let i = 0; i < objToSelect.length; i++) {
-      const element = objToSelect[i];
-
-      canvas.remove(element);
-    }
 
     tox = pointer.x;
     toy = pointer.y;
@@ -147,12 +143,32 @@ const handleArrowDrawing = ({
       hasRotatingPoint: true,
       fill: squareModeSettings.stroke, //'white',
       // stroke: squareModeSettings.stroke, //'black',
-    });
+    }) as CustomPolylineI;
 
-    arrow.setCoords();
+    const arrowId = getUniqueId();
+    arrow.id = arrowId;
 
     canvas.add(arrow);
-    canvas.setActiveObject(arrow).renderAll();
+
+    canvas.forEachObject((o) => {
+      const obj = o as CustomObjI;
+
+      // Remove the line after drawing the arrow
+      if (obj.id === id) {
+        canvas.remove(obj);
+      }
+
+      // By doing this we can select the arrow after drawing it
+      // There must be a better way to do this
+      if (obj.id === arrowId) {
+        canvas.remove(obj);
+        obj.setCoords();
+        canvas.add(obj);
+        canvas.setActiveObject(obj);
+      }
+    });
+
+    canvas.renderAll();
   });
 };
 

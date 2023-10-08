@@ -82,14 +82,6 @@ const handleLineDrawing = ({
       const element = objToSelect[i];
 
       canvas.remove(element);
-
-      // element?.setOptions({
-      //   evented: true,
-      //   selectable: true,
-      //   hasControls: true,
-      //   hasRotatingPoint: true,
-      // });
-
       element.setCoords();
       canvas.add(element);
     }

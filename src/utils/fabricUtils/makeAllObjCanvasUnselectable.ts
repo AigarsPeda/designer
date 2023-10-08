@@ -16,7 +16,7 @@ const makeAllObjCanvasUnselectable = (canvas: fabric.Canvas | null) => {
     });
   });
 
-  canvas.renderAll();
+  // canvas.renderAll();
 };
 
 export default makeAllObjCanvasUnselectable;

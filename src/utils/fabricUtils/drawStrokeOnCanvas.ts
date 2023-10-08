@@ -3,6 +3,7 @@ import getSvgPathFromStroke from "@/utils/getSvgPathFromStroke";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 import getStroke from "perfect-freehand";
+import makeAllObjCanvasUnselectable from "./makeAllObjCanvasUnselectable";
 
 type DrawStrokeOnCanvasArgs = {
   canvas: fabric.Canvas | null;
@@ -89,6 +90,8 @@ const drawStrokeOnCanvas = ({
 
     for (let i = 0; i < objToSelect.length; i++) {
       const element = objToSelect[i];
+
+      canvas.remove(element);
 
       element.setCoords();
       canvas.add(element);

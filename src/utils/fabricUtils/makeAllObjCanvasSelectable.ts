@@ -14,7 +14,7 @@ const makeAllObjCanvasSelectable = (canvas: fabric.Canvas | null) => {
     });
   });
 
-  canvas.renderAll();
+  // canvas.renderAll();
 };
 
 export default makeAllObjCanvasSelectable;

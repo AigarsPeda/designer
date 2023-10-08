@@ -24,8 +24,11 @@ import MainMenu from "@/components/MainMenu.vue";
 import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
+import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
-import { ref, shallowRef, watch } from "vue";
+import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
+import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
+import { onMounted, ref, shallowRef, watch } from "vue";
 import VueFeather from "vue-feather";
 import { RouterView, useRoute } from "vue-router";
 
@@ -34,6 +37,7 @@ const activeComponent = shallowRef(MainMenu);
 const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
+const canvasStore = useCanvasStore();
 
 const isNavBarVisible = () => {
   return route.path !== "/" && route.path !== "/about";
@@ -42,6 +46,67 @@ const isNavBarVisible = () => {
 const handleMenuOpen = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+onMounted(() => {
+  // add listener for escape key to close menu
+  const handleKeyPress = (e: KeyboardEvent) => {
+    if (e.key === "Escape" || e.key === "1") {
+      uiStore.setCanvasMode({
+        canvasMode: "mainMenu",
+      });
+    }
+
+    if (e.key === "2") {
+      uiStore.setCanvasMode({
+        canvasMode: "drawing",
+      });
+    }
+
+    if (e.key === "3") {
+      uiStore.setCanvasMode({
+        canvasMode: "line",
+      });
+    }
+
+    if (e.key === "4") {
+      uiStore.setCanvasMode({
+        canvasMode: "arrow",
+      });
+    }
+
+    if (e.key === "5") {
+      uiStore.setCanvasMode({
+        canvasMode: "square",
+      });
+    }
+
+    if (e.key === "6") {
+      handleAddITextToCanvas({
+        position: handleGetCanvasCenter(canvasStore.getSelectedCanvas),
+        text: "Double click to edit text",
+        canvas: canvasStore.getSelectedCanvas,
+      });
+    }
+
+    if (e.key === "7") {
+      uiStore.setCanvasMode({
+        canvasMode: "panning",
+      });
+    }
+
+    if (e.key === "8") {
+      uiStore.setIsDotBackground({
+        isDotBackground: !uiStore.getIsDotBackground,
+      });
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyPress);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyPress);
+  };
+});
 
 watch(
   () => {

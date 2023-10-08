@@ -1,7 +1,11 @@
 <template>
   <button class="btn" :type="type || 'button'" @click="onClick">
     <slot name="icon"></slot>
+
     {{ title }}
+    <span class="info">
+      <slot name="info"></slot>
+    </span>
   </button>
 </template>
 
@@ -74,6 +78,7 @@ onMounted(() => {
   border: none;
   display: flex;
   cursor: pointer;
+  position: relative;
   font-size: 0.7rem;
   border-radius: 5px;
   align-items: center;
@@ -87,6 +92,22 @@ onMounted(() => {
   background-color: v-bind(
     "`${props.isSelect ? stylesRef.selectedBackgroundColor : stylesRef.backgroundColor }`"
   );
+}
+
+.info {
+  top: 0.4rem;
+  right: 0.4rem;
+  font-weight: 500;
+  color: #e5e7eb;
+  font-size: 0.65rem;
+  position: absolute;
+}
+
+.title {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (hover: hover) {

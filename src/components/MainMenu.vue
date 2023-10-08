@@ -19,6 +19,7 @@
         <template #icon>
           <vue-feather type="mouse-pointer" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">1</p> </template>
       </Button>
       <Button
         isFullWidth
@@ -34,6 +35,7 @@
         <template #icon>
           <vue-feather type="edit-2" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">2</p> </template>
       </Button>
       <Button
         isFullWidth
@@ -48,6 +50,7 @@
         <template #icon>
           <vue-feather type="minus" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">3</p> </template>
       </Button>
       <Button
         isFullWidth
@@ -63,6 +66,7 @@
         <template #icon>
           <vue-feather type="arrow-right" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">4</p> </template>
       </Button>
       <Button
         isFullWidth
@@ -78,11 +82,13 @@
         <template #icon>
           <vue-feather type="square" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">5</p> </template>
       </Button>
       <Button isFullWidth title="Text" @click="addText">
         <template #icon>
           <vue-feather type="type" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">6</p> </template>
       </Button>
       <Button
         isFullWidth
@@ -98,6 +104,7 @@
         <template #icon>
           <vue-feather type="crosshair" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">7</p> </template>
       </Button>
       <Button
         isFullWidth
@@ -112,6 +119,7 @@
         <template #icon>
           <vue-feather type="grid" size="16" class="icon" />
         </template>
+        <template #info> <p class="info">8</p> </template>
       </Button>
     </div>
   </nav>
@@ -125,22 +133,14 @@ import useUIStore from "@/stores/useUIStore";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import VueFeather from "vue-feather";
 import { RouterLink } from "vue-router";
+import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
 
 const addText = () => {
-  const center = canvasStore.getSelectedCanvas?.getCenter();
-
-  if (!center) {
-    return;
-  }
-
   handleAddITextToCanvas({
-    position: {
-      y: center.top,
-      x: center.left,
-    },
+    position: handleGetCanvasCenter(canvasStore.getSelectedCanvas),
     text: "Double click to edit text",
     canvas: canvasStore.getSelectedCanvas,
   });
@@ -181,6 +181,13 @@ header {
   text-decoration: none;
   color: var(--color-text);
   border-bottom: 1px solid transparent;
+}
+.info {
+  font-weight: 500;
+  color: #64748b;
+  /* color: red; */
+  font-size: 0.6rem;
+  /* padding-left: 0.5rem; */
 }
 
 nav {

@@ -81,6 +81,15 @@ watch(
       //   continue;
       // }
 
+      if (element.type === "polyline") {
+        const arrow = element;
+        arrow.set({
+          // stroke: getSquareModeSettings.stroke,
+          fill: getSquareModeSettings.stroke,
+        });
+        continue;
+      }
+
       if (element.type === "line") {
         const line = element as CustomITextI;
         line.set({

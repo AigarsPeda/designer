@@ -9,12 +9,12 @@ type HandleArrowDrawingArgs = {
 };
 
 let id = "";
-let isDown = false;
-
-let fromX = 0;
-let fromY = 0;
 let tox = 0;
 let toy = 0;
+let fromX = 0;
+let fromY = 0;
+let isDown = false;
+
 const headLength = 5; // arrow head size
 
 const handleArrowDrawing = ({
@@ -34,25 +34,6 @@ const handleArrowDrawing = ({
 
     fromX = pointer.x;
     fromY = pointer.y;
-    // if(document.getElementById('linetype').value == "dashed") {
-    //    line = new fabric.Line(points, {
-    //     strokeWidth: 5,
-    //     strokeDashArray: [15, 5],
-    //     fill: 'gray',
-    //     stroke: 'gray',
-    //     originX: 'center',
-    //     originY: 'center'
-    //   });
-    // }
-    // else {
-    // const triangle = new fabric.Triangle({
-    //   width: 150,
-    //   height: 200,
-    //   fill: "#add8e6",
-    //   left: 400,
-    //   top: 175,
-    //   angle: 190,
-    // });
 
     const line = new fabric.Line(points, {
       cornerSize: 6,
@@ -91,6 +72,7 @@ const handleArrowDrawing = ({
 
   canvas.on("mouse:up", (event) => {
     if (!isDown) return;
+    isDown = false;
 
     const pointer = canvas.getPointer(event.e);
     const obj = canvas.getObjects() as CustomLineI[];
@@ -158,20 +140,19 @@ const handleArrowDrawing = ({
     const arrow = new fabric.Polyline(points, {
       opacity: 1,
       cornerSize: 6,
-      originY: "top",
-      originX: "left",
-      evented: false,
-      selectable: false,
-      hasControls: false,
-      hasRotatingPoint: false,
+      evented: true,
+      selectable: true,
+      hasControls: true,
+      objectCaching: false,
+      hasRotatingPoint: true,
       fill: squareModeSettings.stroke, //'white',
-      stroke: squareModeSettings.stroke, //'black',
+      // stroke: squareModeSettings.stroke, //'black',
     });
 
     arrow.setCoords();
 
-    isDown = false;
-    canvas.add(arrow).renderAll();
+    canvas.add(arrow);
+    canvas.setActiveObject(arrow).renderAll();
   });
 };
 

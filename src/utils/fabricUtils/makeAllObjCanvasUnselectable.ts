@@ -15,6 +15,8 @@ const makeAllObjCanvasUnselectable = (canvas: fabric.Canvas | null) => {
       hasRotatingPoint: false,
     });
   });
+
+  canvas.renderAll();
 };
 
 export default makeAllObjCanvasUnselectable;

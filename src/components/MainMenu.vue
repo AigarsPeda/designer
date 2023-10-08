@@ -131,9 +131,9 @@ import Logo from "@/components/Logo.vue";
 import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
+import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 import VueFeather from "vue-feather";
 import { RouterLink } from "vue-router";
-import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();

@@ -30,7 +30,7 @@ const useCanvasStore = defineStore("design", {
         backgroundPattern: "none",
       },
     },
-    selectedObjectIds: [],
+    selectedObjects: [],
   }),
 
   getters: {
@@ -43,8 +43,8 @@ const useCanvasStore = defineStore("design", {
     getCanvasIds({ canvas }: StateType) {
       return canvas.map(({ id }) => id);
     },
-    getSelectedObjectIds({ selectedObjectIds }: StateType) {
-      return selectedObjectIds;
+    getSelectedObject({ selectedObjects }: StateType) {
+      return selectedObjects;
     },
     getSelectedCanvas({ selectedCanvas }: StateType) {
       return selectedCanvas;
@@ -52,13 +52,13 @@ const useCanvasStore = defineStore("design", {
     getSquareModeSettings({ defaultCanvasSate }: StateType) {
       return defaultCanvasSate.squareModeSettings;
     },
-    getSelectedObjInCanvas({ selectedCanvas, selectedObjectIds }: StateType) {
-      const canvasObj = selectedCanvas?.getObjects() as CustomObjI[];
+    // getSelectedObjInCanvas({ selectedCanvas, selectedObjectIds }: StateType) {
+    //   const canvasObj = selectedCanvas?.getObjects() as CustomObjI[];
 
-      return canvasObj.filter((obj) => {
-        return selectedObjectIds.includes(obj.id);
-      });
-    },
+    //   return canvasObj.filter((obj) => {
+    //     return selectedObjectIds.includes(obj.id);
+    //   });
+    // },
     getIsTextToObject({ isTextToObject }: StateType) {
       return isTextToObject;
     },
@@ -74,12 +74,8 @@ const useCanvasStore = defineStore("design", {
     }) {
       this.defaultCanvasSate.drawingSettings = drawingSettings;
     },
-    setSelectedObjectIds({
-      selectedObjectIds,
-    }: {
-      selectedObjectIds: string[];
-    }) {
-      this.selectedObjectIds = selectedObjectIds;
+    setSelectedObjects({ selectedObjects }: { selectedObjects: CustomObjI[] }) {
+      this.selectedObjects = selectedObjects;
     },
     setSelectedCanvas({ selectedCanvas }: { selectedCanvas: fabric.Canvas }) {
       this.selectedCanvas = selectedCanvas;

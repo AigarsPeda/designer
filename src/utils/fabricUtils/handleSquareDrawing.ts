@@ -1,6 +1,5 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
-import debounce from "@/utils/debounce";
 import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
 import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";

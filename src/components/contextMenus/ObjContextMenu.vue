@@ -39,16 +39,78 @@
 import AdditionOptions from "@/components/AdditionOptions.vue";
 import ColorList from "@/components/ColorList.vue";
 import SquareOption from "@/components/SquareOption.vue";
+import useLocalStorage from "@/composables/useLocalStorage";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { CustomITextI, CustomRectI } from "@/types/fabric.types";
 import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
 import findPattern from "@/utils/fabricUtils/findPattern";
 import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
-import { watch } from "vue";
+import getUniqueId from "@/utils/getUniqueId";
+import { fabric } from "fabric";
+import { onMounted, watch } from "vue";
 
 const canvasStore = useCanvasStore();
 const pasterns = createAllPatterns();
+const { storedValue, updateValue } = useLocalStorage<fabric.Object[] | null>(
+  "savedObj",
+  null
+);
+
+// onMounted(() => {
+//   // add listener for escape key to close menu
+//   const handleKeyPress = (e: KeyboardEvent) => {
+//     // on command + c or ctrl + c save selected object
+//     if ((e.metaKey || e.ctrlKey) && e.key === "c") {
+//       const canvas = canvasStore.getSelectedCanvas;
+
+//       if (!canvas) {
+//         return;
+//       }
+
+//       const active = canvas.getActiveObjects();
+
+//       if (active) {
+//         const clonedArray: fabric.Object[] = [];
+
+//         for (let i in active) {
+//           const obj = active[i];
+
+//           const copiedObject = fabric.util.object.clone(obj) as fabric.Object;
+
+//           copiedObject.setOptions({
+//             id: getUniqueId(),
+//             top: (copiedObject?.top || 0) + 20,
+//             left: (copiedObject?.left || 0) + 20,
+//           });
+
+//           clonedArray.push(copiedObject);
+//         }
+
+//         canvas.discardActiveObject();
+//         updateValue(clonedArray);
+//       }
+//     }
+
+//     // on command + v or ctrl + v paste selected object
+//     if ((e.metaKey || e.ctrlKey) && e.key === "v") {
+//       const canvas = canvasStore.getSelectedCanvas;
+
+//       if (!storedValue.value || !canvas) {
+//         return;
+//       }
+
+//       canvas.add(...storedValue.value);
+//       canvas.renderAll();
+//     }
+//   };
+
+//   window.addEventListener("keydown", handleKeyPress);
+
+//   return () => {
+//     window.removeEventListener("keydown", handleKeyPress);
+//   };
+// });
 
 watch(
   () => {

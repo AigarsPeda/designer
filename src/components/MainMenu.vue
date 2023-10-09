@@ -7,119 +7,19 @@
     </div>
     <div class="nav-buttons">
       <Button
+        v-for="option in menuOptions"
         isFullWidth
-        title="Selection"
-        :isSelect="uiStore.getCanvasMode === 'mainMenu'"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode: 'mainMenu',
-          })
-        "
+        :key="option.id"
+        :title="option.title"
+        :onClick="option.onClick"
+        :isSelect="uiStore.getCanvasMode === option.canvasMode"
       >
         <template #icon>
-          <vue-feather type="mouse-pointer" size="16" class="icon" />
+          <vue-feather :type="option.icon" size="16" class="icon" />
         </template>
-        <template #info> <p class="info">1</p> </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Draw"
-        :isSelect="uiStore.getCanvasMode === 'drawing'"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode:
-              uiStore.getCanvasMode === 'drawing' ? 'mainMenu' : 'drawing',
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="edit-2" size="16" class="icon" />
+        <template #info>
+          <p class="info">{{ option.keyShortCut }}</p>
         </template>
-        <template #info> <p class="info">2</p> </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Line"
-        :isSelect="uiStore.getCanvasMode === 'line'"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode: uiStore.getCanvasMode === 'line' ? 'mainMenu' : 'line',
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="minus" size="16" class="icon" />
-        </template>
-        <template #info> <p class="info">3</p> </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Arrow"
-        :isSelect="uiStore.getCanvasMode === 'arrow'"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode:
-              uiStore.getCanvasMode === 'arrow' ? 'mainMenu' : 'arrow',
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="arrow-right" size="16" class="icon" />
-        </template>
-        <template #info> <p class="info">4</p> </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Square"
-        :isSelect="uiStore.getCanvasMode === 'square'"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode:
-              uiStore.getCanvasMode === 'square' ? 'mainMenu' : 'square',
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="square" size="16" class="icon" />
-        </template>
-        <template #info> <p class="info">5</p> </template>
-      </Button>
-      <Button isFullWidth title="Text" @click="addText">
-        <template #icon>
-          <vue-feather type="type" size="16" class="icon" />
-        </template>
-        <template #info> <p class="info">6</p> </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Move"
-        :isSelect="uiStore.getCanvasMode === 'panning'"
-        @click="
-          uiStore.setCanvasMode({
-            canvasMode:
-              uiStore.getCanvasMode === 'panning' ? 'mainMenu' : 'panning',
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="crosshair" size="16" class="icon" />
-        </template>
-        <template #info> <p class="info">7</p> </template>
-      </Button>
-      <Button
-        isFullWidth
-        title="Background"
-        :isSelect="uiStore.getIsDotBackground"
-        @click="
-          uiStore.setIsDotBackground({
-            isDotBackground: !uiStore.getIsDotBackground,
-          })
-        "
-      >
-        <template #icon>
-          <vue-feather type="grid" size="16" class="icon" />
-        </template>
-        <template #info> <p class="info">8</p> </template>
       </Button>
     </div>
   </nav>
@@ -128,23 +28,13 @@
 <script setup lang="ts">
 import Button from "@/components/Button.vue";
 import Logo from "@/components/Logo.vue";
-import useCanvasStore from "@/stores/useCanvasStore";
+import useMenuOptions from "@/composables/useMenuOptions";
 import useUIStore from "@/stores/useUIStore";
-import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
-import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 import VueFeather from "vue-feather";
 import { RouterLink } from "vue-router";
 
 const uiStore = useUIStore();
-const canvasStore = useCanvasStore();
-
-const addText = () => {
-  handleAddITextToCanvas({
-    position: handleGetCanvasCenter(canvasStore.getSelectedCanvas),
-    text: "Double click to edit text",
-    canvas: canvasStore.getSelectedCanvas,
-  });
-};
+const { menuOptions } = useMenuOptions();
 </script>
 
 <style scoped>

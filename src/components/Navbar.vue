@@ -24,13 +24,16 @@ import MainMenu from "@/components/MainMenu.vue";
 import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
-import useCanvasStore from "@/stores/useCanvasStore";
+import useMenuOptions from "@/composables/useMenuOptions";
 import useUIStore from "@/stores/useUIStore";
-import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
-import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import VueFeather from "vue-feather";
 import { RouterView, useRoute } from "vue-router";
+import useLocalStorage from "../composables/useLocalStorage";
+import useCanvasStore from "../stores/useCanvasStore";
+import getUniqueId from "../utils/getUniqueId";
+import { fabric } from "fabric";
+import scalingObjAndPreservingCorners from "../utils/fabricUtils/scalingObjAndPreservingCorners";
 
 const activeComponent = shallowRef(MainMenu);
 
@@ -38,6 +41,11 @@ const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
 const canvasStore = useCanvasStore();
+const { menuOptions } = useMenuOptions();
+const { storedValue, updateValue } = useLocalStorage<fabric.Object[] | null>(
+  "savedObj",
+  null
+);
 
 const isNavBarVisible = () => {
   return route.path !== "/" && route.path !== "/about";
@@ -50,54 +58,98 @@ const handleMenuOpen = () => {
 onMounted(() => {
   // add listener for escape key to close menu
   const handleKeyPress = (e: KeyboardEvent) => {
-    if (e.key === "Escape" || e.key === "1") {
+    if (e.key === "Escape") {
       uiStore.setCanvasMode({
         canvasMode: "mainMenu",
       });
     }
 
-    if (e.key === "2") {
-      uiStore.setCanvasMode({
-        canvasMode: "drawing",
-      });
+    for (const option of menuOptions) {
+      if (e.key === option.keyShortCut) {
+        option.onClick();
+      }
     }
 
-    if (e.key === "3") {
-      uiStore.setCanvasMode({
-        canvasMode: "line",
-      });
+    if ((e.metaKey || e.ctrlKey) && e.key === "c") {
+      const canvas = canvasStore.getSelectedCanvas;
+
+      if (!canvas) {
+        return;
+      }
+
+      const active = canvas.getActiveObjects();
+
+      if (active) {
+        const clonedArray: fabric.Object[] = [];
+
+        for (let i in active) {
+          const obj = active[i];
+
+          // const top = obj?.top || 0;
+
+          obj.clone(
+            (clonedObj: fabric.Object) => {
+              clonedObj.setOptions({
+                cornerSize: 6,
+                id: getUniqueId(),
+                top: (obj?.top || 0) + 20,
+                left: (obj?.left || 0) + 20,
+              });
+
+              clonedObj.on("scaling", (event) =>
+                scalingObjAndPreservingCorners(event)
+              );
+
+              clonedArray.push(clonedObj);
+            },
+            ["noScaleCache", "cornerSize"]
+          );
+        }
+
+        // canvas.discardActiveObject();
+        updateValue(clonedArray);
+      }
     }
 
-    if (e.key === "4") {
-      uiStore.setCanvasMode({
-        canvasMode: "arrow",
-      });
-    }
+    // on command + v or ctrl + v paste selected object
+    if ((e.metaKey || e.ctrlKey) && e.key === "v") {
+      const canvas = canvasStore.getSelectedCanvas;
 
-    if (e.key === "5") {
-      uiStore.setCanvasMode({
-        canvasMode: "square",
-      });
-    }
+      if (!storedValue.value || !canvas) {
+        return;
+      }
 
-    if (e.key === "6") {
-      handleAddITextToCanvas({
-        position: handleGetCanvasCenter(canvasStore.getSelectedCanvas),
-        text: "Double click to edit text",
-        canvas: canvasStore.getSelectedCanvas,
-      });
-    }
+      canvas.discardActiveObject();
 
-    if (e.key === "7") {
-      uiStore.setCanvasMode({
-        canvasMode: "panning",
-      });
-    }
+      if (storedValue.value.length === 1) {
+        canvas.add(...storedValue.value);
+      }
 
-    if (e.key === "8") {
-      uiStore.setIsDotBackground({
-        isDotBackground: !uiStore.getIsDotBackground,
-      });
+      if (storedValue.value.length > 1) {
+        const canvasTop = canvas?.width || 0;
+        const canvasLeft = canvas?.height || 0;
+
+        for (let i in storedValue.value) {
+          const obj = storedValue.value[i];
+
+          obj.setOptions({
+            top: (obj?.top || 1) + canvasTop / 2,
+            left: (obj?.left || 1) + canvasLeft / 2,
+          });
+
+          canvas.add(obj);
+          // canvas.setActiveObject(obj);
+        }
+      }
+
+      // make multiple objects active
+      canvas.setActiveObject(
+        new fabric.ActiveSelection(storedValue.value, {
+          canvas: canvas,
+        })
+      );
+
+      canvas.renderAll();
     }
   };
 

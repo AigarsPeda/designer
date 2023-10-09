@@ -1,4 +1,5 @@
 import { fabric } from "fabric";
+import type { CustomObjI } from "../../types/fabric.types";
 
 export type DrawingSettingsType = {
   size: number;
@@ -32,5 +33,5 @@ export interface StateType {
     drawingSettings: DrawingSettingsType;
     squareModeSettings: DefaultSquareMode;
   };
-  selectedObjectIds: string[];
+  selectedObjects: CustomObjI[];
 }

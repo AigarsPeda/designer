@@ -75,9 +75,7 @@ header {
 .info {
   font-weight: 500;
   color: #64748b;
-  /* color: red; */
   font-size: 0.6rem;
-  /* padding-left: 0.5rem; */
 }
 
 nav {

@@ -25,30 +25,19 @@ import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
 import useMenuOptions from "@/composables/useMenuOptions";
+import useCopyPastaCanvasObj from "@/stores/useCopyPastaCanvasObj";
 import useUIStore from "@/stores/useUIStore";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import VueFeather from "vue-feather";
 import { RouterView, useRoute } from "vue-router";
-import useLocalStorage from "../composables/useLocalStorage";
-import useCanvasStore from "../stores/useCanvasStore";
-import getUniqueId from "../utils/getUniqueId";
-import { fabric } from "fabric";
-import scalingObjAndPreservingCorners from "../utils/fabricUtils/scalingObjAndPreservingCorners";
-import useWindowSize from "../composables/useWindowSize";
 
 const activeComponent = shallowRef(MainMenu);
 
 const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
-const canvasStore = useCanvasStore();
+const copyPasta = useCopyPastaCanvasObj();
 const { menuOptions } = useMenuOptions();
-const { storedValue, updateValue } = useLocalStorage<fabric.Object[] | null>(
-  "savedObj",
-  null
-);
-
-const { height, width } = useWindowSize();
 
 const isNavBarVisible = () => {
   return route.path !== "/" && route.path !== "/about";
@@ -73,86 +62,14 @@ onMounted(() => {
       }
     }
 
+    // on command + c or ctrl + c copy selected object
     if ((e.metaKey || e.ctrlKey) && e.key === "c") {
-      const canvas = canvasStore.getSelectedCanvas;
-
-      if (!canvas) {
-        return;
-      }
-
-      const active = canvas.getActiveObjects();
-
-      if (active) {
-        const clonedArray: fabric.Object[] = [];
-
-        for (let i in active) {
-          const obj = active[i];
-
-          // const top = obj?.top || 0;
-
-          obj.clone(
-            (clonedObj: fabric.Object) => {
-              clonedObj.setOptions({
-                cornerSize: 6,
-                id: getUniqueId(),
-                top: (obj?.top || 0) + 20,
-                left: (obj?.left || 0) + 20,
-              });
-
-              clonedObj.on("scaling", (event) =>
-                scalingObjAndPreservingCorners(event)
-              );
-
-              clonedArray.push(clonedObj);
-            },
-            ["noScaleCache", "cornerSize"]
-          );
-        }
-
-        updateValue(clonedArray);
-      }
+      copyPasta.copyCanvasActiveObjects();
     }
 
     // on command + v or ctrl + v paste selected object
     if ((e.metaKey || e.ctrlKey) && e.key === "v") {
-      const canvas = canvasStore.getSelectedCanvas;
-
-      if (!storedValue.value || !canvas) {
-        return;
-      }
-
-      canvas.discardActiveObject();
-
-      if (storedValue.value.length === 1) {
-        canvas.add(...storedValue.value);
-      }
-
-      if (storedValue.value.length > 1) {
-        const { bl, br, tl } = canvas.calcViewportBoundaries();
-
-        const width = br.x - bl.x;
-        const height = bl.y - tl.y;
-
-        for (let i in storedValue.value) {
-          const obj = storedValue.value[i];
-
-          obj.setOptions({
-            top: (obj?.top || 1) + height / 2,
-            left: (obj?.left || 1) + width / 2,
-          });
-
-          canvas.add(obj);
-        }
-      }
-
-      // make multiple objects active
-      canvas.setActiveObject(
-        new fabric.ActiveSelection(storedValue.value, {
-          canvas: canvas,
-        })
-      );
-
-      canvas.renderAll();
+      copyPasta.pasteCanvasActiveObjects();
     }
   };
 
@@ -197,8 +114,8 @@ header {
   position: absolute;
   border-radius: 0.5rem;
   margin: 0.5rem 0 0.5rem 0.5rem;
-  background-color: var(--color-background);
   box-shadow: var(--vt-c-shadow);
+  background-color: var(--color-background);
 }
 
 .menu-button {

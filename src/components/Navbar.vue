@@ -34,6 +34,7 @@ import useCanvasStore from "../stores/useCanvasStore";
 import getUniqueId from "../utils/getUniqueId";
 import { fabric } from "fabric";
 import scalingObjAndPreservingCorners from "../utils/fabricUtils/scalingObjAndPreservingCorners";
+import useWindowSize from "../composables/useWindowSize";
 
 const activeComponent = shallowRef(MainMenu);
 
@@ -46,6 +47,8 @@ const { storedValue, updateValue } = useLocalStorage<fabric.Object[] | null>(
   "savedObj",
   null
 );
+
+const { height, width } = useWindowSize();
 
 const isNavBarVisible = () => {
   return route.path !== "/" && route.path !== "/about";
@@ -106,7 +109,6 @@ onMounted(() => {
           );
         }
 
-        // canvas.discardActiveObject();
         updateValue(clonedArray);
       }
     }
@@ -126,19 +128,20 @@ onMounted(() => {
       }
 
       if (storedValue.value.length > 1) {
-        const canvasTop = canvas?.width || 0;
-        const canvasLeft = canvas?.height || 0;
+        const { bl, br, tl } = canvas.calcViewportBoundaries();
+
+        const width = br.x - bl.x;
+        const height = bl.y - tl.y;
 
         for (let i in storedValue.value) {
           const obj = storedValue.value[i];
 
           obj.setOptions({
-            top: (obj?.top || 1) + canvasTop / 2,
-            left: (obj?.left || 1) + canvasLeft / 2,
+            top: (obj?.top || 1) + height / 2,
+            left: (obj?.left || 1) + width / 2,
           });
 
           canvas.add(obj);
-          // canvas.setActiveObject(obj);
         }
       }
 

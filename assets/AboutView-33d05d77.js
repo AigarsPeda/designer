@@ -1,1 +1,0 @@
-import{_ as e,o as t,c as s,a as o}from"./index-ed4b0528.js";const c={},_={class:"about"},a=o("h1",null,"This is project is created to learn Vue.js and canvas.",-1),n=[a];function r(i,d){return t(),s("div",_,n)}const u=e(c,[["render",r]]);export{u as default};

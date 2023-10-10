@@ -22,7 +22,10 @@ const canvasReference = ref<HTMLCanvasElement | null>(null);
 const emit = defineEmits<{
   (e: "canvas-created", canvas: fabric.Canvas): void;
   (e: "mouse-down", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "object-added", opt: fabric.IEvent<MouseEvent>): void;
   (e: "mouse-dblclick", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "object-removed", opt: fabric.IEvent<MouseEvent>): void;
+  (e: "object-modified", opt: fabric.IEvent<MouseEvent>): void;
   (e: "selection-created", opt: fabric.IEvent<MouseEvent>): void;
   (e: "selection-cleared", opt: fabric.IEvent<MouseEvent>): void;
   (e: "selection-updated", opt: fabric.IEvent<MouseEvent>): void;
@@ -62,7 +65,16 @@ onMounted(() => {
     emit("mouse-down", opt);
   });
 
+  canvas.on("object:added", (opt) => {
+    emit("object-added", opt);
+  });
+
+  canvas.on("object:removed", (opt) => {
+    emit("object-removed", opt);
+  });
+
   canvas.on("object:modified", (opt) => {
+    emit("object-modified", opt);
     opt.target?.set({
       opacity: 1, // Set opacity back to 1
     });

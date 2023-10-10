@@ -57,6 +57,7 @@ const handleSquareDrawing = ({
         pasterns,
         stroke: squareModeSettings.stroke,
         background: squareModeSettings.background,
+        isFindEnabled: squareModeSettings.backgroundPattern !== "none",
       }),
     }) as CustomRectI;
 

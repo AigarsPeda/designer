@@ -83,8 +83,9 @@ watch(
 
       if (element.type === "polyline") {
         const arrow = element;
-        arrow.set({
+        arrow.setOptions({
           // stroke: getSquareModeSettings.stroke,
+          // getSquareModeSettings.stroke
           fill: getSquareModeSettings.stroke,
         });
         continue;
@@ -92,7 +93,8 @@ watch(
 
       if (element.type === "line") {
         const line = element as CustomITextI;
-        line.set({
+        line.setOptions({
+          // stroke: getSquareModeSettings.stroke,
           stroke: getSquareModeSettings.stroke,
         });
         continue;
@@ -100,7 +102,7 @@ watch(
 
       if (element.type === "path") {
         const path = element as CustomRectI;
-        path.set({
+        path.setOptions({
           fill: getSquareModeSettings.background,
         });
         continue;
@@ -108,6 +110,7 @@ watch(
 
       if (element.type === "rect") {
         const rect = element as CustomRectI;
+
         updateCanvasRect({
           rect,
           squareSettings: getSquareModeSettings,
@@ -115,22 +118,27 @@ watch(
             pasterns,
             stroke: getSquareModeSettings.stroke,
             background: getSquareModeSettings.background,
+            isFindEnabled: getSquareModeSettings.backgroundPattern !== "none",
           }),
         });
+
         continue;
       }
 
       if (element.type === "i-text") {
         const text = element as CustomITextI;
-        text.set({
+        text.setOptions({
+          // fill: getSquareModeSettings.stroke,
           fill: getSquareModeSettings.stroke,
         });
+
         continue;
       }
 
       getSelectedCanvas?.add(element);
     }
 
+    getSelectedCanvas?.fire("object:modified");
     getSelectedCanvas?.renderAll();
   }
 );

@@ -9,6 +9,7 @@ const useUIStore = defineStore("uiStore", {
     offsetWidthInVW: 0,
     canvasMode: "mainMenu",
     isDotBackground: false,
+    selectedCanvasName: "first",
   }),
 
   getters: {
@@ -21,6 +22,10 @@ const useUIStore = defineStore("uiStore", {
 
     getIsDotBackground({ isDotBackground }: UiStoreStateType): boolean {
       return isDotBackground;
+    },
+
+    getSelectedCanvasName({ selectedCanvasName }: UiStoreStateType): string {
+      return selectedCanvasName;
     },
   },
   actions: {

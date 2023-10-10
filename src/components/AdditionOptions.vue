@@ -18,7 +18,11 @@
         <BsLayersFill class="icon" />
       </template>
     </Button>
-    <Button isFullWidth title="Copy" @click="copyPasta.copyCanvasActiveObjects">
+    <Button
+      isFullWidth
+      title="Copy"
+      @click="localStorageCanvas.copyCanvasActiveObjects"
+    >
       <template #icon>
         <AkCopy class="icon" />
       </template>
@@ -26,7 +30,7 @@
     <Button
       isFullWidth
       title="Paste"
-      @click="copyPasta.pasteCanvasActiveObjects"
+      @click="localStorageCanvas.pasteCanvasActiveObjects"
     >
       <template #icon>
         <LuClipboardPaste class="icon" />
@@ -48,7 +52,7 @@
 <script setup lang="ts">
 import Button from "@/components/Button.vue";
 import useCanvasStore from "@/stores/useCanvasStore";
-import useCopyPastaCanvasObj from "@/stores/useCopyPastaCanvasObj";
+import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import handleDeleteSelectedCanvasObj from "@/utils/fabricUtils/handleDeleteSelectedCanvasObj";
 import {
   AkCopy,
@@ -59,7 +63,7 @@ import {
 } from "@kalimahapps/vue-icons";
 
 const canvasStore = useCanvasStore();
-const copyPasta = useCopyPastaCanvasObj();
+const localStorageCanvas = useLocalStorageCanvas();
 
 const handleBringToFront = (canvas: fabric.Canvas | null) => {
   const activeObj = canvas?.getActiveObject();
@@ -89,4 +93,3 @@ const handleSendToBack = (canvas: fabric.Canvas | null) => {
   grid-template-columns: repeat(2, 1fr);
 }
 </style>
-../stores/useCopyPastaCanvasObj

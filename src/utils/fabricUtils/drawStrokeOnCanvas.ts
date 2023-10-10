@@ -74,6 +74,7 @@ const drawStrokeOnCanvas = ({
       evented: false,
       selectable: false,
       hasRotatingPoint: false,
+      // fill: drawingSettings.stroke,
       fill: drawingSettings.stroke,
     }) as CustomPathI;
 

@@ -1,4 +1,4 @@
-import { COLORS } from "@/hardcoded";
+import { COLORS, TRANSPARENT_COLOR } from "@/hardcoded";
 import type {
   DefaultSquareMode,
   DrawingSettingsType,
@@ -24,10 +24,10 @@ const useCanvasStore = defineStore("design", {
       squareModeSettings: {
         rx: 10,
         ry: 10,
-        background: "",
         strokeWidth: 2,
         stroke: COLORS[0],
         backgroundPattern: "none",
+        background: TRANSPARENT_COLOR,
       },
     },
     selectedObjects: [],

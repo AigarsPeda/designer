@@ -45,7 +45,9 @@ const handleArrowDrawing = ({
       originX: "center",
       originY: "center",
       cornerStyle: "circle",
+      // fill: squareModeSettings.stroke,
       fill: squareModeSettings.stroke,
+      // stroke: squareModeSettings.stroke,
       stroke: squareModeSettings.stroke,
       evented: false,
       selectable: false,
@@ -141,7 +143,8 @@ const handleArrowDrawing = ({
       hasControls: true,
       objectCaching: false,
       hasRotatingPoint: true,
-      fill: squareModeSettings.stroke, //'white',
+      // fill: squareModeSettings.stroke, //'white',
+      fill: squareModeSettings.stroke,
       // stroke: squareModeSettings.stroke, //'black',
     }) as CustomPolylineI;
 

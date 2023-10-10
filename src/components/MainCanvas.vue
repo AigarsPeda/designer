@@ -2,11 +2,13 @@
   <div class="design-canvas-container" ref="elRef">
     <FabricCanvas
       :id="'1'"
-      @mouse-down="handleMouseDown"
       @mouse-dblclick="handleDoubleClick"
       @canvas-created="handleCanvasCreated"
       @selection-created="handleObjSelected"
       @selection-updated="handleObjSelected"
+      @object-added="saveCanvasToLocalStorage"
+      @object-removed="saveCanvasToLocalStorage"
+      @object-modified="saveCanvasToLocalStorage"
       @selection-cleared="handleObjSelectionCleared"
     />
   </div>
@@ -16,11 +18,13 @@
 import FabricCanvas from "@/components/FabricCanvas.vue";
 import useKeydownListener from "@/composables/useKeydownListener";
 import useCanvasStore from "@/stores/useCanvasStore";
+import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import useUIStore from "@/stores/useUIStore";
 import type { CustomITextI } from "@/types/fabric.types";
 import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActiveCanvasObjWithBackspace";
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
+import handleArrowDrawing from "@/utils/fabricUtils/handleArrowDrawing";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
 import handleLineDrawing from "@/utils/fabricUtils/handleLineDrawing";
@@ -32,11 +36,27 @@ import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMove
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
-import handleArrowDrawing from "../utils/fabricUtils/handleArrowDrawing";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
 const elRef = ref<HTMLDivElement | null>(null);
+const { storedCanvasSate, addCanvasStateToLocalStorage } =
+  useLocalStorageCanvas();
+
+const saveCanvasToLocalStorage = () => {
+  const canvas = canvasStore.getSelectedCanvas;
+
+  if (!canvas) {
+    return;
+  }
+
+  const state = canvas.toJSON();
+
+  addCanvasStateToLocalStorage({
+    state: state,
+    name: uiStore.getSelectedCanvasName,
+  });
+};
 
 const { addListener, removeListener } = useKeydownListener((e) => {
   const canvas = canvasStore.getSelectedCanvas;
@@ -72,17 +92,22 @@ const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
   });
 };
 
-const handleMouseDown = (event: fabric.IEvent<MouseEvent>) => {
-  console.log("mouse down", event);
-
-  // if (event.target && event.target.type === "i-text") {
-  //   console.log("removeListener()");
-  //   const text = event.target as CustomITextI;
-  //   text.isEditing && removeListener();
-  // }
-};
-
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
+  const state = storedCanvasSate;
+
+  if (state && state[uiStore.getSelectedCanvasName]) {
+    const length = state[uiStore.getSelectedCanvasName].length;
+
+    const s = state[uiStore.getSelectedCanvasName][length - 1];
+
+    fabricCanvas.loadFromJSON(s, fabricCanvas.renderAll.bind(fabricCanvas));
+
+    canvasStore.setSelectedCanvas({
+      selectedCanvas: fabricCanvas,
+    });
+    return;
+  }
+
   canvasStore.setSelectedCanvas({
     selectedCanvas: fabricCanvas,
   });
@@ -127,12 +152,10 @@ watch(
     resetCanvasMouseMoveUpDown(getSelectedCanvas);
 
     if (isCanvasObjSelectable(getCanvasMode)) {
-      console.log("unselectable");
       makeAllObjCanvasUnselectable(getSelectedCanvas);
     }
 
     if (!isCanvasObjSelectable(getCanvasMode)) {
-      console.log("selectable");
       makeAllObjCanvasSelectable(getSelectedCanvas);
     }
 

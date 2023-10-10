@@ -25,7 +25,7 @@ import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
 import useMenuOptions from "@/composables/useMenuOptions";
-import useCopyPastaCanvasObj from "@/stores/useCopyPastaCanvasObj";
+import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import useUIStore from "@/stores/useUIStore";
 import { onMounted, ref, shallowRef, watch } from "vue";
 import VueFeather from "vue-feather";
@@ -36,8 +36,8 @@ const activeComponent = shallowRef(MainMenu);
 const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
-const copyPasta = useCopyPastaCanvasObj();
 const { menuOptions } = useMenuOptions();
+const localStorageCanvas = useLocalStorageCanvas();
 
 const isNavBarVisible = () => {
   return route.path !== "/" && route.path !== "/about";
@@ -64,12 +64,12 @@ onMounted(() => {
 
     // on command + c or ctrl + c copy selected object
     if ((e.metaKey || e.ctrlKey) && e.key === "c") {
-      copyPasta.copyCanvasActiveObjects();
+      localStorageCanvas.copyCanvasActiveObjects();
     }
 
     // on command + v or ctrl + v paste selected object
     if ((e.metaKey || e.ctrlKey) && e.key === "v") {
-      copyPasta.pasteCanvasActiveObjects();
+      localStorageCanvas.pasteCanvasActiveObjects();
     }
   };
 

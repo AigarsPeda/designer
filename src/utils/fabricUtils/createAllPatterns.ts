@@ -1,8 +1,8 @@
-import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
+import { BACKGROUND_COLORS, COLORS, TRANSPARENT_COLOR } from "@/hardcoded";
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 
-const TRANSPARENT_COLOR = "transparent";
+// const TRANSPARENT_COLOR = "transparent";
 
 const createAllPatterns = () => {
   const patterns: Record<string, fabric.Pattern> = {};
@@ -18,6 +18,8 @@ const createAllPatterns = () => {
       });
     });
   });
+
+  console.log("patterns", patterns);
 
   return patterns;
 };

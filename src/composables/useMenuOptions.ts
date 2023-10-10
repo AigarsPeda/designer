@@ -1,4 +1,5 @@
 import useCanvasStore from "@/stores/useCanvasStore";
+import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import useUIStore from "@/stores/useUIStore";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
@@ -6,6 +7,7 @@ import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 const useMenuOptions = () => {
   const uiStore = useUIStore();
   const canvasStore = useCanvasStore();
+  const { deleteCanvasStateFromLocalStorage } = useLocalStorageCanvas();
 
   const MENU_OPTIONS = [
     {
@@ -106,6 +108,18 @@ const useMenuOptions = () => {
       onClick() {
         uiStore.setIsDotBackground({
           isDotBackground: !uiStore.getIsDotBackground,
+        });
+      },
+    },
+    {
+      id: 9,
+      title: "Reset",
+      icon: "trash-2",
+      canvasMode: "trash",
+      keyShortCut: "9",
+      onClick() {
+        deleteCanvasStateFromLocalStorage({
+          name: uiStore.getSelectedCanvasName,
         });
       },
     },

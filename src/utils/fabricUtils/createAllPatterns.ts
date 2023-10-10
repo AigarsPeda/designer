@@ -19,8 +19,6 @@ const createAllPatterns = () => {
     });
   });
 
-  console.log("patterns", patterns);
-
   return patterns;
 };
 

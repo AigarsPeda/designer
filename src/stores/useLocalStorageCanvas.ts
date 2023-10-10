@@ -48,6 +48,24 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
     });
   };
 
+  const deleteCanvasStateFromLocalStorage = ({ name }: { name: string }) => {
+    if (!storedCanvasSate.value) {
+      return;
+    }
+
+    // const arr = storedCanvasSate.value[name];
+
+    // if (arr.length > 1) {
+    //   arr.pop();
+    // }
+
+    updateStoredCanvasSate({
+      [name]: [],
+    });
+
+    canvasStore.getSelectedCanvas?.clear();
+  };
+
   const copyCanvasActiveObjects = () => {
     const clonedArray = copyActiveObjects({
       canvas: canvasStore.getSelectedCanvas,
@@ -71,6 +89,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
     copyCanvasActiveObjects,
     pasteCanvasActiveObjects,
     addCanvasStateToLocalStorage,
+    deleteCanvasStateFromLocalStorage,
   };
 });
 

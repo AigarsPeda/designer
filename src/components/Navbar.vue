@@ -1,16 +1,16 @@
 <template>
   <div class="main-container">
     <div v-show="isNavBarVisible()">
+      <SettingsModal />
       <button type="button" class="menu-button" @click="handleMenuOpen">
         <vue-feather type="menu" size="24" class="menu" />
       </button>
       <header ref="headerRef">
         <Transition name="fade" mode="out-in">
-          <component :is="activeComponent"></component>
+          <component :is="activeComponent" />
         </Transition>
       </header>
-
-      <button class="over-lay" @click="handleMenuOpen"></button>
+      <button type="button" class="over-lay" @click="handleMenuOpen"></button>
     </div>
     <main>
       <RouterView />
@@ -19,8 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import Button from "@/components/Button.vue";
 import MainMenu from "@/components/MainMenu.vue";
+import SettingsModal from "@/components/SettingsModal.vue";
 import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
@@ -37,10 +37,11 @@ const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
 const { menuOptions } = useMenuOptions();
-const localStorageCanvas = useLocalStorageCanvas();
+const { copyCanvasActiveObjects, pasteCanvasActiveObjects } =
+  useLocalStorageCanvas();
 
 const isNavBarVisible = () => {
-  return route.path !== "/" && route.path !== "/about";
+  return route.path !== "/about";
 };
 
 const handleMenuOpen = () => {
@@ -64,12 +65,12 @@ onMounted(() => {
 
     // on command + c or ctrl + c copy selected object
     if ((e.metaKey || e.ctrlKey) && e.key === "c") {
-      localStorageCanvas.copyCanvasActiveObjects();
+      copyCanvasActiveObjects();
     }
 
     // on command + v or ctrl + v paste selected object
     if ((e.metaKey || e.ctrlKey) && e.key === "v") {
-      localStorageCanvas.pasteCanvasActiveObjects();
+      pasteCanvasActiveObjects();
     }
   };
 
@@ -108,7 +109,7 @@ watch(
 
 <style scoped>
 header {
-  top: 1rem;
+  top: 3rem;
   left: 1rem;
   z-index: 100;
   position: absolute;
@@ -134,14 +135,10 @@ header {
   border: 1.5px solid var(--color-border);
 }
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
+@media (hover: hover) {
+  .menu-button:hover {
+    background-color: var(--color-border);
+  }
 }
 
 .over-lay {

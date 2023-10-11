@@ -14,6 +14,10 @@ type StoredCanvasSate = {
   [key: string]: CanvasState[];
 };
 
+type StoredScreenShots = {
+  [key: string]: string;
+};
+
 const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   const canvasStore = useCanvasStore();
   const { storedValue: storedObjects, updateValue: updateStoredObjects } =
@@ -22,6 +26,11 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   const { storedValue: storedCanvasSate, updateValue: updateStoredCanvasSate } =
     useLocalStorage<StoredCanvasSate>("storedCanvas", {});
 
+  const {
+    storedValue: storedCanvasScreenShots,
+    updateValue: updateStoredCanvasScreenShots,
+  } = useLocalStorage<StoredScreenShots>("storedCanvasNames", {});
+
   const addCanvasStateToLocalStorage = ({
     name,
     state,
@@ -29,6 +38,21 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
     name: string;
     state: CanvasState;
   }) => {
+    const png = canvasStore.getSelectedCanvas?.toDataURL({
+      format: "png",
+      quality: 0.5,
+    });
+
+    if (!png) {
+      return;
+    }
+
+    // On every save, update the storedCanvasScreenShots
+    updateStoredCanvasScreenShots({
+      ...storedCanvasScreenShots.value,
+      [name]: png,
+    });
+
     if (!storedCanvasSate.value) {
       updateStoredCanvasSate({
         [name]: [state],
@@ -38,12 +62,21 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
 
     const arr = storedCanvasSate.value[name];
 
+    if (!arr) {
+      updateStoredCanvasSate({
+        ...storedCanvasSate.value,
+        [name]: [state],
+      });
+      return;
+    }
+
     // store only 10 states
     if (arr.length >= 10) {
       arr.shift();
     }
 
     updateStoredCanvasSate({
+      ...storedCanvasSate.value,
       [name]: [...arr, state],
     });
   };
@@ -86,6 +119,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
 
   return {
     storedCanvasSate,
+    storedCanvasScreenShots,
     copyCanvasActiveObjects,
     pasteCanvasActiveObjects,
     addCanvasStateToLocalStorage,

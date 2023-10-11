@@ -12,6 +12,9 @@ export interface CustomPathI extends fabric.Path {
 export interface CustomRectI extends fabric.Rect {
   _objects?: fabric.Object[];
   id: string;
+  myFill: string;
+  myStroke: string;
+  isBackgroundPattern: boolean;
 }
 
 export interface CustomGroupOptionsI extends fabric.IGroupOptions {

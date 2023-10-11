@@ -1,4 +1,4 @@
-import HomeView from "@/views/HomeView.vue";
+import DesignView from "@/views/DesignView.vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 
 // const isProd = import.meta.env.PROD;
@@ -12,17 +12,18 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: DesignView,
+      // component: () => import("@/views/DesignView.vue"),
     },
+    // {
+    //   path: "/",
+    //   name: "home",
+    //   component: HomeView,
+    // },
     {
       path: "/about",
       name: "about",
       component: () => import("@/views/AboutView.vue"),
-    },
-    {
-      path: "/design",
-      name: "design",
-      component: () => import("@/views/DesignView.vue"),
     },
   ],
 });

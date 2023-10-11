@@ -25,6 +25,7 @@ const stylesRef = ref({
   textColor: "#0f172a",
   bgHover: "#cbd5e1",
   textHaverColor: "#0f172a",
+  textHoverDarkTheme: "#fff",
   backgroundColor: "transparent",
   selectedBackgroundColor: "#cbd5e1",
 });
@@ -35,6 +36,7 @@ onMounted(() => {
       textColor: "#fff",
       bgHover: "#15803d",
       textHaverColor: "#fff",
+      textHoverDarkTheme: "#fff",
       backgroundColor: "#059669",
       selectedBackgroundColor: "#15803d",
     };
@@ -45,6 +47,7 @@ onMounted(() => {
       textColor: "#fff",
       bgHover: "#7e22ce",
       textHaverColor: "#fff",
+      textHoverDarkTheme: "#fff",
       backgroundColor: "#7e22ce",
       selectedBackgroundColor: "#7e22ce",
     };
@@ -55,6 +58,7 @@ onMounted(() => {
       textColor: "#fff",
       bgHover: "#b91c1c",
       textHaverColor: "#fff",
+      textHoverDarkTheme: "#fff",
       backgroundColor: "#dc2626",
       selectedBackgroundColor: "#b91c1c",
     };
@@ -65,6 +69,7 @@ onMounted(() => {
       textColor: "#dc2626",
       bgHover: "#dc2626",
       textHaverColor: "#fff",
+      textHoverDarkTheme: "#fff",
       backgroundColor: "transparent",
       selectedBackgroundColor: "#f87171",
     };
@@ -121,10 +126,13 @@ onMounted(() => {
 /* @media (prefers-color-scheme: dark) {
   .btn {
     color: #fff;
-    background-color: v-bind('`${props.isSelect ? "#27272a": "var(--color-background)" }`');
+    background-color: v-bind(
+      '`${props.isSelect ? "#27272a": "var(--color-background)" }`'
+    );
   }
   .btn:hover {
     background-color: #3f3f46;
+    color: v-bind("`${stylesRef.textHoverDarkTheme}`");
   }
 } */
 </style>

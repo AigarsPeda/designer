@@ -36,6 +36,7 @@ onMounted(() => {
     preserveObjectStacking: true,
     width: containerRef.value?.offsetWidth || 500,
     height: containerRef.value?.offsetHeight || 500,
+    backgroundColor: "#fff",
   });
 
   if (!canvas) {

@@ -1,16 +1,13 @@
 <template>
   <main>
     <div class="blob-container">
-      <Blob />
-      <RouterLink class="link" to="/design">Start</RouterLink>
+      <!-- <Blob /> -->
+      <!-- <RouterLink class="link" to="/design">Start</RouterLink> -->
     </div>
   </main>
 </template>
 
-<script setup lang="ts">
-import Blob from "@/components/Blob.vue";
-import { RouterLink } from "vue-router";
-</script>
+<script setup lang="ts"></script>
 
 <style scoped>
 main {

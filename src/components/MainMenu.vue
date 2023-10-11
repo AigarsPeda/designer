@@ -2,8 +2,6 @@
   <nav>
     <div class="nav-navigation">
       <Logo />
-      <RouterLink class="link" to="/">Home</RouterLink>
-      <RouterLink class="link" to="/about">About</RouterLink>
     </div>
     <div class="nav-buttons">
       <Button
@@ -31,24 +29,12 @@ import Logo from "@/components/Logo.vue";
 import useMenuOptions from "@/composables/useMenuOptions";
 import useUIStore from "@/stores/useUIStore";
 import VueFeather from "vue-feather";
-import { RouterLink } from "vue-router";
 
 const uiStore = useUIStore();
 const { menuOptions } = useMenuOptions();
 </script>
 
 <style scoped>
-header {
-  top: 1rem;
-  left: 1rem;
-  z-index: 100;
-  position: absolute;
-  border-radius: 0.5rem;
-  margin: 0.5rem 0 0.5rem 0.5rem;
-  box-shadow: var(--vt-c-shadow);
-  background-color: var(--color-background);
-}
-
 .nav-buttons {
   gap: 0.5rem;
   width: 100%;
@@ -65,13 +51,6 @@ header {
   flex-direction: column;
 }
 
-.link {
-  transition: 0.4s;
-  padding: 0.5rem 1rem;
-  text-decoration: none;
-  color: var(--color-text);
-  border-bottom: 1px solid transparent;
-}
 .info {
   font-weight: 500;
   color: #64748b;
@@ -85,11 +64,5 @@ nav {
   padding: 0.5rem;
   flex-direction: column;
   justify-content: space-between;
-}
-
-@media (hover: hover) {
-  .link:hover {
-    border-bottom: 1px solid var(--color-text);
-  }
 }
 </style>

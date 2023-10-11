@@ -86,10 +86,10 @@ const handleLineDrawing = ({
       canvas.remove(element);
       element.setCoords();
       canvas.add(element);
+      canvas.setActiveObject(element);
+      canvas.renderAll();
     }
   });
-
-  // makeAllObjCanvasUnselectable(canvas);
 };
 
 export default handleLineDrawing;

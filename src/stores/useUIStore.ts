@@ -9,7 +9,7 @@ const useUIStore = defineStore("uiStore", {
     offsetWidthInVW: 0,
     canvasMode: "mainMenu",
     isDotBackground: false,
-    selectedCanvasName: "first",
+    selectedCanvasName: "second",
   }),
 
   getters: {

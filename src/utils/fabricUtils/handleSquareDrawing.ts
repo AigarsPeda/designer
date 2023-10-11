@@ -5,6 +5,7 @@ import findPattern from "@/utils/fabricUtils/findPattern";
 import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
+import dotPattern from "../svgUtils/patterns/dotPattern";
 
 type SquareDrawingArgs = {
   canvas: fabric.Canvas | null;
@@ -30,6 +31,7 @@ const handleSquareDrawing = ({
 
   canvas.on("mouse:down", (e) => {
     isDown = true;
+    id = getUniqueId();
 
     const pointer = canvas.getPointer(e.e);
 
@@ -61,11 +63,14 @@ const handleSquareDrawing = ({
       }),
     }) as CustomRectI;
 
+    // Adding additional properties to the object
+    rect.id = id;
+    rect.myStroke = squareModeSettings.stroke;
+    rect.myFill = squareModeSettings.background;
+    rect.isBackgroundPattern = squareModeSettings.backgroundPattern !== "none";
+
     // When scaling, preserving corners
     rect.on("scaling", (event) => scalingObjAndPreservingCorners(event));
-
-    rect.id = getUniqueId();
-    id = rect.id;
 
     canvas.add(rect).renderAll();
   });
@@ -93,15 +98,16 @@ const handleSquareDrawing = ({
     canvas.renderAll();
   });
 
-  canvas.on("mouse:up", (o) => {
-    isDown = false;
-
+  canvas.on("mouse:up", () => {
     const allObj = canvas.getObjects() as CustomRectI[];
     const square = allObj.find((obj) => obj.id === id);
 
     if (!square) {
       return;
     }
+
+    id = "";
+    isDown = false;
 
     canvas.remove(square);
     square.setOptions({
@@ -113,6 +119,7 @@ const handleSquareDrawing = ({
     square.setCoords();
     canvas.add(square);
     canvas.setActiveObject(square);
+    canvas.renderAll();
   });
 };
 

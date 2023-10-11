@@ -38,6 +38,13 @@ const useUIStore = defineStore("uiStore", {
     setCanvasMode({ canvasMode }: { canvasMode: CanvaModeType }) {
       this.canvasMode = canvasMode;
     },
+    setSelectedCanvasName({
+      selectedCanvasName,
+    }: {
+      selectedCanvasName: string;
+    }) {
+      this.selectedCanvasName = selectedCanvasName;
+    },
   },
 });
 

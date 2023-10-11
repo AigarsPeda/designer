@@ -33,6 +33,7 @@ import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
+import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
@@ -89,30 +90,13 @@ const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
 };
 
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
-  const state = storedCanvasSate.storedValue;
-
-  if (state && state[uiStore.getSelectedCanvasName]) {
-    const length = state[uiStore.getSelectedCanvasName].length;
-
-    const s = state[uiStore.getSelectedCanvasName][length - 1];
-
-    fabricCanvas.loadFromJSON(s, fabricCanvas.renderAll.bind(fabricCanvas));
-
-    canvasStore.setSelectedCanvas({
-      selectedCanvas: fabricCanvas,
-    });
-    return;
-  }
-
   canvasStore.setSelectedCanvas({
     selectedCanvas: fabricCanvas,
   });
 };
 
 const handleObjSelected = (event: fabric.IEvent<MouseEvent>) => {
-  console.log("selection", event);
   // TODO: Depending on selected object add or remove listener
-
   addListener();
 
   uiStore.setCanvasMode({
@@ -125,6 +109,33 @@ const handleObjSelectionCleared = (event: fabric.IEvent<MouseEvent>) => {
     canvasMode: "mainMenu",
   });
 };
+
+watch(
+  () => {
+    return {
+      getSelectedCanvas: canvasStore.getSelectedCanvas,
+      getSelectedCanvasName: uiStore.getSelectedCanvasName,
+    };
+  },
+  (newSate) => {
+    const { getSelectedCanvas, getSelectedCanvasName } = newSate;
+    const state = getStoredCanvasStateByName(getSelectedCanvasName);
+
+    if (state && getSelectedCanvas) {
+      getSelectedCanvas.loadFromJSON(
+        state,
+        getSelectedCanvas.renderAll.bind(getSelectedCanvas)
+      );
+
+      getSelectedCanvas.forEachObject((obj) => {
+        getSelectedCanvas.remove(obj);
+        getSelectedCanvas.add(obj);
+      });
+
+      getSelectedCanvas.renderAll();
+    }
+  }
+);
 
 watch(
   () => {

@@ -6,24 +6,35 @@
   <Modal :closeModal="closeModal" :isShowModal="isShowModal">
     <template #modal-content>
       <RouterLink class="link" to="/about">About</RouterLink>
-      <div class="canvas-container">
+      <div class="container">
         <p class="info">Saved Canvas:</p>
-        <div class="canvas-buttons-container">
-          <button
+        <div class="canvas-container">
+          <div
             v-for="(value, key) in storedCanvasSate.storedValue"
             :key="key"
-            class="canvas-select-button"
+            class="canvas-buttons-container"
           >
             <img
               v-if="storedScreenShots.storedValue"
               alt="canvas screenshot"
               :src="storedScreenShots.storedValue[key.toString()]"
             />
-            <div class="canvas-select-info">
-              <span class="info">Name</span>
-              <span class="canvas-select-name">{{ key }}</span>
+            <div class="canvas-option-container">
+              <div class="canvas-description-container">
+                <span class="info">Name</span>
+                <span class="canvas-select-name">{{ key }}</span>
+              </div>
+              <div class="canvas-button-container">
+                <button
+                  class="button"
+                  @click="handleCanvasLoad(key.toString())"
+                >
+                  <AkDownload class="icon" />
+                  <span>Load</span>
+                </button>
+              </div>
             </div>
-          </button>
+          </div>
         </div>
       </div>
     </template>
@@ -32,13 +43,26 @@
 
 <script setup lang="ts">
 import Modal from "@/components/Modal.vue";
+
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import { CaSettings } from "@kalimahapps/vue-icons";
+import useUIStore from "@/stores/useUIStore";
+import { AkDownload, CaSettings } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
+const uiStore = useUIStore();
 const isShowModal = ref(false);
 const { storedCanvasSate, storedScreenShots } = useLocalStorageCanvas();
+
+const handleCanvasLoad = (str: string) => {
+  isShowModal.value = false;
+
+  console.log("handleCanvasLoad", str);
+
+  uiStore.setSelectedCanvasName({
+    selectedCanvasName: str,
+  });
+};
 
 const closeModal = () => {
   isShowModal.value = false;
@@ -55,7 +79,7 @@ const showModal = () => {
   font-size: 0.6rem;
 }
 
-.canvas-buttons-container {
+.canvas-container {
   gap: 0.5rem;
   width: 100%;
   display: flex;
@@ -65,7 +89,7 @@ const showModal = () => {
   flex-direction: column;
 }
 
-.canvas-select-button {
+.canvas-buttons-container {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -78,11 +102,11 @@ const showModal = () => {
   background-color: var(--color-background-soft);
 }
 
-.canvas-select-button:hover {
+.canvas-buttons-container:hover {
   background-color: var(--color-background-soft);
 }
 
-.canvas-select-button img {
+.canvas-buttons-container img {
   margin: 0rem;
   width: 100px;
   height: 100px;
@@ -92,15 +116,47 @@ const showModal = () => {
   background-color: var(--color-background);
 }
 
-.canvas-select-info {
+.canvas-button-container {
+  display: flex;
+  padding: 0rem 0rem 0rem 0.5rem;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.canvas-option-container {
+  display: flex;
+  padding: 0.5rem 0rem;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.canvas-description-container {
+  display: flex;
+  padding: 0rem 0.5rem;
+  flex-direction: column;
+}
+
+.icon {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
+.button {
+  border: none;
   display: flex;
   padding: 0.5rem;
-  flex-direction: column;
+  font-size: 0.9rem;
+  align-items: center;
+  border-radius: 0.5rem;
+  /* justify-content: center; */
+  color: var(--color-background);
+  border: 1.5px solid transparent;
+  background-color: rgba(105, 101, 219, 1);
 }
 
 .canvas-select-name {
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .link {
   transition: 0.4s;
@@ -110,7 +166,7 @@ const showModal = () => {
   border-bottom: 1px solid transparent;
 }
 
-.canvas-container {
+.container {
   gap: 0.5rem;
   display: flex;
   width: 100%;

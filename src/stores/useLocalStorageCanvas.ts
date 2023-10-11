@@ -20,16 +20,18 @@ type StoredScreenShots = {
 
 const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   const canvasStore = useCanvasStore();
-  const { storedValue: storedObjects, updateValue: updateStoredObjects } =
-    useLocalStorage<fabric.Object[]>("storedObjects", []);
 
-  const { storedValue: storedCanvasSate, updateValue: updateStoredCanvasSate } =
-    useLocalStorage<StoredCanvasSate>("storedCanvas", {});
+  const storedObjects = useLocalStorage<fabric.Object[]>("storedObjects", []);
 
-  const {
-    storedValue: storedCanvasScreenShots,
-    updateValue: updateStoredCanvasScreenShots,
-  } = useLocalStorage<StoredScreenShots>("storedCanvasNames", {});
+  const storedCanvasSate = useLocalStorage<StoredCanvasSate>(
+    "storedCanvas",
+    {}
+  );
+
+  const storedScreenShots = useLocalStorage<StoredScreenShots>(
+    "storedCanvasNames",
+    {}
+  );
 
   const addCanvasStateToLocalStorage = ({
     name,
@@ -47,24 +49,24 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
       return;
     }
 
-    // On every save, update the storedCanvasScreenShots
-    updateStoredCanvasScreenShots({
-      ...storedCanvasScreenShots.value,
+    storedScreenShots.updateValue({
+      ...storedScreenShots.storedValue.value,
       [name]: png,
     });
 
-    if (!storedCanvasSate.value) {
-      updateStoredCanvasSate({
+    if (!storedCanvasSate.storedValue.value) {
+      storedCanvasSate.updateValue({
         [name]: [state],
       });
       return;
     }
 
-    const arr = storedCanvasSate.value[name];
+    // const arr = storedCanvasSate.value[name];
+    const arr = storedCanvasSate.storedValue.value[name];
 
     if (!arr) {
-      updateStoredCanvasSate({
-        ...storedCanvasSate.value,
+      storedCanvasSate.updateValue({
+        ...storedCanvasSate.storedValue.value,
         [name]: [state],
       });
       return;
@@ -75,24 +77,24 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
       arr.shift();
     }
 
-    updateStoredCanvasSate({
-      ...storedCanvasSate.value,
+    storedCanvasSate.updateValue({
+      ...storedCanvasSate.storedValue.value,
       [name]: [...arr, state],
     });
   };
 
   const deleteCanvasStateFromLocalStorage = ({ name }: { name: string }) => {
-    if (!storedCanvasSate.value) {
+    if (!storedCanvasSate.storedValue.value) {
       return;
     }
 
-    // const arr = storedCanvasSate.value[name];
+    storedScreenShots.updateValue({
+      ...storedScreenShots.storedValue.value,
+      [name]: "",
+    });
 
-    // if (arr.length > 1) {
-    //   arr.pop();
-    // }
-
-    updateStoredCanvasSate({
+    storedCanvasSate.updateValue({
+      ...storedCanvasSate.storedValue.value,
       [name]: [],
     });
 
@@ -104,11 +106,11 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
       canvas: canvasStore.getSelectedCanvas,
     });
 
-    updateStoredObjects(clonedArray);
+    storedObjects.updateValue(clonedArray);
   };
 
   const pasteCanvasActiveObjects = () => {
-    const array = storedObjects.value || [];
+    const array = storedObjects.storedValue.value || [];
     const canvas = canvasStore.getSelectedCanvas;
 
     addObjToCanvasFromArray({
@@ -119,7 +121,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
 
   return {
     storedCanvasSate,
-    storedCanvasScreenShots,
+    storedScreenShots,
     copyCanvasActiveObjects,
     pasteCanvasActiveObjects,
     addCanvasStateToLocalStorage,

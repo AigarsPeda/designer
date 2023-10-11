@@ -69,10 +69,6 @@ const { addListener, removeListener } = useKeydownListener((e) => {
 });
 
 const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
-  console.log("double click", e);
-
-  // isTextEditing.value = true;
-
   if (e.target && e.target.type === "i-text") {
     const text = e.target as CustomITextI;
     text.enterEditing();
@@ -93,7 +89,7 @@ const handleDoubleClick = (e: fabric.IEvent<MouseEvent>) => {
 };
 
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
-  const state = storedCanvasSate;
+  const state = storedCanvasSate.storedValue;
 
   if (state && state[uiStore.getSelectedCanvasName]) {
     const length = state[uiStore.getSelectedCanvasName].length;

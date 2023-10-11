@@ -10,14 +10,14 @@
         <p class="info">Saved Canvas:</p>
         <div class="canvas-buttons-container">
           <button
-            v-for="(value, key) in storedCanvasSate"
+            v-for="(value, key) in storedCanvasSate.storedValue"
             :key="key"
             class="canvas-select-button"
           >
             <img
-              v-if="storedCanvasScreenShots"
+              v-if="storedScreenShots.storedValue"
               alt="canvas screenshot"
-              :src="storedCanvasScreenShots[key.toString()]"
+              :src="storedScreenShots.storedValue[key.toString()]"
             />
             <div class="canvas-select-info">
               <span class="info">Name</span>
@@ -38,7 +38,7 @@ import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
 const isShowModal = ref(false);
-const { storedCanvasSate, storedCanvasScreenShots } = useLocalStorageCanvas();
+const { storedCanvasSate, storedScreenShots } = useLocalStorageCanvas();
 
 const closeModal = () => {
   isShowModal.value = false;

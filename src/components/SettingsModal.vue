@@ -15,12 +15,12 @@
 </template>
 
 <script setup lang="ts">
+import DisplayCreatedCanvas from "@/components/DisplayCreatedCanvas.vue";
 import Modal from "@/components/Modal.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import { CaSettings } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
-import DisplayCreatedCanvas from "./DisplayCreatedCanvas.vue";
 
 const isShowModal = ref(false);
 const { storedSelectedCanvasName } = useLocalStorageCanvas();

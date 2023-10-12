@@ -11,5 +11,5 @@ export interface UiStoreStateType {
   offsetWidthInVW: number;
   isDotBackground: boolean;
   canvasMode: CanvaModeType;
-  selectedCanvasName: string;
+  // selectedCanvasName: string;
 }

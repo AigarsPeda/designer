@@ -1,15 +1,13 @@
 import { ref, watch, type Ref } from "vue";
 
-// type ValueTypes = string | number | boolean | null | undefined
-
 function useLocalStorage<T>(key: string, initialValue: T) {
-  const storedValue: Ref<T | null> = ref(null);
+  let storedValue: Ref<T>;
 
   // Get the initial value from localStorage or use the provided initial value
   if (localStorage.getItem(key) !== null) {
-    storedValue.value = JSON.parse(localStorage.getItem(key) || "") as T;
+    storedValue = ref(JSON.parse(localStorage.getItem(key) || ""));
   } else {
-    storedValue.value = initialValue;
+    storedValue = ref(initialValue) as Ref<T>;
     localStorage.setItem(key, JSON.stringify(initialValue));
   }
 

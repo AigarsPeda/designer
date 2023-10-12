@@ -7,7 +7,8 @@ import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 const useMenuOptions = () => {
   const uiStore = useUIStore();
   const canvasStore = useCanvasStore();
-  const { deleteCanvasStateFromLocalStorage } = useLocalStorageCanvas();
+  const { deleteCanvasStateFromLocalStorage, storedSelectedCanvasName } =
+    useLocalStorageCanvas();
 
   const MENU_OPTIONS = [
     {
@@ -119,7 +120,7 @@ const useMenuOptions = () => {
       keyShortCut: "9",
       onClick() {
         deleteCanvasStateFromLocalStorage({
-          name: uiStore.getSelectedCanvasName,
+          name: storedSelectedCanvasName.storedValue,
         });
       },
     },

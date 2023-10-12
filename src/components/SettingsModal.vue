@@ -1,6 +1,9 @@
 <template>
   <button type="button" class="settings-button" @click="showModal">
-    <CaSettings />
+    {{ storedSelectedCanvasName.storedValue }}
+    <span class="settings-button-icon">
+      <CaSettings />
+    </span>
   </button>
 
   <Modal :closeModal="closeModal" :isShowModal="isShowModal">
@@ -30,7 +33,7 @@
                   @click="handleCanvasLoad(key.toString())"
                 >
                   <AkDownload class="icon" />
-                  <span>Load</span>
+                  <span class="button-text">Load</span>
                 </button>
               </div>
             </div>
@@ -45,23 +48,17 @@
 import Modal from "@/components/Modal.vue";
 
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import useUIStore from "@/stores/useUIStore";
 import { AkDownload, CaSettings } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
-const uiStore = useUIStore();
 const isShowModal = ref(false);
-const { storedCanvasSate, storedScreenShots } = useLocalStorageCanvas();
+const { storedCanvasSate, storedScreenShots, storedSelectedCanvasName } =
+  useLocalStorageCanvas();
 
 const handleCanvasLoad = (str: string) => {
   isShowModal.value = false;
-
-  console.log("handleCanvasLoad", str);
-
-  uiStore.setSelectedCanvasName({
-    selectedCanvasName: str,
-  });
+  storedSelectedCanvasName.updateValue(str);
 };
 
 const closeModal = () => {
@@ -145,25 +142,31 @@ const showModal = () => {
   border: none;
   display: flex;
   padding: 0.5rem;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   align-items: center;
   border-radius: 0.5rem;
-  /* justify-content: center; */
   color: var(--color-background);
   border: 1.5px solid transparent;
   background-color: rgba(105, 101, 219, 1);
 }
 
-.canvas-select-name {
+.button-text {
   font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.05rem;
+  color: var(--color-background);
+}
+
+.canvas-select-name {
   font-size: 1rem;
+  font-weight: 500;
 }
 .link {
   transition: 0.4s;
-  padding: 0.5rem 0rem;
+  padding: 0.3rem 0rem;
   text-decoration: none;
   color: var(--color-text);
-  border-bottom: 1px solid transparent;
+  border-bottom: 1.5px solid var(--color-text);
 }
 
 .container {
@@ -179,24 +182,35 @@ const showModal = () => {
   border: none;
   display: flex;
   right: 0.5rem;
+  font-size: 1rem;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  background-color: transparent;
+}
+
+.settings-button-icon {
+  display: flex;
   padding: 0.4rem;
   font-size: 1.2rem;
-  position: absolute;
+  margin-left: 0.5rem;
   align-items: center;
   border-radius: 0.5rem;
   justify-content: center;
   color: var(--color-background);
-  border: 1.5px solid transparent;
   background-color: rgba(105, 101, 219, 1);
+  transition: all 0.25s ease-in-out;
 }
 
 @media (hover: hover) {
-  .settings-button:hover {
+  /* on hover over settings-button trigger hover on settings-button-icon   */
+  .settings-button:hover .settings-button-icon {
     background-color: rgba(105, 101, 219, 0.8);
   }
 
   .link:hover {
-    border-bottom: 1px solid var(--color-text);
+    border-bottom: 1.5px solid rgba(105, 101, 219, 1);
   }
 }
 </style>

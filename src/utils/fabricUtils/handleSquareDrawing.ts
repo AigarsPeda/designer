@@ -5,7 +5,6 @@ import findPattern from "@/utils/fabricUtils/findPattern";
 import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
-import dotPattern from "../svgUtils/patterns/dotPattern";
 
 type SquareDrawingArgs = {
   canvas: fabric.Canvas | null;

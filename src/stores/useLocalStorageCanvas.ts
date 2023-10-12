@@ -1,4 +1,5 @@
 import useLocalStorage from "@/composables/useLocalStorage";
+import { DEFAULT_CANVAS_NAME } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 import addObjToCanvasFromArray from "@/utils/fabricUtils/addObjToCanvasFromArray";
 import copyActiveObjects from "@/utils/fabricUtils/copyActiveObjects";
@@ -20,6 +21,11 @@ type StoredScreenShots = {
 
 const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   const canvasStore = useCanvasStore();
+
+  const storedSelectedCanvasName = useLocalStorage(
+    "storedSelectedCanvasName",
+    DEFAULT_CANVAS_NAME
+  );
 
   const storedObjects = useLocalStorage<fabric.Object[]>("storedObjects", []);
 
@@ -110,7 +116,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   };
 
   const pasteCanvasActiveObjects = () => {
-    const array = storedObjects.storedValue.value || [];
+    const array = storedObjects.storedValue.value;
     const canvas = canvasStore.getSelectedCanvas;
 
     addObjToCanvasFromArray({
@@ -122,6 +128,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   return {
     storedCanvasSate,
     storedScreenShots,
+    storedSelectedCanvasName,
     copyCanvasActiveObjects,
     pasteCanvasActiveObjects,
     addCanvasStateToLocalStorage,

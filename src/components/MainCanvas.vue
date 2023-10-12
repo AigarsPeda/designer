@@ -41,7 +41,7 @@ import { ref, watch } from "vue";
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
 const elRef = ref<HTMLDivElement | null>(null);
-const { storedCanvasSate, addCanvasStateToLocalStorage } =
+const { storedSelectedCanvasName, addCanvasStateToLocalStorage } =
   useLocalStorageCanvas();
 
 const saveCanvasToLocalStorage = () => {
@@ -55,7 +55,7 @@ const saveCanvasToLocalStorage = () => {
 
   addCanvasStateToLocalStorage({
     state: state,
-    name: uiStore.getSelectedCanvasName,
+    name: storedSelectedCanvasName.storedValue,
   });
 };
 
@@ -114,7 +114,7 @@ watch(
   () => {
     return {
       getSelectedCanvas: canvasStore.getSelectedCanvas,
-      getSelectedCanvasName: uiStore.getSelectedCanvasName,
+      getSelectedCanvasName: storedSelectedCanvasName.storedValue,
     };
   },
   (newSate) => {

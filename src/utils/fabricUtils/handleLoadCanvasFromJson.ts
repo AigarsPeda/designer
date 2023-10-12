@@ -10,10 +10,6 @@ const handleLoadCanvasFromJson = ({
   canvas,
 }: HandleLoadCanvasFromJsonArgs) => {
   canvas?.loadFromJSON(state, canvas.renderAll.bind(canvas));
-
-  // canvasStore.setSelectedCanvas({
-  //   selectedCanvas: canvas,
-  // });
 };
 
 export default handleLoadCanvasFromJson;

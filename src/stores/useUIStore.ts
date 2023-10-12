@@ -9,7 +9,7 @@ const useUIStore = defineStore("uiStore", {
     offsetWidthInVW: 0,
     canvasMode: "mainMenu",
     isDotBackground: false,
-    selectedCanvasName: "second",
+    // selectedCanvasName: "second",
   }),
 
   getters: {
@@ -24,9 +24,9 @@ const useUIStore = defineStore("uiStore", {
       return isDotBackground;
     },
 
-    getSelectedCanvasName({ selectedCanvasName }: UiStoreStateType): string {
-      return selectedCanvasName;
-    },
+    // getSelectedCanvasName({ selectedCanvasName }: UiStoreStateType): string {
+    //   return selectedCanvasName;
+    // },
   },
   actions: {
     saveOffSet({ offsetWidthInVW }: { offsetWidthInVW: number }) {
@@ -38,13 +38,13 @@ const useUIStore = defineStore("uiStore", {
     setCanvasMode({ canvasMode }: { canvasMode: CanvaModeType }) {
       this.canvasMode = canvasMode;
     },
-    setSelectedCanvasName({
-      selectedCanvasName,
-    }: {
-      selectedCanvasName: string;
-    }) {
-      this.selectedCanvasName = selectedCanvasName;
-    },
+    // setSelectedCanvasName({
+    //   selectedCanvasName,
+    // }: {
+    //   selectedCanvasName: string;
+    // }) {
+    //   this.selectedCanvasName = selectedCanvasName;
+    // },
   },
 });
 

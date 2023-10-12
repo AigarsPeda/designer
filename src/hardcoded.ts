@@ -19,3 +19,5 @@ export const BACKGROUND_COLORS = [
 ];
 
 export const TRANSPARENT_COLOR = "rgb(255, 255, 255, 1.000)";
+
+export const DEFAULT_CANVAS_NAME = "unnamed";

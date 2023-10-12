@@ -1,6 +1,9 @@
 <template>
   <div class="main-container">
     <div v-show="isNavBarVisible()">
+      <!-- <p class="selected-canvas-name">
+        {{ storedSelectedCanvasName.storedValue }}
+      </p> -->
       <SettingsModal />
       <button type="button" class="menu-button" @click="handleMenuOpen">
         <vue-feather type="menu" size="24" class="menu" />
@@ -37,8 +40,11 @@ const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
 const { menuOptions } = useMenuOptions();
-const { copyCanvasActiveObjects, pasteCanvasActiveObjects } =
-  useLocalStorageCanvas();
+const {
+  // storedSelectedCanvasName,
+  copyCanvasActiveObjects,
+  pasteCanvasActiveObjects,
+} = useLocalStorageCanvas();
 
 const isNavBarVisible = () => {
   return route.path !== "/about";
@@ -134,6 +140,16 @@ header {
   background-color: transparent;
   border: 1.5px solid var(--color-border);
 }
+
+/* .selected-canvas-name {
+  top: 0.8rem;
+  z-index: 100;
+  right: 3.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  position: absolute;
+  color: var(--color-text);
+} */
 
 @media (hover: hover) {
   .menu-button:hover {

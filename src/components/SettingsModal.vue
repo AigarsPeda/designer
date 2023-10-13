@@ -67,8 +67,8 @@ const showModal = () => {
 
 .settings-button-icon {
   display: flex;
-  padding: 0.4rem;
-  font-size: 1.2rem;
+  padding: 0.5rem;
+  font-size: 1.5rem;
   margin-left: 0.5rem;
   align-items: center;
   border-radius: 0.5rem;

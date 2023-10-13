@@ -1,6 +1,6 @@
 <template>
   <div class="container" ref="containerRef">
-    <canvas id="canvas" ref="canvasReference" :width="500" :height="500" />
+    <canvas id="canvas" ref="canvasReference" />
   </div>
 </template>
 
@@ -94,10 +94,10 @@ onMounted(() => {
   //   console.log(opt);
   // });
 
-  lastContainerSizeRef.value = {
-    width: containerRef.value?.offsetWidth || 500,
-    height: containerRef.value?.offsetHeight || 500,
-  };
+  // lastContainerSizeRef.value = {
+  //   width: containerRef.value?.offsetWidth || 500,
+  //   height: containerRef.value?.offsetHeight || 500,
+  // };
 
   handleCanvasZoom({ canvas });
 

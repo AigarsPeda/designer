@@ -121,8 +121,8 @@ header {
 }
 
 .menu-button {
-  top: 8px;
-  left: 8px;
+  top: 0.5rem;
+  left: 0.5rem;
   z-index: 100;
   border: none;
   display: none;
@@ -154,7 +154,7 @@ header {
   background: rgba(51, 65, 85, 0.403);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 760px) {
   .menu-button {
     display: flex;
   }

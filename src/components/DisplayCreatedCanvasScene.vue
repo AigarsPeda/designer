@@ -8,13 +8,16 @@
         :key="key"
         class="canvas-buttons-container"
       >
-        <div class="img-container">
+        <button
+          class="img-container-button"
+          @click="handleCanvasLoad(key.toString())"
+        >
           <img
             v-if="storedScreenShots.storedValue[key.toString()]"
             alt="canvas screenshot"
             :src="storedScreenShots.storedValue[key.toString()]"
           />
-        </div>
+        </button>
         <div class="canvas-option-container">
           <div class="canvas-description-container">
             <span class="info">Name</span>
@@ -22,12 +25,10 @@
           </div>
           <div class="canvas-button-container">
             <button class="button" @click="handleCanvasLoad(key.toString())">
-              <AkDownload class="icon" />
-              <span class="button-text">Load</span>
+              <CaSelectWindow class="icon" />
             </button>
             <button class="delete" @click="handleDelete(key.toString())">
               <AnOutlinedDelete class="icon" />
-              <span class="button-text">Delete</span>
             </button>
           </div>
         </div>
@@ -38,7 +39,7 @@
 
 <script setup lang="ts">
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import { AkDownload, AnOutlinedDelete } from "@kalimahapps/vue-icons";
+import { CaSelectWindow, AnOutlinedDelete } from "@kalimahapps/vue-icons";
 
 const emit = defineEmits<{
   (e: "new-canvas-loaded", canvasName: string): void;
@@ -69,7 +70,7 @@ const handleCanvasLoad = (str: string) => {
 }
 
 .canvas-container {
-  gap: 0.5rem;
+  gap: 0.6rem;
   width: 100%;
   display: flex;
   overflow-y: auto;
@@ -85,30 +86,28 @@ const handleCanvasLoad = (str: string) => {
   width: 100%;
   border: none;
   display: flex;
+  padding: 0.1rem;
   text-align: left;
   transition: 0.4s;
-  min-height: 100px;
   flex-direction: row;
   border-radius: 0.5rem;
-  background-color: var(--color-background-soft);
 }
 
-.canvas-buttons-container:hover {
-  background-color: var(--color-background-soft);
-}
-
-.img-container {
-  width: 100px;
-  height: 100px;
+.img-container-button {
+  padding: 0;
+  width: 90px;
+  height: 90px;
+  border: none;
   overflow: hidden;
   border-radius: 0.5rem;
-  border: var(--vt-c-text-light-1) 1px solid;
+  box-shadow:
+    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
 
-.img-container img {
-  margin: 0rem;
-  width: 100px;
-  height: 100px;
+.img-container-button img {
+  width: 90px;
+  height: 90px;
   object-fit: contain;
   border-radius: 0.5rem;
   background-color: var(--color-background);
@@ -119,7 +118,6 @@ const handleCanvasLoad = (str: string) => {
   display: flex;
   flex-direction: row;
   padding: 0rem 0rem 0rem 0.5rem;
-  justify-content: space-between;
 }
 
 .canvas-option-container {
@@ -137,7 +135,6 @@ const handleCanvasLoad = (str: string) => {
 
 .icon {
   font-size: 1rem;
-  margin-right: 0.5rem;
 }
 
 .button {
@@ -169,8 +166,8 @@ const handleCanvasLoad = (str: string) => {
 }
 
 .canvas-select-name {
-  font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .container {

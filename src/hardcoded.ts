@@ -6,6 +6,7 @@ export const COLORS = [
   "rgba(73, 222, 128, 1.000)",
   "rgba(244, 113, 181, 1.000)",
   "rgba(75, 85, 99, 1.000)",
+  "rgba(243, 244, 246, 1.000)",
 ];
 
 export const BACKGROUND_COLORS = [
@@ -16,8 +17,9 @@ export const BACKGROUND_COLORS = [
   "rgba(135, 239, 172, 1.000)",
   "rgba(249, 169, 212, 1.000)",
   "rgba(209, 213, 219, 1.000)",
+  "rgba(243, 244, 246, 1.000)",
 ];
 
-export const TRANSPARENT_COLOR = "rgb(255, 255, 255, 1.000)";
+export const TRANSPARENT_COLOR = "rgb(255, 255, 255, 0.000)";
 
 export const DEFAULT_CANVAS_NAME = "unnamed";

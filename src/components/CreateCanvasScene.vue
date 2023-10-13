@@ -8,8 +8,6 @@
           v-model="newCanvasSceneName"
           @input="handleCanvasLoad(newCanvasSceneName)"
         />
-        <span class="highlight"></span>
-        <span class="bar"></span>
         <label>Name</label>
       </div>
 
@@ -60,8 +58,8 @@ const handleCrete = () => {
 
 <style scoped>
 .form-container {
-  display: flex;
   width: 100%;
+  display: flex;
 }
 .group {
   width: 100%;
@@ -108,7 +106,6 @@ input:focus {
 
 /* LABEL ======================================= */
 label {
-  /* left: 5px; */
   top: 10px;
   color: #999;
   font-size: 1rem;

@@ -52,15 +52,14 @@ const showModal = () => {
 }
 
 .settings-button {
-  top: 0.5rem;
+  top: 0.3rem;
   z-index: 100;
   border: none;
   display: flex;
-  right: 0.5rem;
+  right: 0.1rem;
   font-size: 1rem;
   position: absolute;
   align-items: center;
-  justify-content: center;
   color: var(--color-text);
   background-color: transparent;
 }

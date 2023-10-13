@@ -52,11 +52,11 @@ const showModal = () => {
 }
 
 .settings-button {
-  top: 0.3rem;
+  top: 8px;
   z-index: 100;
   border: none;
   display: flex;
-  right: 0.1rem;
+  right: 8px;
   font-size: 1rem;
   position: absolute;
   align-items: center;

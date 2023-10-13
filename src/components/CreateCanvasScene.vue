@@ -12,6 +12,7 @@
         <span class="bar"></span>
         <label>Name</label>
       </div>
+
       <button
         @click="handleCrete"
         class="create-scene-button"
@@ -59,25 +60,27 @@ const handleCrete = () => {
 
 <style scoped>
 .form-container {
-  /* padding: 1rem 0rem; */
   display: flex;
+  width: 100%;
 }
 .group {
+  width: 100%;
+  max-width: 300px;
   position: relative;
 }
 
 .error {
-  padding: 0.2rem 0rem;
-  color: #ef4444;
   height: 1rem;
+  color: #ef4444;
   font-size: 0.7rem;
+  padding: 0.2rem 0rem;
 }
 .create-scene-button {
-  margin-left: 1rem;
   border: none;
+  margin-left: 1rem;
   font-size: 0.85rem;
-  padding: 0.5rem 1.2rem;
   border-radius: 0.5rem;
+  padding: 0.5rem 1.2rem;
   background-color: #8b5cf6;
   color: var(--color-background);
 }
@@ -92,7 +95,7 @@ const handleCrete = () => {
 }
 
 input {
-  width: 300px;
+  width: 100%;
   border: none;
   display: block;
   font-size: 1rem;

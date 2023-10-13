@@ -121,8 +121,8 @@ header {
 }
 
 .menu-button {
-  top: 0.5rem;
-  left: 0.5rem;
+  top: 8px;
+  left: 8px;
   z-index: 100;
   border: none;
   display: none;

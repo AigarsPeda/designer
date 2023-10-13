@@ -1,9 +1,6 @@
 <template>
   <div class="main-container">
-    <div v-show="isNavBarVisible()">
-      <!-- <p class="selected-canvas-name">
-        {{ storedSelectedCanvasName.storedValue }}
-      </p> -->
+    <div v-show="isNavBarVisible">
       <SettingsModal />
       <button type="button" class="menu-button" @click="handleMenuOpen">
         <vue-feather type="menu" size="24" class="menu" />
@@ -34,25 +31,23 @@ import { onMounted, ref, shallowRef, watch } from "vue";
 import VueFeather from "vue-feather";
 import { RouterView, useRoute } from "vue-router";
 
-const activeComponent = shallowRef(MainMenu);
-
 const route = useRoute();
 const uiStore = useUIStore();
 const isMenuOpen = ref(false);
+const isNavBarVisible = ref(false);
 const { menuOptions } = useMenuOptions();
-const {
-  // storedSelectedCanvasName,
-  copyCanvasActiveObjects,
-  pasteCanvasActiveObjects,
-} = useLocalStorageCanvas();
+const activeComponent = shallowRef(MainMenu);
 
-const isNavBarVisible = () => {
-  return route.path !== "/about";
-};
+const { copyCanvasActiveObjects, pasteCanvasActiveObjects } =
+  useLocalStorageCanvas();
 
 const handleMenuOpen = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
+onMounted(() => {
+  isNavBarVisible.value = route.path !== "/about";
+});
 
 onMounted(() => {
   // add listener for escape key to close menu

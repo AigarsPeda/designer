@@ -35,7 +35,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   );
 
   const storedScreenShots = useLocalStorage<StoredScreenShots>(
-    "storedCanvasNames",
+    "storedScreenShots",
     {}
   );
 

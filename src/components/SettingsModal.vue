@@ -9,13 +9,18 @@
   <Modal :closeModal="closeModal" :isShowModal="isShowModal">
     <template #modal-content>
       <RouterLink class="link" to="/about">About</RouterLink>
-      <DisplayCreatedCanvas />
+
+      <div class="create-scene-container">
+        <CreateCanvasScene @canvas-created="closeModal" />
+      </div>
+      <DisplayCreatedCanvasScene @new-canvas-loaded="closeModal" />
     </template>
   </Modal>
 </template>
 
 <script setup lang="ts">
-import DisplayCreatedCanvas from "@/components/DisplayCreatedCanvas.vue";
+import CreateCanvasScene from "@/components/CreateCanvasScene.vue";
+import DisplayCreatedCanvasScene from "@/components/DisplayCreatedCanvasScene.vue";
 import Modal from "@/components/Modal.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import { CaSettings } from "@kalimahapps/vue-icons";
@@ -42,6 +47,10 @@ const showModal = () => {
   border-bottom: 1.5px solid var(--color-text);
 }
 
+.create-scene-container {
+  padding: 1rem 0rem;
+}
+
 .settings-button {
   top: 0.5rem;
   z-index: 100;
@@ -65,18 +74,18 @@ const showModal = () => {
   border-radius: 0.5rem;
   justify-content: center;
   color: var(--color-background);
-  background-color: rgba(105, 101, 219, 1);
+  background-color: #8b5cf6;
   transition: all 0.25s ease-in-out;
 }
 
 @media (hover: hover) {
   /* on hover over settings-button trigger hover on settings-button-icon   */
   .settings-button:hover .settings-button-icon {
-    background-color: rgba(105, 101, 219, 0.8);
+    background-color: #8b5cf6cc;
   }
 
   .link:hover {
-    border-bottom: 1.5px solid rgba(105, 101, 219, 1);
+    border-bottom: 1.5px solid #8b5cf6cc;
   }
 }
 </style>

@@ -29,7 +29,7 @@ const gobBack = () => {
   justify-content: center;
   color: var(--color-background);
   border: 1.5px solid transparent;
-  background-color: rgba(105, 101, 219, 1);
+  background-color: #8b5cf6;
 }
 
 .back-button-icon {
@@ -48,7 +48,7 @@ const gobBack = () => {
 
 @media (hover: hover) {
   .back-button:hover {
-    background-color: rgba(105, 101, 219, 0.8);
+    background-color: #8b5cf6cc;
   }
 }
 </style>

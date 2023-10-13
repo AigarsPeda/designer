@@ -98,12 +98,12 @@ defineProps<{
   cursor: pointer;
   border-radius: 5px;
   padding: 0.5rem 1rem;
-  background-color: rgba(105, 101, 219, 1);
+  background-color: #374151;
 }
 
 @media (hover: hover) {
   .modal-button:hover {
-    background-color: rgba(105, 101, 219, 0.8);
+    background-color: #374151cc;
   }
 }
 </style>

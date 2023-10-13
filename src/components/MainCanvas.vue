@@ -134,6 +134,11 @@ watch(
 
       getSelectedCanvas.renderAll();
     }
+
+    if (getSelectedCanvas && !state) {
+      getSelectedCanvas.clear();
+      getSelectedCanvas.renderAll();
+    }
   }
 );
 

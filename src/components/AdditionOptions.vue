@@ -69,6 +69,7 @@ const handleBringToFront = (canvas: fabric.Canvas | null) => {
   const activeObj = canvas?.getActiveObject();
   if (activeObj) {
     activeObj.bringForward();
+    canvas?.fire("object:modified");
     canvas?.renderAll();
   }
 };
@@ -77,6 +78,7 @@ const handleSendToBack = (canvas: fabric.Canvas | null) => {
   const activeObj = canvas?.getActiveObject();
   if (activeObj) {
     activeObj.sendBackwards();
+    canvas?.fire("object:modified");
     canvas?.renderAll();
   }
 };

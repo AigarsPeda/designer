@@ -136,16 +136,6 @@ header {
   border: 1.5px solid var(--color-border);
 }
 
-/* .selected-canvas-name {
-  top: 0.8rem;
-  z-index: 100;
-  right: 3.5rem;
-  font-weight: 500;
-  font-size: 0.9rem;
-  position: absolute;
-  color: var(--color-text);
-} */
-
 @media (hover: hover) {
   .menu-button:hover {
     background-color: var(--color-border);

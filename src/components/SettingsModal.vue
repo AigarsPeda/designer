@@ -11,9 +11,15 @@
       <RouterLink class="link" to="/about">About</RouterLink>
 
       <div class="create-scene-container">
-        <CreateCanvasScene @canvas-created="closeModal" />
+        <CreateCanvasScene
+          @canvas-created="closeModal"
+          :oldCanvasSceneName="oldCanvasSceneName"
+        />
       </div>
-      <DisplayCreatedCanvasScene @new-canvas-loaded="closeModal" />
+      <DisplayCreatedCanvasScene
+        @new-canvas-loaded="closeModal"
+        @edit-name="setOldCanvasSceneName"
+      />
     </template>
   </Modal>
 </template>
@@ -28,7 +34,12 @@ import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
 const isShowModal = ref(false);
+const oldCanvasSceneName = ref("");
 const { storedSelectedCanvasName } = useLocalStorageCanvas();
+
+const setOldCanvasSceneName = (name: string) => {
+  oldCanvasSceneName.value = name;
+};
 
 const closeModal = () => {
   isShowModal.value = false;

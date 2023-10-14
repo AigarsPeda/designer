@@ -12,11 +12,18 @@
       </div>
 
       <button
-        @click="handleCrete"
-        class="create-scene-button"
+        @click="handleButtonClick"
+        class="create-scene-button violet"
         :disabled="newCanvasSceneName.length === 0 || isAlreadyCreated"
       >
-        Create
+        {{ isEditing ? "Save" : "Create" }}
+      </button>
+      <button
+        @click="handleCancel"
+        class="create-scene-button gray"
+        :disabled="newCanvasSceneName.length === 0 || isAlreadyCreated"
+      >
+        Cancel
       </button>
     </div>
     <div class="error">
@@ -27,15 +34,23 @@
 
 <script setup lang="ts">
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const emit = defineEmits<{
   (e: "canvas-created", canvasName: string): void;
 }>();
 
+const props = defineProps<{
+  oldCanvasSceneName: string;
+}>();
+
+const isEditing = ref(false);
 const newCanvasSceneName = ref("");
 const isAlreadyCreated = ref(false);
-const { storedSelectedCanvasName, storedCanvasSate } = useLocalStorageCanvas();
+const isEditingSceneName = ref(false);
+
+const { storedScreenShots, storedCanvasSate, storedSelectedCanvasName } =
+  useLocalStorageCanvas();
 
 const handleCanvasLoad = (str: string) => {
   newCanvasSceneName.value = str;
@@ -54,6 +69,52 @@ const handleCrete = () => {
   });
   emit("canvas-created", newCanvasSceneName.value);
 };
+
+const handleCanvasNameChange = (key: string, newName: string) => {
+  // change storedScreenShots key name with the new name
+  const { [key]: screenShot, ...restScreenShots } =
+    storedScreenShots.storedValue;
+  storedScreenShots.updateValue({
+    ...restScreenShots,
+    [newName]: screenShot,
+  });
+
+  // change storedCanvasSate key name with the new name
+  const { [key]: canvas, ...restCanvasSate } = storedCanvasSate.storedValue;
+  storedCanvasSate.updateValue({
+    ...restCanvasSate,
+    [newName]: canvas,
+  });
+
+  if (isEditingSceneName.value) {
+    storedSelectedCanvasName.updateValue(newName);
+  }
+};
+
+const handleCancel = () => {
+  isEditing.value = false;
+  newCanvasSceneName.value = "";
+  isAlreadyCreated.value = false;
+};
+
+const handleButtonClick = () => {
+  if (isEditing.value) {
+    handleCanvasNameChange(props.oldCanvasSceneName, newCanvasSceneName.value);
+    isEditing.value = false;
+  } else {
+    handleCrete();
+  }
+};
+
+watch(
+  () => props.oldCanvasSceneName,
+  (oldCanvasSceneName) => {
+    isEditing.value = Boolean(oldCanvasSceneName);
+    isEditingSceneName.value =
+      oldCanvasSceneName === storedSelectedCanvasName.storedValue;
+    newCanvasSceneName.value = oldCanvasSceneName;
+  }
+);
 </script>
 
 <style scoped>
@@ -75,21 +136,25 @@ const handleCrete = () => {
 }
 .create-scene-button {
   border: none;
+  min-width: 5rem;
   margin-left: 1rem;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-  padding: 0.5rem 1.2rem;
-  background-color: #8b5cf6;
   color: var(--color-background);
 }
 
-.create-scene-button:hover {
-  background-color: #8b5cf6cc;
+.violet {
+  background-color: #8b5cf6;
+}
+
+.gray {
+  background-color: #6b7280;
 }
 
 .create-scene-button:disabled {
-  background-color: #9ca3af;
   color: #e5e7eb;
+  background-color: #9ca3af;
 }
 
 input {

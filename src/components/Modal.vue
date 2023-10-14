@@ -96,6 +96,7 @@ defineProps<{
   border: none;
   color: #fff;
   cursor: pointer;
+  font-size: 0.9rem;
   border-radius: 5px;
   padding: 0.5rem 1rem;
   background-color: #374151;

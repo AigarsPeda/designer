@@ -4,7 +4,9 @@
 
     <TransitionGroup tag="ul" name="fade" class="canvas-container">
       <li
-        v-for="(value, key) in storedCanvasSate.storedValue"
+        v-for="(value, key) in sortObjKeysAlphabetically(
+          storedCanvasSate.storedValue
+        )"
         :key="key"
         class="canvas-buttons-container"
       >
@@ -24,10 +26,19 @@
             <span class="canvas-select-name">{{ key }}</span>
           </div>
           <div class="canvas-button-container">
-            <button class="button" @click="handleCanvasLoad(key.toString())">
+            <button
+              class="button violet"
+              @click="handleCanvasLoad(key.toString())"
+            >
               <CaSelectWindow class="icon" />
             </button>
-            <button class="delete" @click="handleDelete(key.toString())">
+            <button
+              class="button gray"
+              @click="handleStartNameEdit(key.toString())"
+            >
+              <AnOutlinedEdit class="icon" />
+            </button>
+            <button class="button red" @click="handleDelete(key.toString())">
               <AnOutlinedDelete class="icon" />
             </button>
           </div>
@@ -39,9 +50,15 @@
 
 <script setup lang="ts">
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import { CaSelectWindow, AnOutlinedDelete } from "@kalimahapps/vue-icons";
+import sortObjKeysAlphabetically from "@/utils/sortObjKeysAlphabetically";
+import {
+  AnOutlinedDelete,
+  AnOutlinedEdit,
+  CaSelectWindow,
+} from "@kalimahapps/vue-icons";
 
 const emit = defineEmits<{
+  (e: "edit-name", canvasName: string): void;
   (e: "new-canvas-loaded", canvasName: string): void;
 }>();
 
@@ -54,6 +71,10 @@ const handleDelete = (str: string) => {
 
   const { [str]: _, ...rest } = storedCanvasSate.storedValue;
   storedCanvasSate.updateValue(rest);
+};
+
+const handleStartNameEdit = (str: string) => {
+  emit("edit-name", str);
 };
 
 const handleCanvasLoad = (str: string) => {
@@ -100,9 +121,12 @@ const handleCanvasLoad = (str: string) => {
   border: none;
   overflow: hidden;
   border-radius: 0.5rem;
-  box-shadow:
+  /* box-shadow:
     rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; */
+  box-shadow:
+    rgba(75, 85, 99, 0.3) 0px 1px 2px 0px,
+    rgba(75, 85, 99, 0.15) 0px 2px 6px 2px;
 }
 
 .img-container-button img {
@@ -143,20 +167,20 @@ const handleCanvasLoad = (str: string) => {
   padding: 0.5rem;
   align-items: center;
   border-radius: 0.5rem;
-  background-color: #8b5cf6;
   color: var(--color-background);
   border: 1.5px solid transparent;
 }
 
-.delete {
-  border: none;
-  display: flex;
-  padding: 0.5rem;
-  align-items: center;
-  border-radius: 0.5rem;
+.violet {
+  background-color: #8b5cf6;
+}
+
+.red {
   background-color: #ef4444;
-  color: var(--color-background);
-  border: 1.5px solid transparent;
+}
+
+.gray {
+  background-color: #6b7280;
 }
 
 .button-text {

@@ -16,7 +16,6 @@ const props = defineProps<{
 
 const canvasRef = ref<fabric.Canvas | null>(null);
 const containerRef = ref<HTMLDivElement | null>(null);
-const lastContainerSizeRef = ref({ width: 0, height: 0 });
 const canvasReference = ref<HTMLCanvasElement | null>(null);
 
 const emit = defineEmits<{

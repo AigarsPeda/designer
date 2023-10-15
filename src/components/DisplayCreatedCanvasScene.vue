@@ -172,11 +172,11 @@ const handleCanvasLoad = (str: string) => {
 }
 
 .violet {
-  background-color: #8b5cf6;
+  background-color: #6d28d9;
 }
 
 .red {
-  background-color: #ef4444;
+  background-color: #e91517;
 }
 
 .gray {

@@ -4,7 +4,10 @@
       <button
         :key="index"
         @click="handleColorClick(color)"
-        :style="{ backgroundColor: color }"
+        :style="{
+          backgroundColor: color,
+          // boxShadow: `0px 1px 3px 0px rgba(0, 0, 0, 0.1), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)`,
+        }"
         :class="{
           'color-btn': true,
           'color-btn_active': selectedColor === color,
@@ -71,10 +74,15 @@ li {
   border-radius: 0.5rem;
   justify-content: center;
   transition: all 0.2s ease-in-out;
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
+    rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
 .color-btn_transparent {
-  border: 1.5px solid #cbd5e1;
+  background-size: 8px 8px;
+  background-image: linear-gradient(to right, #cbd5e1 1.2px, transparent 1.2px),
+    linear-gradient(to bottom, #cbd5e1 1.2px, transparent 1.2px);
 }
 
 .color-btn_active {

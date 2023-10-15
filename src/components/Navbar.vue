@@ -115,9 +115,11 @@ header {
   z-index: 100;
   position: absolute;
   border-radius: 0.5rem;
+  backdrop-filter: blur(6px);
   margin: 0.5rem 0 0.5rem 0.5rem;
   box-shadow: var(--vt-c-shadow);
-  background-color: var(--color-background);
+  background-color: rgba(238, 240, 244, 0.2);
+  border: 1.5px solid var(--color-border);
 }
 
 .menu-button {

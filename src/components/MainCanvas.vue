@@ -176,6 +176,7 @@ watch(
         drawStrokeOnCanvas({
           canvas: getSelectedCanvas,
           drawingSettings: getDrawingSettings,
+          callback: saveCanvasToLocalStorage,
         });
         break;
       case "panning":
@@ -214,11 +215,6 @@ watch(
 </script>
 
 <style scoped>
-span {
-  font-weight: bold;
-  color: #000;
-}
-
 .design-canvas-container {
   width: 100vw;
   height: 100vh;

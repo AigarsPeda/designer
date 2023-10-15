@@ -83,12 +83,12 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
       arr.shift();
     }
 
-    arr.push(state);
+    // arr.push(state);
 
-    // storedCanvasSate.updateValue({
-    //   ...storedCanvasSate.storedValue.value,
-    //   [name]: [...arr, state],
-    // });
+    storedCanvasSate.updateValue({
+      ...storedCanvasSate.storedValue.value,
+      [name]: [...arr, state],
+    });
   };
 
   const deleteCanvasStateFromLocalStorage = ({ name }: { name: string }) => {

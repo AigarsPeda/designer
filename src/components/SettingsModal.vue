@@ -78,24 +78,25 @@ const showModal = () => {
 .settings-button-icon {
   display: flex;
   padding: 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   margin-left: 0.5rem;
   align-items: center;
   border-radius: 0.5rem;
   justify-content: center;
   color: var(--color-background);
-  background-color: #8b5cf6;
+  background-color: rgba(109, 40, 217, 0.7);
+  backdrop-filter: blur(6px);
   transition: all 0.25s ease-in-out;
 }
 
 @media (hover: hover) {
   /* on hover over settings-button trigger hover on settings-button-icon   */
   .settings-button:hover .settings-button-icon {
-    background-color: #8b5cf6cc;
+    background-color: #6d28d9cc;
   }
 
   .link:hover {
-    border-bottom: 1.5px solid #8b5cf6cc;
+    border-bottom: 1.5px solid #6d28d9cc;
   }
 }
 </style>

@@ -145,7 +145,7 @@ watch(
 }
 
 .violet {
-  background-color: #8b5cf6;
+  background-color: #6d28d9;
 }
 
 .gray {
@@ -187,6 +187,6 @@ input:focus ~ label,
 input:valid ~ label {
   top: -10px;
   font-size: 0.7rem;
-  color: #8b5cf6;
+  color: #6d28d9;
 }
 </style>

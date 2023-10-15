@@ -3,7 +3,6 @@ import getSvgPathFromStroke from "@/utils/getSvgPathFromStroke";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 import getStroke from "perfect-freehand";
-import makeAllObjCanvasUnselectable from "./makeAllObjCanvasUnselectable";
 
 type DrawStrokeOnCanvasArgs = {
   canvas: fabric.Canvas | null;
@@ -14,6 +13,7 @@ type DrawStrokeOnCanvasArgs = {
     smoothing: number;
     streamline: number;
   };
+  callback: () => void;
 };
 
 let objId = "";
@@ -22,6 +22,7 @@ let position: number[][] = [[0, 0]];
 
 const drawStrokeOnCanvas = ({
   canvas,
+  callback,
   drawingSettings,
 }: DrawStrokeOnCanvasArgs) => {
   if (!canvas) {
@@ -29,10 +30,17 @@ const drawStrokeOnCanvas = ({
     return;
   }
 
+  // disable this event listener to prevent the canvas from being saved
+  // to local storage when the user is drawing
+  canvas.off("object:added");
+  canvas.off("object:removed");
+  canvas.off("object:modified");
+
   canvas.on("mouse:down", (e) => {
     isMouseDown = true;
     objId = getUniqueId();
 
+    canvas.isDrawingMode = true;
     const pointer = canvas.getPointer(e.e);
     position = [[pointer.x, pointer.y]];
   });
@@ -58,14 +66,6 @@ const drawStrokeOnCanvas = ({
     });
 
     const pathData = getSvgPathFromStroke(outlinePoints);
-    const activeObjects = canvas.getObjects() as CustomObjI[];
-    const obj = activeObjects.filter((o) => o?.id === objId);
-
-    if (obj.length > 0) {
-      for (let i = 0; i < obj.length; i++) {
-        canvas.remove(obj[i]);
-      }
-    }
 
     const path = new fabric.Path(pathData, {
       scaleX: 1,
@@ -74,17 +74,33 @@ const drawStrokeOnCanvas = ({
       evented: false,
       selectable: false,
       hasRotatingPoint: false,
-      // fill: drawingSettings.stroke,
       fill: drawingSettings.stroke,
     }) as CustomPathI;
 
     path.id = objId;
+
+    // canvas.off("object:added");
+    // canvas.off("object:modified");
+    // canvas.off("object:removed");
+
+    const canvasObjects = canvas.getObjects() as CustomObjI[];
+    const obj = canvasObjects.filter((o) => o?.id === objId);
+
+    if (obj.length > 0) {
+      for (let i = 0; i < obj.length; i++) {
+        canvas.remove(obj[i]);
+      }
+    }
 
     canvas.add(path);
   });
 
   canvas.on("mouse:up", (e) => {
     if (!isMouseDown) return;
+
+    canvas.on("object:added", callback);
+    canvas.on("object:modified", callback);
+    canvas.on("object:removed", callback);
 
     const obj = canvas.getObjects() as CustomObjI[];
     const objToSelect = obj.filter((o) => o?.id === objId);
@@ -100,7 +116,6 @@ const drawStrokeOnCanvas = ({
 
     objId = "";
     isMouseDown = false;
-    // makeAllObjCanvasUnselectable(canvas);
   });
 };
 

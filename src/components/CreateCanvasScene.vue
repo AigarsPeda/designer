@@ -11,20 +11,23 @@
         <label>Name</label>
       </div>
 
-      <button
-        @click="handleButtonClick"
-        class="create-scene-button violet"
-        :disabled="newCanvasSceneName.length === 0 || isAlreadyCreated"
-      >
-        {{ isEditing ? "Save" : "Create" }}
-      </button>
-      <button
-        @click="handleCancel"
-        class="create-scene-button gray"
-        :disabled="newCanvasSceneName.length === 0 || isAlreadyCreated"
-      >
-        Cancel
-      </button>
+      <div class="action-button-container">
+        <button
+          class="button blue"
+          @click="handleButtonClick"
+          :disabled="newCanvasSceneName.length === 0 || isAlreadyCreated"
+        >
+          <CaSave class="icon" />
+          {{ isEditing ? "Save" : "Create" }}
+        </button>
+        <button
+          class="button"
+          @click="handleCancel"
+          :disabled="newCanvasSceneName.length === 0 || isAlreadyCreated"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
     <div class="error">
       <span v-if="isAlreadyCreated">Scene with this name already exists</span>
@@ -34,6 +37,7 @@
 
 <script setup lang="ts">
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
+import { CaSave } from "@kalimahapps/vue-icons";
 import { ref, watch } from "vue";
 
 const emit = defineEmits<{
@@ -128,6 +132,20 @@ watch(
   position: relative;
 }
 
+.button {
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
+  border: 1.5px solid transparent;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+}
+.icon {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+
 .error {
   height: 1rem;
   color: #ef4444;
@@ -144,17 +162,10 @@ watch(
   color: var(--color-background);
 }
 
-.violet {
-  background-color: #6d28d9;
-}
-
-.gray {
-  background-color: #6b7280;
-}
-
-.create-scene-button:disabled {
-  color: #e5e7eb;
-  background-color: #9ca3af;
+.action-button-container {
+  gap: 0.5rem;
+  display: flex;
+  padding-left: 0.5rem;
 }
 
 input {
@@ -163,7 +174,7 @@ input {
   display: block;
   font-size: 1rem;
   padding: 10px 10px 10px 0px;
-  border-bottom: 1.5px solid var(--color-text);
+  border-bottom: 1.5px solid #9ca3af;
 }
 input:focus {
   outline: none;
@@ -187,6 +198,12 @@ input:focus ~ label,
 input:valid ~ label {
   top: -10px;
   font-size: 0.7rem;
-  color: #6d28d9;
+  color: #6366f1;
+}
+
+@media (hover: hover) {
+  .blue:hover {
+    color: #6366f1;
+  }
 }
 </style>

@@ -54,7 +54,7 @@ defineProps<{
 
 .modal-container {
   width: 90%;
-  max-width: 600px;
+  max-width: 500px;
   border-radius: 5px;
   position: relative;
   background-color: #fff;

@@ -1,15 +1,14 @@
 <template>
-  <button type="button" class="settings-button" @click="showModal">
+  <button type="button" class="menu-button" @click="showModal">
     {{ storedSelectedCanvasName.storedValue }}
-    <span class="settings-button-icon">
-      <CaSettings />
-    </span>
+    <vue-feather type="menu" size="24" class="menu-icon" />
   </button>
 
   <Modal :closeModal="closeModal" :isShowModal="isShowModal">
     <template #modal-content>
-      <RouterLink class="link" to="/about">About</RouterLink>
-
+      <div class="link-container">
+        <RouterLink class="link" to="/about">About</RouterLink>
+      </div>
       <div class="create-scene-container">
         <CreateCanvasScene
           @canvas-created="closeModal"
@@ -29,8 +28,8 @@ import CreateCanvasScene from "@/components/CreateCanvasScene.vue";
 import DisplayCreatedCanvasScene from "@/components/DisplayCreatedCanvasScene.vue";
 import Modal from "@/components/Modal.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import { CaSettings } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
+import VueFeather from "vue-feather";
 import { RouterLink } from "vue-router";
 
 const isShowModal = ref(false);
@@ -50,6 +49,11 @@ const showModal = () => {
 </script>
 
 <style scoped>
+.link-container {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+}
 .link {
   transition: 0.4s;
   padding: 0.3rem 0rem;
@@ -75,24 +79,37 @@ const showModal = () => {
   background-color: transparent;
 }
 
-.settings-button-icon {
+.menu-button {
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 100;
+  border: none;
+  padding: 0.4rem 0.6rem;
   display: flex;
-  padding: 0.5rem;
-  font-size: 1.4rem;
-  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: absolute;
   align-items: center;
   border-radius: 0.5rem;
   justify-content: center;
-  color: var(--color-background);
-  background-color: rgba(109, 40, 217, 0.7);
+  color: var(--color-text);
   backdrop-filter: blur(6px);
-  transition: all 0.25s ease-in-out;
+  background-color: rgba(238, 240, 244, 0.2);
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+}
+
+.menu-icon {
+  margin-left: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
 }
 
 @media (hover: hover) {
   /* on hover over settings-button trigger hover on settings-button-icon   */
-  .settings-button:hover .settings-button-icon {
-    background-color: #6d28d9cc;
+  .menu-button:hover .menu-icon {
+    color: #6d28d9cc;
   }
 
   .link:hover {

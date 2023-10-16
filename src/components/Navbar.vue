@@ -117,9 +117,10 @@ header {
   border-radius: 0.5rem;
   backdrop-filter: blur(6px);
   margin: 0.5rem 0 0.5rem 0.5rem;
-  box-shadow: var(--vt-c-shadow);
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
   background-color: rgba(238, 240, 244, 0.2);
-  border: 1.5px solid var(--color-border);
 }
 
 .menu-button {

@@ -26,20 +26,17 @@
             <span class="canvas-select-name">{{ key }}</span>
           </div>
           <div class="canvas-button-container">
-            <button
-              class="button violet"
-              @click="handleCanvasLoad(key.toString())"
-            >
+            <button class="button" @click="handleCanvasLoad(key.toString())">
               <CaSelectWindow class="icon" />
+              Select
             </button>
-            <button
-              class="button gray"
-              @click="handleStartNameEdit(key.toString())"
-            >
+            <button class="button" @click="handleStartNameEdit(key.toString())">
               <AnOutlinedEdit class="icon" />
+              Edit
             </button>
             <button class="button red" @click="handleDelete(key.toString())">
               <AnOutlinedDelete class="icon" />
+              Delete
             </button>
           </div>
         </div>
@@ -121,12 +118,8 @@ const handleCanvasLoad = (str: string) => {
   border: none;
   overflow: hidden;
   border-radius: 0.5rem;
-  /* box-shadow:
-    rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
-    rgba(60, 64, 67, 0.15) 0px 1px 3px 1px; */
-  box-shadow:
-    rgba(75, 85, 99, 0.3) 0px 1px 2px 0px,
-    rgba(75, 85, 99, 0.15) 0px 2px 6px 2px;
+  border: 1px solid #f9fafb;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 1px 1px;
 }
 
 .img-container-button img {
@@ -159,6 +152,7 @@ const handleCanvasLoad = (str: string) => {
 
 .icon {
   font-size: 1rem;
+  margin-right: 0.5rem;
 }
 
 .button {
@@ -167,26 +161,8 @@ const handleCanvasLoad = (str: string) => {
   padding: 0.5rem;
   align-items: center;
   border-radius: 0.5rem;
-  color: var(--color-background);
   border: 1.5px solid transparent;
-}
-
-.violet {
-  background-color: #6d28d9;
-}
-
-.red {
-  background-color: #e91517;
-}
-
-.gray {
-  background-color: #6b7280;
-}
-
-.button-text {
-  font-weight: 500;
-  font-size: 0.85rem;
-  color: var(--color-background);
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }
 
 .canvas-select-name {
@@ -222,5 +198,11 @@ ul {
 
 .fade-leave-active {
   position: absolute;
+}
+
+@media (hover: hover) {
+  .red:hover {
+    color: #e91517;
+  }
 }
 </style>

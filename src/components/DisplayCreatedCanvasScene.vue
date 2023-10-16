@@ -161,6 +161,7 @@ const handleCanvasLoad = (str: string) => {
   padding: 0.5rem;
   align-items: center;
   border-radius: 0.5rem;
+  color: #343d4a;
   border: 1.5px solid transparent;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }

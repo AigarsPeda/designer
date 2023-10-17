@@ -8,7 +8,7 @@
 import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
 import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
 import { fabric } from "fabric";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const props = defineProps<{
   id: string;
@@ -30,11 +30,31 @@ const emit = defineEmits<{
   (e: "selection-updated", opt: fabric.IEvent<MouseEvent>): void;
 }>();
 
+watch(
+  () => {
+    return {
+      offsetWidth: containerRef.value?.offsetWidth,
+      offsetHeight: containerRef.value?.offsetHeight,
+    };
+  },
+  (newSate) => {
+    const { offsetHeight, offsetWidth } = newSate;
+
+    if (!canvasRef.value) {
+      return;
+    }
+
+    offsetWidth && canvasRef.value.setWidth(offsetWidth);
+    offsetHeight && canvasRef.value.setHeight(offsetHeight);
+    canvasRef.value.renderAll();
+  }
+);
+
 onMounted(() => {
   const canvas = new fabric.Canvas(canvasReference.value, {
     preserveObjectStacking: true,
-    width: containerRef.value?.offsetWidth || 500,
-    height: containerRef.value?.offsetHeight || 500,
+    // width: containerRef.value?.offsetWidth || 500,
+    // height: containerRef.value?.offsetHeight || 500,
     backgroundColor: "#fff",
   });
 

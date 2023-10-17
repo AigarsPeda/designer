@@ -19,7 +19,7 @@ const gobBack = () => {
 };
 </script>
 
-<style>
+<style scoped>
 .back-button {
   border: none;
   display: flex;

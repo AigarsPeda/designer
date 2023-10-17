@@ -4,35 +4,38 @@
     <vue-feather type="menu" size="24" class="menu-icon" />
   </button>
 
-  <Modal :closeModal="closeModal" :isShowModal="isShowModal">
+  <Modal
+    :z-index="200"
+    :closeModal="closeModal"
+    :isShowModal="isShowModal"
+    :maxwidth="Boolean(exportCanvasName) ? 800 : 467"
+  >
     <template #modal-content>
-      <div class="link-container">
-        <RouterLink class="link" to="/about">About</RouterLink>
-      </div>
-      <div class="create-scene-container">
-        <CreateCanvasScene
-          @canvas-created="closeModal"
-          :oldCanvasSceneName="oldCanvasSceneName"
-        />
-      </div>
-      <DisplayCreatedCanvasScene
-        @new-canvas-loaded="closeModal"
-        @edit-name="setOldCanvasSceneName"
+      <ExportModal
+        v-if="Boolean(exportCanvasName)"
+        :selectedCanvasName="exportCanvasName"
+        :handleBackButtonClick="handleBackButtonClick"
+      />
+
+      <CreatedAndDisplayCanvas
+        :closeModal="closeModal"
+        v-if="!Boolean(exportCanvasName)"
+        :handleCanvasSceneExportSelect="handleCanvasSceneExportSelect"
       />
     </template>
   </Modal>
 </template>
 
 <script setup lang="ts">
-import CreateCanvasScene from "@/components/CreateCanvasScene.vue";
-import DisplayCreatedCanvasScene from "@/components/DisplayCreatedCanvasScene.vue";
+import CreatedAndDisplayCanvas from "@/components/CreatedAndDisplayCanvas.vue";
+import ExportModal from "@/components/ExportModal.vue";
 import Modal from "@/components/Modal.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import { ref } from "vue";
 import VueFeather from "vue-feather";
-import { RouterLink } from "vue-router";
 
 const isShowModal = ref(false);
+const exportCanvasName = ref("");
 const oldCanvasSceneName = ref("");
 const { storedSelectedCanvasName } = useLocalStorageCanvas();
 
@@ -40,8 +43,20 @@ const setOldCanvasSceneName = (name: string) => {
   oldCanvasSceneName.value = name;
 };
 
+const handleBackButtonClick = () => {
+  exportCanvasName.value = "";
+};
+
+const handleCanvasSceneExportSelect = (str: string) => {
+  exportCanvasName.value = str;
+  // isShowModal.value = false;
+  console.log("handleCanvasExport", str);
+};
+
 const closeModal = () => {
   isShowModal.value = false;
+  exportCanvasName.value = "";
+  oldCanvasSceneName.value = "";
 };
 const showModal = () => {
   isShowModal.value = true;
@@ -49,36 +64,6 @@ const showModal = () => {
 </script>
 
 <style scoped>
-.link-container {
-  display: flex;
-  align-items: center;
-  /* justify-content: center; */
-}
-.link {
-  transition: 0.4s;
-  padding: 0.3rem 0rem;
-  text-decoration: none;
-  color: var(--color-text);
-  border-bottom: 1.5px solid var(--color-text);
-}
-
-.create-scene-container {
-  padding: 1rem 0rem;
-}
-
-.settings-button {
-  top: 0.5rem;
-  z-index: 100;
-  border: none;
-  display: flex;
-  right: 0.5rem;
-  font-size: 1rem;
-  position: absolute;
-  align-items: center;
-  color: var(--color-text);
-  background-color: transparent;
-}
-
 .menu-button {
   top: 0.5rem;
   right: 0.5rem;
@@ -110,10 +95,6 @@ const showModal = () => {
   /* on hover over settings-button trigger hover on settings-button-icon   */
   .menu-button:hover .menu-icon {
     color: #6d28d9cc;
-  }
-
-  .link:hover {
-    border-bottom: 1.5px solid #6d28d9cc;
   }
 }
 </style>

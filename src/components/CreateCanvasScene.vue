@@ -125,6 +125,7 @@ watch(
 .form-container {
   width: 100%;
   display: flex;
+  flex-direction: column;
 }
 .group {
   width: 100%;
@@ -165,7 +166,9 @@ watch(
 .action-button-container {
   gap: 0.5rem;
   display: flex;
-  padding-left: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0rem;
+  justify-content: flex-end;
 }
 
 input {
@@ -204,6 +207,13 @@ input:valid ~ label {
 @media (hover: hover) {
   .blue:hover {
     color: #6366f1;
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .form-container {
+    flex-direction: row;
   }
 }
 </style>

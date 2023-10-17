@@ -25,22 +25,24 @@
 <script setup lang="ts">
 import { ClCloseLg } from "@kalimahapps/vue-icons";
 defineProps<{
+  zIndex?: number;
+  maxwidth?: number;
   isShowModal: boolean;
   closeModal: () => void;
 }>();
 </script>
 
-<style>
+<style scoped>
 .modal {
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   display: flex;
-  z-index: 9999;
   position: fixed;
   align-items: center;
   justify-content: center;
+  z-index: v-bind("`${zIndex || 900}`");
 }
 
 .modal-overlay {
@@ -54,16 +56,16 @@ defineProps<{
 
 .modal-container {
   width: 90%;
-  max-width: 500px;
   border-radius: 5px;
   position: relative;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: v-bind("`${maxwidth || 500}px`");
 }
 
 .modal-header {
   display: flex;
-  padding: 1rem;
+  padding: 0.7rem;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #ccc;
@@ -81,12 +83,12 @@ defineProps<{
 }
 
 .modal-body {
-  padding: 1rem;
+  padding: 0.7rem;
 }
 
 .modal-footer {
   display: flex;
-  padding: 1rem;
+  padding: 0.7rem;
   align-items: center;
   justify-content: flex-end;
   border-top: 1px solid #ccc;
@@ -98,13 +100,28 @@ defineProps<{
   cursor: pointer;
   font-size: 0.9rem;
   border-radius: 5px;
-  padding: 0.5rem 1rem;
+  padding: 0.7rem 1rem;
   background-color: #374151;
 }
 
 @media (hover: hover) {
   .modal-button:hover {
     background-color: #374151cc;
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-footer {
+    padding: 1rem;
   }
 }
 </style>

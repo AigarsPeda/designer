@@ -46,10 +46,6 @@ const handleMenuOpen = () => {
 };
 
 onMounted(() => {
-  isNavBarVisible.value = route.path !== "/about";
-});
-
-onMounted(() => {
   // add listener for escape key to close menu
   const handleKeyPress = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -81,6 +77,19 @@ onMounted(() => {
     window.removeEventListener("keydown", handleKeyPress);
   };
 });
+
+watch(
+  () => {
+    return {
+      path: route.path,
+    };
+  },
+  (newSate) => {
+    const { path } = newSate;
+
+    isNavBarVisible.value = path !== "/about";
+  }
+);
 
 watch(
   () => {

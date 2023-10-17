@@ -4,7 +4,7 @@
 
     <TransitionGroup tag="ul" name="fade" class="canvas-container">
       <li
-        v-for="(value, key) in sortObjKeysAlphabetically(
+        v-for="(_value, key) in sortObjKeysAlphabetically(
           storedCanvasSate.storedValue
         )"
         :key="key"
@@ -34,6 +34,13 @@
               <AnOutlinedEdit class="icon" />
               Edit
             </button>
+            <button
+              class="button"
+              @click="handleExportCanvasSceneSelect(key.toString())"
+            >
+              <AkDownload class="icon" />
+              Export
+            </button>
             <button class="button red" @click="handleDelete(key.toString())">
               <AnOutlinedDelete class="icon" />
               Delete
@@ -49,6 +56,7 @@
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import sortObjKeysAlphabetically from "@/utils/sortObjKeysAlphabetically";
 import {
+  AkDownload,
   AnOutlinedDelete,
   AnOutlinedEdit,
   CaSelectWindow,
@@ -56,6 +64,7 @@ import {
 
 const emit = defineEmits<{
   (e: "edit-name", canvasName: string): void;
+  (e: "export-canvas-select", canvasName: string): void;
   (e: "new-canvas-loaded", canvasName: string): void;
 }>();
 
@@ -72,6 +81,10 @@ const handleDelete = (str: string) => {
 
 const handleStartNameEdit = (str: string) => {
   emit("edit-name", str);
+};
+
+const handleExportCanvasSceneSelect = (str: string) => {
+  emit("export-canvas-select", str);
 };
 
 const handleCanvasLoad = (str: string) => {
@@ -107,8 +120,8 @@ const handleCanvasLoad = (str: string) => {
   padding: 0.1rem;
   text-align: left;
   transition: 0.4s;
-  flex-direction: row;
   border-radius: 0.5rem;
+  flex-direction: column;
 }
 
 .img-container-button {
@@ -133,8 +146,9 @@ const handleCanvasLoad = (str: string) => {
 .canvas-button-container {
   gap: 0.5rem;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
-  padding: 0rem 0rem 0rem 0.5rem;
+  padding: 0rem 0rem 0rem 0rem;
 }
 
 .canvas-option-container {
@@ -146,8 +160,8 @@ const handleCanvasLoad = (str: string) => {
 
 .canvas-description-container {
   display: flex;
-  padding: 0rem 0.5rem;
   flex-direction: column;
+  padding: 0.4rem 0rem 0.6rem 0rem;
 }
 
 .icon {
@@ -159,9 +173,9 @@ const handleCanvasLoad = (str: string) => {
   border: none;
   display: flex;
   padding: 0.5rem;
+  color: #343d4a;
   align-items: center;
   border-radius: 0.5rem;
-  color: #343d4a;
   border: 1.5px solid transparent;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }
@@ -204,6 +218,21 @@ ul {
 @media (hover: hover) {
   .red:hover {
     color: #e91517;
+  }
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .canvas-buttons-container {
+    flex-direction: row;
+  }
+
+  .canvas-button-container {
+    padding: 0rem 0rem 0rem 0.5rem;
+  }
+
+  .canvas-description-container {
+    padding: 0rem 0.5rem;
   }
 }
 </style>

@@ -136,11 +136,17 @@ watch(
 .button {
   border: none;
   display: flex;
+  color: #343d4a;
   align-items: center;
   padding: 0.4rem 1rem;
   border-radius: 0.5rem;
   border: 1.5px solid transparent;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .icon {
   font-size: 1rem;
@@ -204,11 +210,11 @@ input:valid ~ label {
   color: #6366f1;
 }
 
-@media (hover: hover) {
+/* @media (hover: hover) {
   .blue:hover {
     color: #6366f1;
   }
-}
+} */
 
 /* Desktop */
 @media (min-width: 768px) {

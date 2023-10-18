@@ -80,9 +80,7 @@ const showModal = () => {
   color: var(--color-text);
   backdrop-filter: blur(6px);
   background-color: rgba(238, 240, 244, 0.2);
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: var(--vt-box-shadow);
 }
 
 .menu-icon {

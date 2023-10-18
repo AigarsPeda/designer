@@ -8,11 +8,7 @@
 import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
 import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
 import { fabric } from "fabric";
-import { onMounted, ref, watch } from "vue";
-
-const props = defineProps<{
-  id: string;
-}>();
+import { onMounted, ref } from "vue";
 
 const canvasRef = ref<fabric.Canvas | null>(null);
 const containerRef = ref<HTMLDivElement | null>(null);
@@ -30,32 +26,12 @@ const emit = defineEmits<{
   (e: "selection-updated", opt: fabric.IEvent<MouseEvent>): void;
 }>();
 
-watch(
-  () => {
-    return {
-      offsetWidth: containerRef.value?.offsetWidth,
-      offsetHeight: containerRef.value?.offsetHeight,
-    };
-  },
-  (newSate) => {
-    const { offsetHeight, offsetWidth } = newSate;
-
-    if (!canvasRef.value) {
-      return;
-    }
-
-    offsetWidth && canvasRef.value.setWidth(offsetWidth);
-    offsetHeight && canvasRef.value.setHeight(offsetHeight);
-    canvasRef.value.renderAll();
-  }
-);
-
 onMounted(() => {
   const canvas = new fabric.Canvas(canvasReference.value, {
     preserveObjectStacking: true,
-    // width: containerRef.value?.offsetWidth || 500,
-    // height: containerRef.value?.offsetHeight || 500,
-    backgroundColor: "#fff",
+    width: containerRef.value?.offsetWidth || 375,
+    height: containerRef.value?.offsetHeight || 667,
+    // backgroundColor: "#fff",
   });
 
   if (!canvas) {
@@ -138,8 +114,6 @@ onMounted(() => {
 #canvas {
   border-radius: 0.5rem;
   background-color: var(--color-background-soft);
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: var(--vt-box-shadow);
 }
 </style>

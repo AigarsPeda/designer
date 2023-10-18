@@ -36,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import useCanvasStore from "@/stores/useCanvasStore";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import { CaSave } from "@kalimahapps/vue-icons";
 import { ref, watch } from "vue";
@@ -51,9 +52,10 @@ const props = defineProps<{
 const isEditing = ref(false);
 const newCanvasSceneName = ref("");
 const isAlreadyCreated = ref(false);
+const canvasStore = useCanvasStore();
 const isEditingSceneName = ref(false);
 
-const { storedScreenShots, storedCanvasSate, storedSelectedCanvasName } =
+const { storedCanvasMetaData, storedCanvasSate, storedSelectedCanvasName } =
   useLocalStorageCanvas();
 
 const handleCanvasLoad = (str: string) => {
@@ -66,21 +68,37 @@ const handleCrete = () => {
     return;
   }
 
+  // select newly created canvas
   storedSelectedCanvasName.updateValue(newCanvasSceneName.value);
+
+  // add new canvas state to localStorage
   storedCanvasSate.updateValue({
     ...storedCanvasSate.storedValue,
     [newCanvasSceneName.value]: [],
   });
+
+  // add new canvas meta data to localStorage
+  storedCanvasMetaData.updateValue({
+    ...storedCanvasMetaData.storedValue,
+    [newCanvasSceneName.value]: {
+      screenShot: "",
+      dimensions: {
+        width: canvasStore.getSelectedCanvas?.getWidth() || 0,
+        height: canvasStore.getSelectedCanvas?.getHeight() || 0,
+      },
+    },
+  });
+
+  // emit event to parent component
   emit("canvas-created", newCanvasSceneName.value);
 };
 
 const handleCanvasNameChange = (key: string, newName: string) => {
-  // change storedScreenShots key name with the new name
-  const { [key]: screenShot, ...restScreenShots } =
-    storedScreenShots.storedValue;
-  storedScreenShots.updateValue({
-    ...restScreenShots,
-    [newName]: screenShot,
+  // change storedCanvasMetaData key name with the new name
+  const { [key]: data, ...restMetaData } = storedCanvasMetaData.storedValue;
+  storedCanvasMetaData.updateValue({
+    ...restMetaData,
+    [newName]: data,
   });
 
   // change storedCanvasSate key name with the new name
@@ -123,13 +141,15 @@ watch(
 
 <style scoped>
 .form-container {
+  gap: 1rem;
   width: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 .group {
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
   position: relative;
 }
 
@@ -182,6 +202,7 @@ input {
   border: none;
   display: block;
   font-size: 1rem;
+  border-radius: 0%;
   padding: 10px 10px 10px 0px;
   border-bottom: 1.5px solid #9ca3af;
 }
@@ -219,7 +240,7 @@ input:valid ~ label {
 /* Desktop */
 @media (min-width: 768px) {
   .form-container {
-    flex-direction: row;
+    grid-auto-flow: column;
   }
 }
 </style>

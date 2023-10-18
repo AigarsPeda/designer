@@ -6,13 +6,16 @@
     </button>
   </div>
   <div class="container">
-    <div class="canvas-container-side"></div>
+    <div class="canvas-container-side" ref="divRef">
+      <FabricCanvas @canvas-created="handleCanvasCreated" />
+    </div>
     <div class="settings-container-side">
       <p class="title">Export image:</p>
       <div class="settings-container">
-        <p class="info">All setting</p>
-        <p class="info">All setting</p>
-        <p class="info">All setting</p>
+        <div class="setting">
+          <p class="info">Background</p>
+          <Switch :isChecked="isBackground" :handleChecked="handleChecked" />
+        </div>
       </div>
       <div class="settings-button-container">
         <button class="button" @click="console.log('--->')">
@@ -29,12 +32,57 @@
 </template>
 
 <script setup lang="ts">
-import { BxArrowBack, AkDownload } from "@kalimahapps/vue-icons";
+import FabricCanvas from "@/components/FabricCanvas.vue";
+import Switch from "@/components/Switch.vue";
+import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
+import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
+import { ref } from "vue";
 
-defineProps<{
+const divRef = ref<HTMLDivElement | null>(null);
+
+const props = defineProps<{
   selectedCanvasName: string;
   handleBackButtonClick: () => void;
 }>();
+
+const isBackground = ref(false);
+
+const handleChecked = () => {
+  isBackground.value = !isBackground.value;
+};
+
+const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
+  if (!divRef.value) {
+    return;
+  }
+
+  const canvasWidth = fabricCanvas.getWidth();
+  const canvasHeight = fabricCanvas.getHeight();
+  const { offsetWidth, offsetHeight } = divRef.value;
+
+  const scale = Math.min(
+    offsetWidth / canvasWidth,
+    offsetHeight / canvasHeight
+  );
+
+  console.log("scale", scale);
+
+  fabricCanvas.setZoom(0.35);
+  const state = getStoredCanvasStateByName(props.selectedCanvasName);
+
+  if (state && fabricCanvas) {
+    fabricCanvas.loadFromJSON(state, fabricCanvas.renderAll.bind(fabricCanvas));
+
+    fabricCanvas.forEachObject((obj) => {
+      obj.setOptions({
+        evented: false,
+        selectable: false,
+      });
+    });
+
+    fabricCanvas.renderAll();
+  }
+};
 </script>
 
 <style scoped>
@@ -43,20 +91,15 @@ defineProps<{
   padding-bottom: 1rem;
 }
 .container {
-  display: grid;
   gap: 1rem;
-  /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
-  grid-template-columns: repeat(auto-fit, minmax(300px, 35%));
+  display: grid;
 }
 .canvas-container-side {
-  width: 100%;
   height: 305px;
   border-radius: 5px;
   position: relative;
   background-color: #fff;
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: var(--vt-box-shadow);
 }
 
 .back-button {
@@ -85,6 +128,13 @@ defineProps<{
   justify-content: flex-start;
 }
 
+.setting {
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .button {
   border: none;
   display: flex;
@@ -99,7 +149,7 @@ defineProps<{
 .settings-container-side {
   width: 100%;
   display: flex;
-  padding-left: 1rem;
+  /* padding-left: 1rem; */
   flex-direction: column;
   justify-content: space-between;
 }
@@ -119,6 +169,10 @@ defineProps<{
 @media (min-width: 768px) {
   .container {
     flex-direction: row;
+  }
+
+  .container {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 48%));
   }
 }
 </style>

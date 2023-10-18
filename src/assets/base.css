@@ -22,6 +22,9 @@
   --vt-c-shadow: 0px 7px 14px rgba(0, 0, 0, 0.05),
     0px 0px 3.127.5rem rgba(0, 0, 0, 0.0798),
     0px 0px 0.931014px rgba(0, 0, 0, 0.1702);
+
+  --vt-box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
+    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 }
 
 /* semantic color variables for this project */

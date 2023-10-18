@@ -74,9 +74,7 @@ li {
   border-radius: 0.5rem;
   justify-content: center;
   transition: all 0.2s ease-in-out;
-  box-shadow:
-    rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
-    rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  box-shadow: var(--vt-box-shadow);
 }
 
 .color-btn_transparent {

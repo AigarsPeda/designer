@@ -1,7 +1,6 @@
 <template>
   <div class="design-canvas-container" ref="elRef">
     <FabricCanvas
-      :id="'1'"
       @mouse-dblclick="handleDoubleClick"
       @canvas-created="handleCanvasCreated"
       @selection-created="handleObjSelected"

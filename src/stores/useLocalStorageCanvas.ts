@@ -15,8 +15,14 @@ type StoredCanvasSate = {
   [key: string]: CanvasState[];
 };
 
-type StoredScreenShots = {
-  [key: string]: string;
+type StoredCanvasMetaDataType = {
+  [key: string]: {
+    screenShot: string;
+    dimensions: {
+      width: number;
+      height: number;
+    };
+  };
 };
 
 const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
@@ -34,8 +40,8 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
     {}
   );
 
-  const storedScreenShots = useLocalStorage<StoredScreenShots>(
-    "storedScreenShots",
+  const storedCanvasMetaData = useLocalStorage<StoredCanvasMetaDataType>(
+    "storedCanvasMetaData",
     {}
   );
 
@@ -55,58 +61,34 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
       return;
     }
 
-    storedScreenShots.updateValue({
-      ...storedScreenShots.storedValue.value,
-      [name]: png,
+    // check if png have data
+    // if not return
+
+    const dimensions = storedCanvasMetaData.storedValue.value[name]?.dimensions;
+
+    storedCanvasMetaData.updateValue({
+      ...storedCanvasMetaData.storedValue.value,
+      [name]: {
+        screenShot: png,
+        dimensions: {
+          width: dimensions?.width || canvasStore.getSelectedCanvas?.width || 0,
+          height:
+            dimensions?.height || canvasStore.getSelectedCanvas?.height || 0,
+        },
+      },
     });
 
-    if (!storedCanvasSate.storedValue.value) {
-      storedCanvasSate.updateValue({
-        [name]: [state],
-      });
-      return;
-    }
-
-    // const arr = storedCanvasSate.value[name];
     const arr = storedCanvasSate.storedValue.value[name];
 
-    if (!arr) {
-      storedCanvasSate.updateValue({
-        ...storedCanvasSate.storedValue.value,
-        [name]: [state],
-      });
-      return;
-    }
-
     // store only 10 states
-    if (arr.length >= 10) {
+    if (arr && arr.length >= 10) {
       arr.shift();
     }
 
-    // arr.push(state);
-
     storedCanvasSate.updateValue({
       ...storedCanvasSate.storedValue.value,
-      [name]: [...arr, state],
+      [name]: [...(arr || []), state],
     });
-  };
-
-  const deleteCanvasStateFromLocalStorage = ({ name }: { name: string }) => {
-    if (!storedCanvasSate.storedValue.value) {
-      return;
-    }
-
-    storedScreenShots.updateValue({
-      ...storedScreenShots.storedValue.value,
-      [name]: "",
-    });
-
-    storedCanvasSate.updateValue({
-      ...storedCanvasSate.storedValue.value,
-      [name]: [],
-    });
-
-    canvasStore.getSelectedCanvas?.clear();
   };
 
   const copyCanvasActiveObjects = () => {
@@ -129,12 +111,11 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
 
   return {
     storedCanvasSate,
-    storedScreenShots,
+    storedCanvasMetaData,
     storedSelectedCanvasName,
     copyCanvasActiveObjects,
     pasteCanvasActiveObjects,
     addCanvasStateToLocalStorage,
-    deleteCanvasStateFromLocalStorage,
   };
 });
 

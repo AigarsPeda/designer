@@ -15,9 +15,9 @@
           @click="handleCanvasLoad(key.toString())"
         >
           <img
-            v-if="storedScreenShots.storedValue[key.toString()]"
+            v-if="storedCanvasMetaData.storedValue[key.toString()].screenShot"
             alt="canvas screenshot"
-            :src="storedScreenShots.storedValue[key.toString()]"
+            :src="storedCanvasMetaData.storedValue[key.toString()].screenShot"
           />
         </button>
         <div class="canvas-option-container">
@@ -68,12 +68,12 @@ const emit = defineEmits<{
   (e: "new-canvas-loaded", canvasName: string): void;
 }>();
 
-const { storedCanvasSate, storedScreenShots, storedSelectedCanvasName } =
+const { storedCanvasSate, storedCanvasMetaData, storedSelectedCanvasName } =
   useLocalStorageCanvas();
 
 const handleDelete = (str: string) => {
-  const { [str]: __, ...restScreenShots } = storedScreenShots.storedValue;
-  storedScreenShots.updateValue(restScreenShots);
+  const { [str]: __, ...restScreenShots } = storedCanvasMetaData.storedValue;
+  storedCanvasMetaData.updateValue(restScreenShots);
 
   const { [str]: _, ...rest } = storedCanvasSate.storedValue;
   storedCanvasSate.updateValue(rest);
@@ -148,6 +148,7 @@ const handleCanvasLoad = (str: string) => {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
+  /* justify-content: space-between; */
   padding: 0rem 0rem 0rem 0rem;
 }
 

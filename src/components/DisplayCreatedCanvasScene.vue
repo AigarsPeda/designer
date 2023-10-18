@@ -26,24 +26,14 @@
             <span class="canvas-select-name">{{ key }}</span>
           </div>
           <div class="canvas-button-container">
-            <button class="button" @click="handleCanvasLoad(key.toString())">
-              <CaSelectWindow class="icon" />
-              Select
-            </button>
-            <button class="button" @click="handleStartNameEdit(key.toString())">
-              <AnOutlinedEdit class="icon" />
-              Edit
-            </button>
             <button
               class="button"
-              @click="handleExportCanvasSceneSelect(key.toString())"
+              v-for="option in menuOptions"
+              :key="option.id"
+              @click="handleButtonClick(option.onClick(key.toString()))"
             >
-              <AkDownload class="icon" />
-              Export
-            </button>
-            <button class="button red" @click="handleDelete(key.toString())">
-              <AnOutlinedDelete class="icon" />
-              Delete
+              <IconComponent :icon="option.icon" />
+              {{ option.title }}
             </button>
           </div>
         </div>
@@ -53,38 +43,34 @@
 </template>
 
 <script setup lang="ts">
+import IconComponent from "@/components/IconComponent.vue";
+import useDisplayCanvasOptions, {
+  type EmitEvent,
+} from "@/composables/useDisplayCanvasOptions";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
+import type { EmitFunction } from "@/types/util.types";
 import sortObjKeysAlphabetically from "@/utils/sortObjKeysAlphabetically";
-import {
-  AkDownload,
-  AnOutlinedDelete,
-  AnOutlinedEdit,
-  CaSelectWindow,
-} from "@kalimahapps/vue-icons";
+
+const { menuOptions } = useDisplayCanvasOptions();
 
 const emit = defineEmits<{
   (e: "edit-name", canvasName: string): void;
-  (e: "export-canvas-select", canvasName: string): void;
   (e: "new-canvas-loaded", canvasName: string): void;
+  (e: "export-canvas-select", canvasName: string): void;
 }>();
 
 const { storedCanvasSate, storedCanvasMetaData, storedSelectedCanvasName } =
   useLocalStorageCanvas();
 
-const handleDelete = (str: string) => {
-  const { [str]: __, ...restScreenShots } = storedCanvasMetaData.storedValue;
-  storedCanvasMetaData.updateValue(restScreenShots);
-
-  const { [str]: _, ...rest } = storedCanvasSate.storedValue;
-  storedCanvasSate.updateValue(rest);
-};
-
-const handleStartNameEdit = (str: string) => {
-  emit("edit-name", str);
-};
-
-const handleExportCanvasSceneSelect = (str: string) => {
-  emit("export-canvas-select", str);
+const handleButtonClick = ({
+  name,
+  emitEvent,
+}: {
+  name: string;
+  emitEvent: EmitEvent;
+}) => {
+  const typedEmit = emit as EmitFunction;
+  typedEmit(emitEvent, name);
 };
 
 const handleCanvasLoad = (str: string) => {

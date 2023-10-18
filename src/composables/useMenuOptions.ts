@@ -1,5 +1,4 @@
 import useCanvasStore from "@/stores/useCanvasStore";
-import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import useUIStore from "@/stores/useUIStore";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
@@ -7,8 +6,6 @@ import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 const useMenuOptions = () => {
   const uiStore = useUIStore();
   const canvasStore = useCanvasStore();
-  const { deleteCanvasStateFromLocalStorage, storedSelectedCanvasName } =
-    useLocalStorageCanvas();
 
   const MENU_OPTIONS = [
     {
@@ -119,9 +116,8 @@ const useMenuOptions = () => {
       canvasMode: "trash",
       keyShortCut: "9",
       onClick() {
-        deleteCanvasStateFromLocalStorage({
-          name: storedSelectedCanvasName.storedValue,
-        });
+        canvasStore.getSelectedCanvas?.clear();
+        canvasStore.getSelectedCanvas?.renderAll();
       },
     },
   ];

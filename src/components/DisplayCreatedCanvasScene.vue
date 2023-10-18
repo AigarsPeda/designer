@@ -91,7 +91,7 @@ const handleCanvasLoad = (str: string) => {
   width: 100%;
   display: flex;
   overflow-y: auto;
-  max-height: 20rem;
+  max-height: 18rem;
   place-items: start;
   position: relative;
   flex-direction: column;

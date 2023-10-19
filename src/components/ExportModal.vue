@@ -34,6 +34,8 @@
 <script setup lang="ts">
 import FabricCanvas from "@/components/FabricCanvas.vue";
 import Switch from "@/components/Switch.vue";
+import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
+import calculateScale from "@/utils/calculateScale";
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
@@ -46,6 +48,7 @@ const props = defineProps<{
 }>();
 
 const isBackground = ref(false);
+const { storedCanvasMetaData } = useLocalStorageCanvas();
 
 const handleChecked = () => {
   isBackground.value = !isBackground.value;
@@ -56,18 +59,31 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
     return;
   }
 
-  const canvasWidth = fabricCanvas.getWidth();
-  const canvasHeight = fabricCanvas.getHeight();
-  const { offsetWidth, offsetHeight } = divRef.value;
+  const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
 
-  const scale = Math.min(
-    offsetWidth / canvasWidth,
-    offsetHeight / canvasHeight
+  const scale2 = calculateScale(
+    {
+      width: meta.dimensions.width,
+      height: meta.dimensions.height,
+    },
+    {
+      width: fabricCanvas.getWidth(),
+      height: fabricCanvas.getHeight(),
+    }
   );
 
-  console.log("scale", scale);
+  const scale = Math.min(
+    fabricCanvas.getWidth() / meta.dimensions.width,
+    fabricCanvas.getHeight() / meta.dimensions.height
+  );
 
-  fabricCanvas.setZoom(0.35);
+  console.log("scale", scale.toFixed(2));
+  console.log("scale2", scale2.toFixed(2));
+
+  // set canvas zoom so that all objects are visible
+
+  // fabricCanvas.setZoom(parseFloat(scale.toFixed(2)));
+  fabricCanvas.setZoom(0.3);
   const state = getStoredCanvasStateByName(props.selectedCanvasName);
 
   if (state && fabricCanvas) {

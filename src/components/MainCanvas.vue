@@ -132,6 +132,8 @@ watch(
       });
 
       getSelectedCanvas.renderAll();
+
+      // find biggest cluster of objects and pan canvas viewport center to one of them
     }
 
     if (getSelectedCanvas && !state) {

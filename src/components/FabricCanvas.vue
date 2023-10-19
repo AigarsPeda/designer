@@ -31,7 +31,6 @@ onMounted(() => {
     preserveObjectStacking: true,
     width: containerRef.value?.offsetWidth || 375,
     height: containerRef.value?.offsetHeight || 667,
-    // backgroundColor: "#fff",
   });
 
   if (!canvas) {
@@ -85,15 +84,6 @@ onMounted(() => {
     canvas.renderAll();
   });
 
-  // canvas.on("object:scaling", (opt) => {
-  //   console.log(opt);
-  // });
-
-  // lastContainerSizeRef.value = {
-  //   width: containerRef.value?.offsetWidth || 500,
-  //   height: containerRef.value?.offsetHeight || 500,
-  // };
-
   handleCanvasZoom({ canvas });
 
   window.addEventListener("resize", () => {
@@ -113,7 +103,7 @@ onMounted(() => {
 
 #canvas {
   border-radius: 0.5rem;
-  background-color: var(--color-background-soft);
   box-shadow: var(--vt-box-shadow);
+  background-color: var(--color-background-soft);
 }
 </style>

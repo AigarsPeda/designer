@@ -39,18 +39,12 @@ const exportCanvasName = ref("");
 const oldCanvasSceneName = ref("");
 const { storedSelectedCanvasName } = useLocalStorageCanvas();
 
-const setOldCanvasSceneName = (name: string) => {
-  oldCanvasSceneName.value = name;
-};
-
 const handleBackButtonClick = () => {
   exportCanvasName.value = "";
 };
 
 const handleCanvasSceneExportSelect = (str: string) => {
   exportCanvasName.value = str;
-  // isShowModal.value = false;
-  console.log("handleCanvasExport", str);
 };
 
 const closeModal = () => {
@@ -66,21 +60,21 @@ const showModal = () => {
 <style scoped>
 .menu-button {
   top: 0.5rem;
-  right: 0.5rem;
   z-index: 100;
   border: none;
-  padding: 0.4rem 0.6rem;
   display: flex;
-  font-size: 0.8rem;
+  right: 0.5rem;
   font-weight: 600;
+  font-size: 0.8rem;
   position: absolute;
   align-items: center;
   border-radius: 0.5rem;
+  padding: 0.4rem 0.6rem;
   justify-content: center;
   color: var(--color-text);
   backdrop-filter: blur(6px);
-  background-color: rgba(238, 240, 244, 0.2);
   box-shadow: var(--vt-box-shadow);
+  background-color: rgba(238, 240, 244, 0.2);
 }
 
 .menu-icon {

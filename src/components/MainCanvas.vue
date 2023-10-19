@@ -24,7 +24,6 @@ import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActive
 import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
 import handleArrowDrawing from "@/utils/fabricUtils/handleArrowDrawing";
-import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
 import handleLineDrawing from "@/utils/fabricUtils/handleLineDrawing";
 import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
@@ -33,15 +32,18 @@ import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSele
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
-import dotPattern from "@/utils/svgUtils/patterns/dotPattern";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
+import scalingObjAndPreservingCorners from "../utils/fabricUtils/scalingObjAndPreservingCorners";
 
 const uiStore = useUIStore();
 const canvasStore = useCanvasStore();
 const elRef = ref<HTMLDivElement | null>(null);
-const { storedSelectedCanvasName, addCanvasStateToLocalStorage } =
-  useLocalStorageCanvas();
+const {
+  storedCanvasMetaData,
+  storedSelectedCanvasName,
+  addCanvasStateToLocalStorage,
+} = useLocalStorageCanvas();
 
 const saveCanvasToLocalStorage = () => {
   const canvas = canvasStore.getSelectedCanvas;
@@ -50,7 +52,9 @@ const saveCanvasToLocalStorage = () => {
     return;
   }
 
-  const state = canvas.toJSON();
+  const state = canvas.toDatalessJSON();
+
+  console.log("state", state);
 
   addCanvasStateToLocalStorage({
     state: state,
@@ -128,6 +132,7 @@ watch(
 
       getSelectedCanvas.forEachObject((obj) => {
         getSelectedCanvas.remove(obj);
+        obj.on("scaling", (event) => scalingObjAndPreservingCorners(event));
         getSelectedCanvas.add(obj);
       });
 
@@ -147,7 +152,6 @@ watch(
   () => {
     return {
       getCanvasMode: uiStore.getCanvasMode,
-      getIsDotBackground: uiStore.getIsDotBackground,
       getSelectedCanvas: canvasStore.getSelectedCanvas,
       getDrawingSettings: canvasStore.getDrawingSettings,
       getSquareModeSettings: canvasStore.getSquareModeSettings,
@@ -158,9 +162,12 @@ watch(
       getCanvasMode,
       getSelectedCanvas,
       getDrawingSettings,
-      getIsDotBackground,
       getSquareModeSettings,
     } = newSate;
+
+    if (!getSelectedCanvas) {
+      return;
+    }
 
     resetCanvasMouseMoveUpDown(getSelectedCanvas);
 
@@ -206,11 +213,6 @@ watch(
         resetCanvasMouseMoveUpDown(getSelectedCanvas);
         break;
     }
-
-    handleCanvasBackgroundColor({
-      canvas: getSelectedCanvas,
-      backgroundColor: getIsDotBackground ? dotPattern({}) : "transparent",
-    });
   }
 );
 </script>

@@ -22,6 +22,7 @@ type StoredCanvasMetaDataType = {
       width: number;
       height: number;
     };
+    // isDotBackground: boolean;
   };
 };
 
@@ -35,14 +36,22 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
 
   const storedObjects = useLocalStorage<fabric.Object[]>("storedObjects", []);
 
-  const storedCanvasSate = useLocalStorage<StoredCanvasSate>(
-    "storedCanvas",
-    {}
-  );
+  const storedCanvasSate = useLocalStorage<StoredCanvasSate>("storedCanvas", {
+    [DEFAULT_CANVAS_NAME]: [],
+  });
 
   const storedCanvasMetaData = useLocalStorage<StoredCanvasMetaDataType>(
     "storedCanvasMetaData",
-    {}
+    {
+      [DEFAULT_CANVAS_NAME]: {
+        screenShot: "",
+        dimensions: {
+          width: 0,
+          height: 0,
+        },
+        // isDotBackground: false,
+      },
+    }
   );
 
   const addCanvasStateToLocalStorage = ({
@@ -61,10 +70,8 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
       return;
     }
 
-    // check if png have data
-    // if not return
-
-    const dimensions = storedCanvasMetaData.storedValue.value[name]?.dimensions;
+    const storedCanvasMeta = storedCanvasMetaData.storedValue.value[name];
+    const dimensions = storedCanvasMeta.dimensions;
 
     storedCanvasMetaData.updateValue({
       ...storedCanvasMetaData.storedValue.value,
@@ -75,6 +82,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
           height:
             dimensions?.height || canvasStore.getSelectedCanvas?.height || 0,
         },
+        // isDotBackground: storedCanvasMeta.isDotBackground,
       },
     });
 

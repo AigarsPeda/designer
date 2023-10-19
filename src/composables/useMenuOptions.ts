@@ -1,6 +1,7 @@
 import useCanvasStore from "@/stores/useCanvasStore";
 import useUIStore from "@/stores/useUIStore";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
+import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import handleGetCanvasCenter from "@/utils/fabricUtils/handleGetCanvasCenter";
 
 const useMenuOptions = () => {
@@ -104,8 +105,12 @@ const useMenuOptions = () => {
       canvasMode: "background",
       keyShortCut: "8",
       onClick() {
-        uiStore.setIsDotBackground({
-          isDotBackground: !uiStore.getIsDotBackground,
+        const bgColor = canvasStore.getSelectedCanvas?.backgroundColor;
+        const isTransparent = bgColor === "transparent" || !bgColor;
+
+        handleCanvasBackgroundColor({
+          canvas: canvasStore.getSelectedCanvas,
+          backgroundColorType: isTransparent ? "pattern" : "transparent",
         });
       },
     },

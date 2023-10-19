@@ -20,7 +20,7 @@
         <PxSharpCorner class="icon" />
       </template>
     </Button>
-    <Button
+    <!-- <Button
       isFullWidth
       title="Background"
       @click="handleBackgroundChange"
@@ -29,7 +29,7 @@
       <template #icon>
         <FlGridDots class="icon" />
       </template>
-    </Button>
+    </Button> -->
   </div>
 </template>
 
@@ -55,17 +55,17 @@ const handleShapeChange = (shape: ShapeType) => {
   });
 };
 
-const handleBackgroundChange = () => {
-  canvasStore.setSquareModeSettings({
-    squareModeSettings: {
-      ...canvasStore.getSquareModeSettings,
-      backgroundPattern:
-        canvasStore.getSquareModeSettings.backgroundPattern === "dots"
-          ? "none"
-          : "dots",
-    },
-  });
-};
+// const handleBackgroundChange = () => {
+//   canvasStore.setSquareModeSettings({
+//     squareModeSettings: {
+//       ...canvasStore.getSquareModeSettings,
+//       backgroundPattern:
+//         canvasStore.getSquareModeSettings.backgroundPattern === "dots"
+//           ? "none"
+//           : "dots",
+//     },
+//   });
+// };
 </script>
 
 <style scoped>

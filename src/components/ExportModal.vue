@@ -114,8 +114,11 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   height: 305px;
   border-radius: 5px;
   position: relative;
-  background-color: #fff;
-  box-shadow: var(--vt-box-shadow);
+  /* box-shadow: var(--vt-box-shadow); */
+  background-size: 16px 16px;
+  background-position: 8px 10px;
+  /* background-image: linear-gradient(to right, #f3f4f6 1px, transparent 1px),
+    linear-gradient(to bottom, #f3f4f6 1px, transparent 1px); */
 }
 
 .back-button {

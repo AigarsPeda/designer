@@ -79,6 +79,7 @@ li {
 
 .color-btn_transparent {
   background-size: 6.5px 6.5px;
+  background-position: 8px 10px;
   background-image: linear-gradient(to right, #cbd5e1 1px, transparent 1px),
     linear-gradient(to bottom, #cbd5e1 1px, transparent 1px);
 }

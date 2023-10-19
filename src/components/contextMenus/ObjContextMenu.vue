@@ -42,13 +42,10 @@ import SquareOption from "@/components/SquareOption.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
 import type { CustomITextI, CustomRectI } from "@/types/fabric.types";
-import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
-import findPattern from "@/utils/fabricUtils/findPattern";
 import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
 import { watch } from "vue";
 
 const canvasStore = useCanvasStore();
-const pasterns = createAllPatterns();
 
 watch(
   () => {
@@ -112,20 +109,14 @@ watch(
         const rect = element as CustomRectI;
 
         // Adding additional properties to the object
-        rect.myStroke = getSquareModeSettings.stroke;
-        rect.myFill = getSquareModeSettings.background;
-        rect.isBackgroundPattern =
-          getSquareModeSettings.backgroundPattern !== "none";
+        // rect.myStroke = getSquareModeSettings.stroke;
+        // rect.myFill = getSquareModeSettings.background;
+        // rect.isBackgroundPattern =
+        //   getSquareModeSettings.backgroundPattern !== "none";
 
         updateCanvasRect({
           rect,
           squareSettings: getSquareModeSettings,
-          pattern: findPattern({
-            pasterns,
-            stroke: getSquareModeSettings.stroke,
-            background: getSquareModeSettings.background,
-            isFindEnabled: getSquareModeSettings.backgroundPattern !== "none",
-          }),
         });
 
         continue;

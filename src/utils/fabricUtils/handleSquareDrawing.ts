@@ -1,7 +1,5 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
-import createAllPatterns from "@/utils/fabricUtils/createAllPatterns";
-import findPattern from "@/utils/fabricUtils/findPattern";
 import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
@@ -10,8 +8,6 @@ type SquareDrawingArgs = {
   canvas: fabric.Canvas | null;
   squareModeSettings: DefaultSquareMode;
 };
-
-const pasterns = createAllPatterns();
 
 let id = "";
 let origX = 0;
@@ -54,19 +50,14 @@ const handleSquareDrawing = ({
       cornerSize: 6,
       stroke: squareModeSettings.stroke,
       strokeWidth: squareModeSettings.strokeWidth,
-      fill: findPattern({
-        pasterns,
-        stroke: squareModeSettings.stroke,
-        background: squareModeSettings.background,
-        isFindEnabled: squareModeSettings.backgroundPattern !== "none",
-      }),
+      fill: squareModeSettings.background,
     }) as CustomRectI;
 
     // Adding additional properties to the object
     rect.id = id;
-    rect.myStroke = squareModeSettings.stroke;
-    rect.myFill = squareModeSettings.background;
-    rect.isBackgroundPattern = squareModeSettings.backgroundPattern !== "none";
+    // rect.myStroke = squareModeSettings.stroke;
+    // rect.myFill = squareModeSettings.background;
+    // rect.isBackgroundPattern = squareModeSettings.backgroundPattern !== "none";
 
     // When scaling, preserving corners
     rect.on("scaling", (event) => scalingObjAndPreservingCorners(event));

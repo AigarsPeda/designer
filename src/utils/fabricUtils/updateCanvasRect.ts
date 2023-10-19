@@ -3,20 +3,15 @@ import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 
 type UpdateCanvasRectArgs = {
   rect: fabric.Rect;
-  pattern: fabric.Pattern | string;
   squareSettings: DefaultSquareMode;
 };
 
-const updateCanvasRect = ({
-  rect,
-  pattern,
-  squareSettings,
-}: UpdateCanvasRectArgs) => {
+const updateCanvasRect = ({ rect, squareSettings }: UpdateCanvasRectArgs) => {
   rect.setOptions({
-    fill: pattern,
     rx: squareSettings.rx,
     ry: squareSettings.ry,
     stroke: squareSettings.stroke,
+    fill: squareSettings.background,
     strokeWidth: squareSettings.strokeWidth,
   });
 

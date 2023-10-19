@@ -10,14 +10,14 @@ const createAllPatterns = () => {
   const backgroundWithTransparent = [...BACKGROUND_COLORS, TRANSPARENT_COLOR];
 
   // create all possible patterns
-  colorsWithTransparent.forEach((color) => {
-    backgroundWithTransparent.forEach((backgroundColor) => {
-      patterns[`${color}-${backgroundColor}`] = dotPattern({
-        fill: backgroundColor,
-        objColor: color,
-      });
-    });
-  });
+  // colorsWithTransparent.forEach((color) => {
+  //   backgroundWithTransparent.forEach((backgroundColor) => {
+  //     patterns[`${color}-${backgroundColor}`] = dotPattern({
+  //       fill: backgroundColor,
+  //       objColor: color,
+  //     });
+  //   });
+  // });
 
   return patterns;
 };

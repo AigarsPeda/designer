@@ -34,6 +34,7 @@ const handleCanvasBackgroundColor = ({
 
   // Fire object:modified event to trigger canvas state update and saving it to local storage
   canvas.fire("object:modified");
+  // canvas.renderAll();
 };
 
 export default handleCanvasBackgroundColor;

@@ -31,12 +31,13 @@ import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
+import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { fabric } from "fabric";
 import { ref, watch } from "vue";
-import scalingObjAndPreservingCorners from "../utils/fabricUtils/scalingObjAndPreservingCorners";
 
 const uiStore = useUIStore();
+const isLoadingCanvas = ref(false);
 const canvasStore = useCanvasStore();
 const elRef = ref<HTMLDivElement | null>(null);
 const {
@@ -48,7 +49,7 @@ const {
 const saveCanvasToLocalStorage = () => {
   const canvas = canvasStore.getSelectedCanvas;
 
-  if (!canvas) {
+  if (!canvas || isLoadingCanvas.value) {
     return;
   }
 
@@ -116,35 +117,49 @@ const handleObjSelectionCleared = (event: fabric.IEvent<MouseEvent>) => {
 watch(
   () => {
     return {
-      getSelectedCanvas: canvasStore.getSelectedCanvas,
+      canvas: canvasStore.getSelectedCanvas,
       getSelectedCanvasName: storedSelectedCanvasName.storedValue,
     };
   },
   (newSate) => {
-    const { getSelectedCanvas, getSelectedCanvasName } = newSate;
+    const { canvas, getSelectedCanvasName } = newSate;
     const state = getStoredCanvasStateByName(getSelectedCanvasName);
 
-    if (state && getSelectedCanvas) {
-      getSelectedCanvas.loadFromJSON(
-        state,
-        getSelectedCanvas.renderAll.bind(getSelectedCanvas)
-      );
+    if (!canvas) {
+      return;
+    }
 
-      getSelectedCanvas.forEachObject((obj) => {
-        getSelectedCanvas.remove(obj);
+    isLoadingCanvas.value = true;
+
+    if (state) {
+      canvas.loadFromJSON(state, canvas.renderAll.bind(canvas));
+      // canvas.loadFromJSON(
+      //   state,
+      //   canvas.renderAll.bind(canvas),
+      //   (o: fabric.Object, obj: fabric.Object) => {
+      //     // canvas.remove(obj);
+      //     // console.log("obj", obj);
+      //     // // canvas.remove(obj);
+      //     // obj.setCoords();
+      //     obj.on("scaling", (event) => scalingObjAndPreservingCorners(event));
+      //     // canvas.add(obj);
+
+      //     // canvas.sendToBack(o[0]);
+      //   }
+      // );
+
+      canvas.forEachObject((obj) => {
+        canvas.remove(obj);
+
+        obj.setCoords();
         obj.on("scaling", (event) => scalingObjAndPreservingCorners(event));
-        getSelectedCanvas.add(obj);
+
+        canvas.add(obj);
       });
-
-      getSelectedCanvas.renderAll();
-
-      // find biggest cluster of objects and pan canvas viewport center to one of them
     }
 
-    if (getSelectedCanvas && !state) {
-      getSelectedCanvas.clear();
-      getSelectedCanvas.renderAll();
-    }
+    canvas.renderAll();
+    isLoadingCanvas.value = false;
   }
 );
 

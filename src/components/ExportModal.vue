@@ -63,8 +63,7 @@ const downloadCanvas = () => {
   const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
 
   canvas.value.setZoom(1);
-  // canvas.value.backgroundColor = "#fff";
-  // Convert the Fabric.js canvas to a data URL
+
   const dataURL = canvas.value.toDataURL({
     format: "png",
     quality: 1,

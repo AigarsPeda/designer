@@ -18,6 +18,10 @@
         </div>
       </div>
       <div class="settings-button-container">
+        <button class="button" @click="downloadCanvas">
+          <AkDownload class="icon" />
+          JPEG
+        </button>
         <button class="button" @click="console.log('--->')">
           <AkDownload class="icon" />
           PNG
@@ -41,6 +45,7 @@ import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
 import { ref } from "vue";
 
 const divRef = ref<HTMLDivElement | null>(null);
+const canvas = ref<fabric.Canvas | null>(null);
 
 const props = defineProps<{
   selectedCanvasName: string;
@@ -54,11 +59,37 @@ const handleChecked = () => {
   isBackground.value = !isBackground.value;
 };
 
+const downloadCanvas = () => {
+  if (!canvas.value) {
+    return;
+  }
+
+  const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
+
+  canvas.value.setZoom(1);
+  // Convert the Fabric.js canvas to a data URL
+  const dataURL = canvas.value.toDataURL({
+    format: "png",
+    quality: 1,
+    width: meta.dimensions.width,
+    height: meta.dimensions.height,
+  });
+
+  // Create an anchor element to trigger the download
+  const a = document.createElement("a");
+  a.href = dataURL;
+  a.download = `${props.selectedCanvasName}.png`;
+
+  // Trigger a click event on the anchor element to initiate the download
+  a.click();
+};
+
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   if (!divRef.value) {
     return;
   }
 
+  canvas.value = fabricCanvas;
   const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
 
   const scale2 = calculateScale(

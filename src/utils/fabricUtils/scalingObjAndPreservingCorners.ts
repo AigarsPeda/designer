@@ -19,12 +19,6 @@ const scalingObjAndPreservingCorners = (event: fabric.IEvent<MouseEvent>) => {
       width: newWidth,
       height: newHeight,
       noScaleCache: false,
-      // fill: findPattern({
-      //   pasterns,
-      //   stroke: rec.myStroke,
-      //   background: rec.myFill,
-      //   isFindEnabled: rec.isBackgroundPattern,
-      // }),
     });
 
     rec.setCoords();

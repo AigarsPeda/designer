@@ -79,9 +79,9 @@ const useMenuOptions = () => {
       keyShortCut: "6",
       onClick() {
         handleAddITextToCanvas({
-          position: handleGetCanvasCenter(canvasStore.getSelectedCanvas),
           text: "Double click to edit text",
           canvas: canvasStore.getSelectedCanvas,
+          position: handleGetCanvasCenter(canvasStore.getSelectedCanvas),
         });
       },
     },

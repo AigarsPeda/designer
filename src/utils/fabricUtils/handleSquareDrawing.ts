@@ -1,6 +1,5 @@
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomRectI } from "@/types/fabric.types";
-import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 
@@ -55,12 +54,6 @@ const handleSquareDrawing = ({
 
     // Adding additional properties to the object
     rect.id = id;
-    // rect.myStroke = squareModeSettings.stroke;
-    // rect.myFill = squareModeSettings.background;
-    // rect.isBackgroundPattern = squareModeSettings.backgroundPattern !== "none";
-
-    // When scaling, preserving corners
-    // rect.on("scaling", (event) => scalingObjAndPreservingCorners(event));
 
     canvas.add(rect).renderAll();
   });

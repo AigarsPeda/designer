@@ -7,6 +7,7 @@
 <script setup lang="ts">
 import handleCanvasResize from "@/utils/fabricUtils/handleCanvasResize";
 import handleCanvasZoom from "@/utils/fabricUtils/handleCanvasZoom";
+import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
 import { fabric } from "fabric";
 import { onMounted, ref } from "vue";
 
@@ -66,6 +67,13 @@ onMounted(() => {
 
   canvas.on("object:removed", (opt) => {
     emit("object-removed", opt);
+  });
+
+  canvas.on("object:scaling", (opt) => {
+    if (opt.target && opt.target.type === "rect") {
+      scalingObjAndPreservingCorners(opt);
+      return;
+    }
   });
 
   canvas.on("object:modified", (opt) => {

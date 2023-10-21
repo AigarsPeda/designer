@@ -1,18 +1,20 @@
 import { fabric } from "fabric";
-import dots from "../../assets/svg/dots.svg";
-import canvasBgCallback from "@/utils/svgUtils/canvasBgCallback";
+
+const svgContent = `<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="2.5" cy="2.5" r="0.5" fill="blue" />
+</svg>`;
+
+const pattern = new fabric.Pattern({
+  source: `data:image/svg+xml,${encodeURIComponent(svgContent)}`,
+  repeat: "repeat",
+});
 
 type HandleCanvasBackgroundColorArgs = {
   canvas: fabric.Canvas | null;
   backgroundColorType: "pattern" | "transparent";
 };
 
-const pattern = new fabric.Pattern({
-  source: dots,
-  repeat: "repeat",
-});
-
-const handleCanvasBackgroundColor = ({
+const handleCanvasBackgroundColor = async ({
   canvas,
   backgroundColorType,
 }: HandleCanvasBackgroundColorArgs) => {
@@ -22,10 +24,7 @@ const handleCanvasBackgroundColor = ({
 
   if (backgroundColorType === "pattern") {
     // canvas.backgroundColor = "rgba(209, 213, 219, 1.0)";
-
-    canvas.setBackgroundColor(pattern, () => {
-      canvasBgCallback(canvas, 0);
-    });
+    canvas.backgroundColor = pattern;
   }
 
   if (backgroundColorType === "transparent") {
@@ -34,7 +33,6 @@ const handleCanvasBackgroundColor = ({
 
   // Fire object:modified event to trigger canvas state update and saving it to local storage
   canvas.fire("object:modified");
-  // canvas.renderAll();
 };
 
 export default handleCanvasBackgroundColor;

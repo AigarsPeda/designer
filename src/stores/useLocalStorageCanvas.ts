@@ -22,7 +22,6 @@ type StoredCanvasMetaDataType = {
       width: number;
       height: number;
     };
-    // isDotBackground: boolean;
   };
 };
 

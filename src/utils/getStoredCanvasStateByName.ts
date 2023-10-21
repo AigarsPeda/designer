@@ -5,14 +5,14 @@ const getStoredCanvasStateByName = (name: string) => {
 
   const state = storedCanvasSate.storedValue[name];
 
-  if (!state) {
-    return;
-  }
+  // if (!state) {
+  //   return;
+  // }
 
   const length = state.length;
   // const s = state[name][length - 1];
 
-  return state[length - 1];
+  return state[length - 1] || [];
 
   // return s;
 };

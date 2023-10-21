@@ -1,8 +1,5 @@
 import type { CustomRectI } from "@/types/fabric.types";
 
-// Initialize patterns so that they are updated when re-rendering
-// const pasterns = createAllPatterns();
-
 const scalingObjAndPreservingCorners = (event: fabric.IEvent<MouseEvent>) => {
   const rec = event.transform?.target as CustomRectI;
   if (rec) {
@@ -18,9 +15,9 @@ const scalingObjAndPreservingCorners = (event: fabric.IEvent<MouseEvent>) => {
     rec.setOptions({
       scaleX: 1,
       scaleY: 1,
+      cornerSize: 6,
       width: newWidth,
       height: newHeight,
-      cornerSize: 6,
       noScaleCache: false,
       // fill: findPattern({
       //   pasterns,

@@ -28,34 +28,30 @@ import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
 import handleLineDrawing from "@/utils/fabricUtils/handleLineDrawing";
 import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
 import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
+import loadCanvasFromJson from "@/utils/fabricUtils/loadCanvasFromJson";
 import makeAllObjCanvasSelectable from "@/utils/fabricUtils/makeAllObjCanvasSelectable";
 import makeAllObjCanvasUnselectable from "@/utils/fabricUtils/makeAllObjCanvasUnselectable";
 import resetCanvasMouseMoveUpDown from "@/utils/fabricUtils/resetCanvasMouseMoveUpDown";
-import scalingObjAndPreservingCorners from "@/utils/fabricUtils/scalingObjAndPreservingCorners";
-import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { fabric } from "fabric";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const uiStore = useUIStore();
-const isLoadingCanvas = ref(false);
+const isCanvasLoaded = ref(false);
 const canvasStore = useCanvasStore();
 const elRef = ref<HTMLDivElement | null>(null);
-const {
-  storedCanvasMetaData,
-  storedSelectedCanvasName,
-  addCanvasStateToLocalStorage,
-} = useLocalStorageCanvas();
+const { storedSelectedCanvasName, addCanvasStateToLocalStorage } =
+  useLocalStorageCanvas();
 
 const saveCanvasToLocalStorage = () => {
   const canvas = canvasStore.getSelectedCanvas;
 
-  if (!canvas || isLoadingCanvas.value) {
+  if (!canvas || !isCanvasLoaded.value) {
     return;
   }
 
   const state = canvas.toDatalessJSON();
 
-  console.log("state", state);
+  console.log("state saved --->", state);
 
   addCanvasStateToLocalStorage({
     state: state,
@@ -114,52 +110,30 @@ const handleObjSelectionCleared = (event: fabric.IEvent<MouseEvent>) => {
   });
 };
 
+onMounted(async () => {
+  isCanvasLoaded.value = false;
+  const isFinished = await loadCanvasFromJson(
+    canvasStore.getSelectedCanvas,
+    storedSelectedCanvasName.storedValue
+  );
+  isCanvasLoaded.value = isFinished;
+});
+
 watch(
   () => {
     return {
-      canvas: canvasStore.getSelectedCanvas,
-      getSelectedCanvasName: storedSelectedCanvasName.storedValue,
+      canvasName: storedSelectedCanvasName.storedValue,
     };
   },
-  (newSate) => {
-    const { canvas, getSelectedCanvasName } = newSate;
-    const state = getStoredCanvasStateByName(getSelectedCanvasName);
+  async (newSate) => {
+    const { canvasName } = newSate;
 
-    if (!canvas) {
-      return;
-    }
-
-    isLoadingCanvas.value = true;
-
-    if (state) {
-      canvas.loadFromJSON(state, canvas.renderAll.bind(canvas));
-      // canvas.loadFromJSON(
-      //   state,
-      //   canvas.renderAll.bind(canvas),
-      //   (o: fabric.Object, obj: fabric.Object) => {
-      //     // canvas.remove(obj);
-      //     // console.log("obj", obj);
-      //     // // canvas.remove(obj);
-      //     // obj.setCoords();
-      //     obj.on("scaling", (event) => scalingObjAndPreservingCorners(event));
-      //     // canvas.add(obj);
-
-      //     // canvas.sendToBack(o[0]);
-      //   }
-      // );
-
-      canvas.forEachObject((obj) => {
-        canvas.remove(obj);
-
-        obj.setCoords();
-        obj.on("scaling", (event) => scalingObjAndPreservingCorners(event));
-
-        canvas.add(obj);
-      });
-    }
-
-    canvas.renderAll();
-    isLoadingCanvas.value = false;
+    isCanvasLoaded.value = false;
+    const isFinished = await loadCanvasFromJson(
+      canvasStore.getSelectedCanvas,
+      canvasName
+    );
+    isCanvasLoaded.value = isFinished;
   }
 );
 

@@ -37,6 +37,7 @@ const handleSquareDrawing = ({
       angle: 0,
       top: origY,
       left: origX,
+      cornerSize: 6,
       evented: false,
       originY: "top",
       originX: "left",
@@ -47,7 +48,6 @@ const handleSquareDrawing = ({
       height: pointer.y - origY,
       rx: squareModeSettings.rx,
       ry: squareModeSettings.ry,
-      cornerSize: 6,
       stroke: squareModeSettings.stroke,
       strokeWidth: squareModeSettings.strokeWidth,
       fill: squareModeSettings.background,
@@ -60,7 +60,7 @@ const handleSquareDrawing = ({
     // rect.isBackgroundPattern = squareModeSettings.backgroundPattern !== "none";
 
     // When scaling, preserving corners
-    rect.on("scaling", (event) => scalingObjAndPreservingCorners(event));
+    // rect.on("scaling", (event) => scalingObjAndPreservingCorners(event));
 
     canvas.add(rect).renderAll();
   });

@@ -1,6 +1,7 @@
 import { fabric } from "fabric";
 
 const svgContent = `<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="white" />
   <circle cx="2.5" cy="2.5" r="0.5" fill="blue" />
 </svg>`;
 

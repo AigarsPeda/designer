@@ -20,10 +20,6 @@
       <div class="settings-button-container">
         <button class="button" @click="downloadCanvas">
           <AkDownload class="icon" />
-          JPEG
-        </button>
-        <button class="button" @click="console.log('--->')">
-          <AkDownload class="icon" />
           PNG
         </button>
         <button class="button" @click="console.log('--->')">
@@ -67,6 +63,7 @@ const downloadCanvas = () => {
   const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
 
   canvas.value.setZoom(1);
+  // canvas.value.backgroundColor = "#fff";
   // Convert the Fabric.js canvas to a data URL
   const dataURL = canvas.value.toDataURL({
     format: "png",

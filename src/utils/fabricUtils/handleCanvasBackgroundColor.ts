@@ -1,3 +1,4 @@
+import isSafari from "@/utils/isSafari";
 import { fabric } from "fabric";
 
 const svgContent = `<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
@@ -24,8 +25,8 @@ const handleCanvasBackgroundColor = async ({
   }
 
   if (backgroundColorType === "pattern") {
-    // canvas.backgroundColor = "rgba(209, 213, 219, 1.0)";
-    canvas.backgroundColor = pattern;
+    // If browser is Safari, then use white color instead of pattern because of pattern loading issue
+    canvas.backgroundColor = isSafari() ? "#f9fafb" : pattern;
   }
 
   if (backgroundColorType === "transparent") {

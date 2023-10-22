@@ -36,12 +36,10 @@ import FabricCanvas from "@/components/FabricCanvas.vue";
 import Switch from "@/components/Switch.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import calculateScale from "@/utils/calculateScale";
+import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
-import { ref } from "vue";
-
-const divRef = ref<HTMLDivElement | null>(null);
-const canvas = ref<fabric.Canvas | null>(null);
+import { ref, watch } from "vue";
 
 const props = defineProps<{
   selectedCanvasName: string;
@@ -49,6 +47,8 @@ const props = defineProps<{
 }>();
 
 const isBackground = ref(false);
+const canvas = ref<fabric.Canvas | null>(null);
+const divRef = ref<HTMLDivElement | null>(null);
 const { storedCanvasMetaData } = useLocalStorageCanvas();
 
 const handleChecked = () => {
@@ -86,6 +86,10 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   }
 
   canvas.value = fabricCanvas;
+
+  isBackground.value =
+    fabricCanvas.backgroundColor === "transparent" ? false : true;
+
   const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
 
   const scale2 = calculateScale(
@@ -126,6 +130,22 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
     fabricCanvas.renderAll();
   }
 };
+
+watch(
+  () => {
+    return {
+      isBackground: isBackground.value,
+    };
+  },
+  async (newSate) => {
+    const { isBackground } = newSate;
+
+    handleCanvasBackgroundColor({
+      canvas: canvas.value,
+      backgroundColorType: isBackground ? "pattern" : "transparent",
+    });
+  }
+);
 </script>
 
 <style scoped>

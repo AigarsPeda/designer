@@ -125,8 +125,6 @@ defineProps<{
   position: relative;
   align-items: center;
   border-radius: 999px;
-  display: -webkit-box;
-  display: -ms-flexbox;
   box-sizing: border-box;
   -ms-flex-align: center;
   -webkit-box-align: center;
@@ -144,8 +142,6 @@ defineProps<{
   display: flex;
   position: absolute;
   align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
   -ms-flex-pack: center;
   -ms-flex-align: center;
   border-radius: inherit;

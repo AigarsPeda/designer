@@ -18,11 +18,59 @@
         </div>
       </div>
       <div class="settings-button-container">
-        <button class="button" @click="downloadCanvas">
+        <button
+          class="button"
+          @click="
+            downloadCanvasAsPNGorJPEG({
+              fileExtension: 'png',
+              canvas: canvas,
+              selectedCanvasName: props.selectedCanvasName,
+              height:
+                storedCanvasMetaData.storedValue[props.selectedCanvasName]
+                  .dimensions.height,
+              width:
+                storedCanvasMetaData.storedValue[props.selectedCanvasName]
+                  .dimensions.width,
+            })
+          "
+        >
           <AkDownload class="icon" />
           PNG
         </button>
-        <button class="button" @click="console.log('--->')">
+        <button
+          class="button"
+          @click="
+            downloadCanvasAsPNGorJPEG({
+              fileExtension: 'jpeg',
+              canvas: canvas,
+              selectedCanvasName: props.selectedCanvasName,
+              height:
+                storedCanvasMetaData.storedValue[props.selectedCanvasName]
+                  .dimensions.height,
+              width:
+                storedCanvasMetaData.storedValue[props.selectedCanvasName]
+                  .dimensions.width,
+            })
+          "
+        >
+          <AkDownload class="icon" />
+          JPEG
+        </button>
+        <button
+          class="button"
+          @click="
+            downloadCanvasAsSvg({
+              canvas: canvas,
+              selectedCanvasName: props.selectedCanvasName,
+              height:
+                storedCanvasMetaData.storedValue[props.selectedCanvasName]
+                  .dimensions.height,
+              width:
+                storedCanvasMetaData.storedValue[props.selectedCanvasName]
+                  .dimensions.width,
+            })
+          "
+        >
           <AkDownload class="icon" />
           SVG
         </button>
@@ -40,6 +88,8 @@ import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgro
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
 import { ref, watch } from "vue";
+import downloadCanvasAsPNGorJPEG from "@/utils/fabricUtils/downloadCanvasAsPNGorJPEG";
+import downloadCanvasAsSvg from "@/utils/fabricUtils/downloadCanvasAsSvg";
 
 const props = defineProps<{
   selectedCanvasName: string;
@@ -53,31 +103,6 @@ const { storedCanvasMetaData } = useLocalStorageCanvas();
 
 const handleChecked = () => {
   isBackground.value = !isBackground.value;
-};
-
-const downloadCanvas = () => {
-  if (!canvas.value) {
-    return;
-  }
-
-  const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
-
-  canvas.value.setZoom(1);
-
-  const dataURL = canvas.value.toDataURL({
-    format: "png",
-    quality: 1,
-    width: meta.dimensions.width,
-    height: meta.dimensions.height,
-  });
-
-  // Create an anchor element to trigger the download
-  const a = document.createElement("a");
-  a.href = dataURL;
-  a.download = `${props.selectedCanvasName}.png`;
-
-  // Trigger a click event on the anchor element to initiate the download
-  a.click();
 };
 
 const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
@@ -158,7 +183,11 @@ watch(
   display: grid;
 }
 .canvas-container-side {
-  height: 305px;
+  display: flex;
+  justify-content: center;
+  height: 250px;
+  width: 100%;
+  /* max-width: 310px; */
   border-radius: 5px;
   position: relative;
   /* box-shadow: var(--vt-box-shadow); */
@@ -206,6 +235,7 @@ watch(
   display: flex;
   padding: 0.5rem;
   color: #343d4a;
+  background-color: #f3f4f6;
   align-items: center;
   border-radius: 0.5rem;
   border: 1.5px solid transparent;
@@ -229,6 +259,12 @@ watch(
 .icon {
   font-size: 1rem;
   margin-right: 0.5rem;
+}
+
+@media (hover: hover) {
+  .button:hover {
+    background-color: #d1d5db;
+  }
 }
 
 /* Desktop */

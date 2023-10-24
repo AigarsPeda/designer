@@ -15,25 +15,28 @@ const handleAddITextToCanvas = ({
 }: ITextDrawingArgs) => {
   const textObject = new fabric.IText(text, {
     fontSize: 16,
-    evented: true,
-    editable: true,
-    selected: true,
+    cornerSize: 6,
     top: position.y,
     left: position.x,
-    hasControls: true,
-    // fill: "#0f172a",
-    fill: fabric.Color.fromHex("#0f172a").toRgba(),
     fontWeight: "bold",
-    hasRotatingPoint: true,
     fontFamily: "Montserrat",
+    fill: fabric.Color.fromHex("#1f2937").toRgba(),
   }) as CustomITextI;
 
   textObject.id = getUniqueId();
-  textObject.bringToFront();
 
   canvas?.add(textObject);
-  canvas?.renderAll();
-  canvas?.setActiveObject(textObject);
+
+  // Not sure why but this is needed to make the text scalable and rotatable
+  const allObj = canvas?.getObjects() as CustomITextI[];
+  const findObj = allObj.find((obj) => obj.id === textObject.id);
+
+  if (!findObj) return;
+
+  findObj.bringToFront();
+  canvas?.remove(findObj);
+  canvas?.add(findObj);
+  canvas?.setActiveObject(findObj).renderAll();
 };
 
 export default handleAddITextToCanvas;

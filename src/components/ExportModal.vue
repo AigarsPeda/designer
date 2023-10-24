@@ -183,18 +183,14 @@ watch(
   display: grid;
 }
 .canvas-container-side {
+  width: 315px;
   display: flex;
-  justify-content: center;
-  height: 250px;
-  width: 100%;
-  /* max-width: 310px; */
+  height: 230px;
   border-radius: 5px;
   position: relative;
-  /* box-shadow: var(--vt-box-shadow); */
+  justify-content: center;
   background-size: 16px 16px;
   background-position: 8px 10px;
-  /* background-image: linear-gradient(to right, #f3f4f6 1px, transparent 1px),
-    linear-gradient(to bottom, #f3f4f6 1px, transparent 1px); */
 }
 
 .back-button {

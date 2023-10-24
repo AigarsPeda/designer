@@ -8,7 +8,7 @@
           v-model="newCanvasSceneName"
           @input="handleCanvasLoad(newCanvasSceneName)"
         />
-        <label>Name</label>
+        <label>New scene name</label>
       </div>
 
       <div class="action-button-container">

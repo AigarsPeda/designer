@@ -1,7 +1,7 @@
 <template>
-  <div class="link-container">
+  <!-- <div class="link-container">
     <RouterLink class="link" to="/about">About</RouterLink>
-  </div>
+  </div> -->
   <div class="create-scene-container">
     <CreateCanvasScene
       @canvas-created="closeModal"
@@ -20,7 +20,6 @@
 import CreateCanvasScene from "@/components/CreateCanvasScene.vue";
 import DisplayCreatedCanvasScene from "@/components/DisplayCreatedCanvasScene.vue";
 import { ref } from "vue";
-import { RouterLink } from "vue-router";
 
 defineProps<{
   closeModal: () => void;

@@ -56,10 +56,10 @@ defineProps<{
 
 .modal-container {
   width: 90%;
-  /* max-height: 90%; */
   border-radius: 5px;
   position: relative;
   background-color: #fff;
+  transition: all 0.3s ease;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   max-width: v-bind("`${maxwidth || 500}px`");
 }
@@ -85,6 +85,8 @@ defineProps<{
 
 .modal-body {
   padding: 0.7rem;
+  transition: all 0.3s ease;
+  /* max-height: 25rem; */
 }
 
 .modal-footer {

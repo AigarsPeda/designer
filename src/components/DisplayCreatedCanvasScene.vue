@@ -92,7 +92,7 @@ const handleCanvasLoad = (str: string) => {
   width: 100%;
   display: flex;
   overflow-y: auto;
-  max-height: 18rem;
+  max-height: 16rem;
   place-items: start;
   position: relative;
   flex-direction: column;
@@ -135,7 +135,6 @@ const handleCanvasLoad = (str: string) => {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  /* justify-content: space-between; */
   padding: 0rem 0rem 0rem 0rem;
 }
 

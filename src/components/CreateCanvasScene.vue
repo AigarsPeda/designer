@@ -145,7 +145,7 @@ watch(
   width: 100%;
   display: grid;
   grid-auto-flow: row;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 .group {
   width: 100%;
@@ -158,7 +158,7 @@ watch(
   display: flex;
   color: #343d4a;
   align-items: center;
-  padding: 0.4rem 1rem;
+  padding: 0.6rem 0.9rem;
   border-radius: 0.5rem;
   background-color: #e5e7eb;
   border: 1.5px solid transparent;

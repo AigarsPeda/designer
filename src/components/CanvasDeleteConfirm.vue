@@ -60,11 +60,12 @@ defineProps<{
 .button {
   border: none;
   display: flex;
-  font-weight: 600;
+  /* font-weight: 600; */
   font-size: 0.8rem;
   border: transparent;
   align-items: center;
-  padding: 0.7rem 1rem;
+  padding: 0.6rem 0.9rem;
+  /* padding: 0.7rem 1rem; */
   border-radius: 0.5rem;
   justify-content: center;
 }

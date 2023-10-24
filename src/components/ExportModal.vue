@@ -84,12 +84,12 @@ import FabricCanvas from "@/components/FabricCanvas.vue";
 import Switch from "@/components/Switch.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import calculateScale from "@/utils/calculateScale";
+import downloadCanvasAsPNGorJPEG from "@/utils/fabricUtils/downloadCanvasAsPNGorJPEG";
+import downloadCanvasAsSvg from "@/utils/fabricUtils/downloadCanvasAsSvg";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
 import { ref, watch } from "vue";
-import downloadCanvasAsPNGorJPEG from "@/utils/fabricUtils/downloadCanvasAsPNGorJPEG";
-import downloadCanvasAsSvg from "@/utils/fabricUtils/downloadCanvasAsSvg";
 
 const props = defineProps<{
   selectedCanvasName: string;

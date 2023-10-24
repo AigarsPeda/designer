@@ -80,7 +80,6 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
           height:
             dimensions?.height ?? canvasStore.getSelectedCanvas?.height ?? 0,
         },
-        // isDotBackground: storedCanvasMeta.isDotBackground,
       },
     });
 

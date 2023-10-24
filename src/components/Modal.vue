@@ -59,7 +59,7 @@ defineProps<{
   border-radius: 5px;
   position: relative;
   background-color: #fff;
-  transition: all 0.3s ease;
+  /* transition: all 0.3s ease; */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   max-width: v-bind("`${maxwidth || 500}px`");
 }
@@ -77,15 +77,21 @@ defineProps<{
 }
 
 .modal-close {
+  margin: 0;
+  padding: 0;
   border: none;
+  display: flex;
   cursor: pointer;
+
   font-size: 1.2rem;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
 }
 
 .modal-body {
   padding: 0.7rem;
-  transition: all 0.3s ease;
+  /* transition: all 0.3s ease; */
   /* max-height: 25rem; */
 }
 
@@ -101,9 +107,9 @@ defineProps<{
   border: none;
   color: #fff;
   cursor: pointer;
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
   border-radius: 5px;
-  padding: 0.7rem 1rem;
+  padding: 0.6rem 0.9rem;
   background-color: #374151;
 }
 

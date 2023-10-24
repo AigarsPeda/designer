@@ -113,8 +113,8 @@ const handleCanvasLoad = (str: string) => {
 
 .img-container-button {
   padding: 0;
-  width: 90px;
-  height: 90px;
+  width: 115px;
+  height: 115px;
   border: none;
   overflow: hidden;
   border-radius: 0.5rem;
@@ -123,8 +123,8 @@ const handleCanvasLoad = (str: string) => {
 }
 
 .img-container-button img {
-  width: 90px;
-  height: 90px;
+  width: 115px;
+  height: 115px;
   object-fit: contain;
   border-radius: 0.5rem;
   background-color: var(--color-background);
@@ -159,8 +159,7 @@ const handleCanvasLoad = (str: string) => {
 .button {
   border: none;
   display: flex;
-  /* padding: 0.5rem; */
-  padding: 0.4rem 0.6rem;
+  padding: 0.6rem 0.9rem;
   color: #343d4a;
   align-items: center;
   border-radius: 0.5rem;

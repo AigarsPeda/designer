@@ -8,7 +8,7 @@
     :z-index="200"
     :closeModal="closeModal"
     :isShowModal="isShowModal"
-    :maxwidth="Boolean(exportCanvasName) ? 800 : 480"
+    :maxwidth="Boolean(exportCanvasName) ? 800 : 543"
   >
     <template #modal-content>
       <ExportModal
@@ -39,11 +39,11 @@ import CanvasDeleteConfirm from "@/components/CanvasDeleteConfirm.vue";
 import CreatedAndDisplayCanvas from "@/components/CreatedAndDisplayCanvas.vue";
 import ExportModal from "@/components/ExportModal.vue";
 import Modal from "@/components/Modal.vue";
+import { DEFAULT_CANVAS_NAME } from "@/hardcoded";
+import useCanvasStore from "@/stores/useCanvasStore";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import { ref } from "vue";
 import VueFeather from "vue-feather";
-import { DEFAULT_CANVAS_NAME } from "@/hardcoded";
-import useCanvasStore from "@/stores/useCanvasStore";
 
 const isShowModal = ref(false);
 const exportCanvasName = ref("");

@@ -160,6 +160,7 @@ watch(
   align-items: center;
   padding: 0.4rem 1rem;
   border-radius: 0.5rem;
+  background-color: #e5e7eb;
   border: 1.5px solid transparent;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }

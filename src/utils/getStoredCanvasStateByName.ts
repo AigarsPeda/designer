@@ -4,17 +4,9 @@ const getStoredCanvasStateByName = (name: string) => {
   const { storedCanvasSate } = useLocalStorageCanvas();
 
   const state = storedCanvasSate.storedValue[name];
+  const length = state ? state.length : undefined;
 
-  // if (!state) {
-  //   return;
-  // }
-
-  const length = state.length;
-  // const s = state[name][length - 1];
-
-  return state[length - 1] || [];
-
-  // return s;
+  return length ? state[state.length - 1] : [];
 };
 
 export default getStoredCanvasStateByName;

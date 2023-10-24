@@ -8,7 +8,7 @@
     :z-index="200"
     :closeModal="closeModal"
     :isShowModal="isShowModal"
-    :maxwidth="Boolean(exportCanvasName) ? 800 : 467"
+    :maxwidth="Boolean(exportCanvasName) ? 800 : 480"
   >
     <template #modal-content>
       <ExportModal
@@ -17,30 +17,76 @@
         :handleBackButtonClick="handleBackButtonClick"
       />
 
+      <CanvasDeleteConfirm
+        v-if="Boolean(selectedDeleteCanvasName)"
+        :handleDeleteButtonClick="handleDeleteButtonClick"
+        :selectedDeleteCanvasName="selectedDeleteCanvasName"
+        :handleDeleteCancelButtonClick="handleDeleteCancelButtonClick"
+      />
+
       <CreatedAndDisplayCanvas
+        v-if="!Boolean(exportCanvasName) && !Boolean(selectedDeleteCanvasName)"
         :closeModal="closeModal"
-        v-if="!Boolean(exportCanvasName)"
         :handleCanvasSceneExportSelect="handleCanvasSceneExportSelect"
+        :handleSelectedDeleteCanvasName="handleSelectedDeleteCanvasName"
       />
     </template>
   </Modal>
 </template>
 
 <script setup lang="ts">
+import CanvasDeleteConfirm from "@/components/CanvasDeleteConfirm.vue";
 import CreatedAndDisplayCanvas from "@/components/CreatedAndDisplayCanvas.vue";
 import ExportModal from "@/components/ExportModal.vue";
 import Modal from "@/components/Modal.vue";
 import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import { ref } from "vue";
 import VueFeather from "vue-feather";
+import { DEFAULT_CANVAS_NAME } from "@/hardcoded";
+import useCanvasStore from "@/stores/useCanvasStore";
 
 const isShowModal = ref(false);
 const exportCanvasName = ref("");
 const oldCanvasSceneName = ref("");
-const { storedSelectedCanvasName } = useLocalStorageCanvas();
+const canvasStore = useCanvasStore();
+const selectedDeleteCanvasName = ref("");
+
+const { storedSelectedCanvasName, storedCanvasSate, storedCanvasMetaData } =
+  useLocalStorageCanvas();
 
 const handleBackButtonClick = () => {
   exportCanvasName.value = "";
+};
+
+const handleDeleteButtonClick = () => {
+  const name = selectedDeleteCanvasName.value;
+  const canvas = canvasStore.getSelectedCanvas;
+
+  if (!canvas) {
+    return;
+  }
+
+  canvas.clear();
+
+  const { [name]: __, ...restScreenShots } = storedCanvasMetaData.storedValue;
+  storedCanvasMetaData.updateValue(restScreenShots);
+  const { [name]: _, ...rest } = storedCanvasSate.storedValue;
+  storedCanvasSate.updateValue(rest);
+
+  const selectedName = Object.keys(rest)[0] ?? DEFAULT_CANVAS_NAME;
+
+  storedSelectedCanvasName.updateValue(selectedName);
+
+  isShowModal.value = false;
+  selectedDeleteCanvasName.value = "";
+};
+
+const handleSelectedDeleteCanvasName = (name: string) => {
+  selectedDeleteCanvasName.value = name;
+};
+
+const handleDeleteCancelButtonClick = () => {
+  selectedDeleteCanvasName.value = "";
 };
 
 const handleCanvasSceneExportSelect = (str: string) => {

@@ -55,6 +55,7 @@ const { menuOptions } = useDisplayCanvasOptions();
 
 const emit = defineEmits<{
   (e: "edit-name", canvasName: string): void;
+  (e: "delete-canvas", canvasName: string): void;
   (e: "new-canvas-loaded", canvasName: string): void;
   (e: "export-canvas-select", canvasName: string): void;
 }>();
@@ -159,10 +160,12 @@ const handleCanvasLoad = (str: string) => {
 .button {
   border: none;
   display: flex;
-  padding: 0.5rem;
+  /* padding: 0.5rem; */
+  padding: 0.4rem 0.6rem;
   color: #343d4a;
   align-items: center;
   border-radius: 0.5rem;
+  background-color: #e5e7eb;
   border: 1.5px solid transparent;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }

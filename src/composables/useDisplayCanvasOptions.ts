@@ -13,8 +13,7 @@ export type EmitEvent =
   | "export-canvas-select";
 
 const useDisplayCanvasOptions = () => {
-  const { storedCanvasSate, storedCanvasMetaData, storedSelectedCanvasName } =
-    useLocalStorageCanvas();
+  const { storedSelectedCanvasName } = useLocalStorageCanvas();
 
   const MENU_OPTIONS = [
     {
@@ -56,12 +55,12 @@ const useDisplayCanvasOptions = () => {
       title: "Delete",
       icon: AnOutlinedDelete,
       onClick(name: string): { name: string; emitEvent: EmitEvent } {
-        const { [name]: __, ...restScreenShots } =
-          storedCanvasMetaData.storedValue;
-        storedCanvasMetaData.updateValue(restScreenShots);
+        // const { [name]: __, ...restScreenShots } =
+        //   storedCanvasMetaData.storedValue;
+        // storedCanvasMetaData.updateValue(restScreenShots);
 
-        const { [name]: _, ...rest } = storedCanvasSate.storedValue;
-        storedCanvasSate.updateValue(rest);
+        // const { [name]: _, ...rest } = storedCanvasSate.storedValue;
+        // storedCanvasSate.updateValue(rest);
 
         return {
           name,

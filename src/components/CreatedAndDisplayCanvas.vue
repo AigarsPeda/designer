@@ -11,6 +11,7 @@
   <DisplayCreatedCanvasScene
     @new-canvas-loaded="closeModal"
     @edit-name="setOldCanvasSceneName"
+    @delete-canvas="handleSelectedDeleteCanvasName"
     @export-canvas-select="handleCanvasSceneExportSelect"
   />
 </template>
@@ -24,6 +25,7 @@ import { RouterLink } from "vue-router";
 defineProps<{
   closeModal: () => void;
   handleCanvasSceneExportSelect: (str: string) => void;
+  handleSelectedDeleteCanvasName: (name: string) => void;
 }>();
 
 const oldCanvasSceneName = ref("");

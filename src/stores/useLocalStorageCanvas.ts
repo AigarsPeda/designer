@@ -48,7 +48,6 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
           width: 0,
           height: 0,
         },
-        // isDotBackground: false,
       },
     }
   );
@@ -70,16 +69,16 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
     }
 
     const storedCanvasMeta = storedCanvasMetaData.storedValue.value[name];
-    const dimensions = storedCanvasMeta.dimensions;
+    const dimensions = storedCanvasMeta?.dimensions;
 
     storedCanvasMetaData.updateValue({
       ...storedCanvasMetaData.storedValue.value,
       [name]: {
         screenShot: png,
         dimensions: {
-          width: dimensions?.width || canvasStore.getSelectedCanvas?.width || 0,
+          width: dimensions?.width ?? canvasStore.getSelectedCanvas?.width ?? 0,
           height:
-            dimensions?.height || canvasStore.getSelectedCanvas?.height || 0,
+            dimensions?.height ?? canvasStore.getSelectedCanvas?.height ?? 0,
         },
         // isDotBackground: storedCanvasMeta.isDotBackground,
       },

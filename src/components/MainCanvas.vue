@@ -140,66 +140,69 @@ watch(
 watch(
   () => {
     return {
-      getCanvasMode: uiStore.getCanvasMode,
-      getSelectedCanvas: canvasStore.getSelectedCanvas,
-      getDrawingSettings: canvasStore.getDrawingSettings,
-      getSquareModeSettings: canvasStore.getSquareModeSettings,
+      canvasMode: uiStore.getCanvasMode,
+      canvas: canvasStore.getSelectedCanvas,
+      squareSettings: canvasStore.getSquareSettings,
+      drawingSettings: canvasStore.getDrawingSettings,
     };
   },
   (newSate) => {
-    const {
-      getCanvasMode,
-      getSelectedCanvas,
-      getDrawingSettings,
-      getSquareModeSettings,
-    } = newSate;
+    const { canvasMode, canvas, drawingSettings, squareSettings } = newSate;
 
-    if (!getSelectedCanvas) {
+    if (!canvas) {
       return;
     }
 
-    resetCanvasMouseMoveUpDown(getSelectedCanvas);
+    resetCanvasMouseMoveUpDown(canvas);
 
-    if (isCanvasObjSelectable(getCanvasMode)) {
-      makeAllObjCanvasUnselectable(getSelectedCanvas);
+    if (isCanvasObjSelectable(canvasMode)) {
+      makeAllObjCanvasUnselectable(canvas);
     }
 
-    if (!isCanvasObjSelectable(getCanvasMode)) {
-      makeAllObjCanvasSelectable(getSelectedCanvas);
+    if (!isCanvasObjSelectable(canvasMode)) {
+      makeAllObjCanvasSelectable(canvas);
+    }
+
+    if (uiStore.getCanvasMode === "panning") {
+      canvas.defaultCursor = "grab";
+    }
+
+    if (uiStore.getCanvasMode !== "panning") {
+      canvas.defaultCursor = "default";
     }
 
     switch (uiStore.getCanvasMode) {
       case "drawing":
         drawStrokeOnCanvas({
-          canvas: getSelectedCanvas,
-          drawingSettings: getDrawingSettings,
+          canvas: canvas,
+          drawingSettings,
           callback: saveCanvasToLocalStorage,
         });
         break;
       case "panning":
-        handleCanvasPanning({ canvas: getSelectedCanvas });
+        handleCanvasPanning({ canvas: canvas });
         break;
       case "square":
         handleSquareDrawing({
-          canvas: getSelectedCanvas,
-          squareModeSettings: getSquareModeSettings,
+          canvas: canvas,
+          squareSettings,
         });
         break;
       case "line":
         handleLineDrawing({
-          canvas: getSelectedCanvas,
-          squareModeSettings: getSquareModeSettings,
+          canvas: canvas,
+          squareSettings,
         });
         break;
       case "arrow":
         handleArrowDrawing({
-          canvas: getSelectedCanvas,
-          squareModeSettings: getSquareModeSettings,
+          canvas: canvas,
+          squareSettings,
         });
         break;
 
       default:
-        resetCanvasMouseMoveUpDown(getSelectedCanvas);
+        resetCanvasMouseMoveUpDown(canvas);
         break;
     }
   }

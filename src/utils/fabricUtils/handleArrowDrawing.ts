@@ -9,7 +9,7 @@ import { fabric } from "fabric";
 
 type HandleArrowDrawingArgs = {
   canvas: fabric.Canvas | null;
-  squareModeSettings: DefaultSquareMode;
+  squareSettings: DefaultSquareMode;
 };
 
 let id = "";
@@ -23,7 +23,7 @@ const headLength = 5; // arrow head size
 
 const handleArrowDrawing = ({
   canvas,
-  squareModeSettings,
+  squareSettings,
 }: HandleArrowDrawingArgs) => {
   if (!canvas) {
     return;
@@ -45,10 +45,10 @@ const handleArrowDrawing = ({
       originX: "center",
       originY: "center",
       cornerStyle: "circle",
-      // fill: squareModeSettings.stroke,
-      fill: squareModeSettings.stroke,
-      // stroke: squareModeSettings.stroke,
-      stroke: squareModeSettings.stroke,
+      // fill: squareSettings.stroke,
+      fill: squareSettings.stroke,
+      // stroke: squareSettings.stroke,
+      stroke: squareSettings.stroke,
       evented: false,
       selectable: false,
       hasControls: false,
@@ -143,9 +143,9 @@ const handleArrowDrawing = ({
       hasControls: true,
       objectCaching: false,
       hasRotatingPoint: true,
-      // fill: squareModeSettings.stroke, //'white',
-      fill: squareModeSettings.stroke,
-      // stroke: squareModeSettings.stroke, //'black',
+      // fill: squareSettings.stroke, //'white',
+      fill: squareSettings.stroke,
+      // stroke: squareSettings.stroke, //'black',
     }) as CustomPolylineI;
 
     const arrowId = getUniqueId();

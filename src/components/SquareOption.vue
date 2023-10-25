@@ -4,7 +4,7 @@
       isFullWidth
       title="Rounded"
       @click="handleShapeChange('rounded')"
-      :isSelect="canvasStore.getSquareModeSettings.rx === 10"
+      :isSelect="canvasStore.getSquareSettings.rx === 10"
     >
       <template #icon>
         <ReRoundedCorner class="icon" />
@@ -14,7 +14,7 @@
       isFullWidth
       title="Sharp"
       @click="handleShapeChange('sharp')"
-      :isSelect="canvasStore.getSquareModeSettings.rx === 0"
+      :isSelect="canvasStore.getSquareSettings.rx === 0"
     >
       <template #icon>
         <PxSharpCorner class="icon" />
@@ -46,9 +46,9 @@ import {
 const canvasStore = useCanvasStore();
 
 const handleShapeChange = (shape: ShapeType) => {
-  canvasStore.setSquareModeSettings({
-    squareModeSettings: {
-      ...canvasStore.getSquareModeSettings,
+  canvasStore.setSquareSettings({
+    squareSettings: {
+      ...canvasStore.getSquareSettings,
       rx: shape === "rounded" ? 10 : 0,
       ry: shape === "rounded" ? 10 : 0,
     },

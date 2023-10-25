@@ -5,7 +5,7 @@ import { fabric } from "fabric";
 
 type HandleLineDrawingArgs = {
   canvas: fabric.Canvas | null;
-  squareModeSettings: DefaultSquareMode;
+  squareSettings: DefaultSquareMode;
 };
 
 let id = "";
@@ -13,7 +13,7 @@ let isDown = false;
 
 const handleLineDrawing = ({
   canvas,
-  squareModeSettings,
+  squareSettings,
 }: HandleLineDrawingArgs) => {
   if (!canvas) {
     return;
@@ -40,10 +40,10 @@ const handleLineDrawing = ({
       cornerSize: 6,
       strokeWidth: 3,
       cornerStyle: "circle",
-      // fill: squareModeSettings.stroke,
-      fill: squareModeSettings.stroke,
-      // stroke: squareModeSettings.stroke,
-      stroke: squareModeSettings.stroke,
+      // fill: squareSettings.stroke,
+      fill: squareSettings.stroke,
+      // stroke: squareSettings.stroke,
+      stroke: squareSettings.stroke,
       originX: "center",
       originY: "center",
       evented: false,

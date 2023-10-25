@@ -107,15 +107,10 @@ onMounted(() => {
 .container {
   width: 100%;
   height: 100%;
-  /* background-color: var(--color-background-soft); */
-  /* background-size: 18px 18px;
-  background-image: linear-gradient(to right, #cbd5e1 1px, transparent 1px),
-    linear-gradient(to bottom, #cbd5e1 1px, transparent 1px); */
 }
 
 #canvas {
   border-radius: 0.5rem;
   box-shadow: var(--vt-box-shadow);
-  /* background-color: var(--color-background-soft); */
 }
 </style>

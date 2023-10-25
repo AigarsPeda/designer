@@ -5,7 +5,7 @@ import { fabric } from "fabric";
 
 type SquareDrawingArgs = {
   canvas: fabric.Canvas | null;
-  squareModeSettings: DefaultSquareMode;
+  squareSettings: DefaultSquareMode;
 };
 
 let id = "";
@@ -15,10 +15,7 @@ let isDown = false;
 
 // const debouncedScalingHandler = debounce(scalingObjAndPreservingCorners, 50);
 
-const handleSquareDrawing = ({
-  canvas,
-  squareModeSettings,
-}: SquareDrawingArgs) => {
+const handleSquareDrawing = ({ canvas, squareSettings }: SquareDrawingArgs) => {
   if (!canvas) {
     return;
   }
@@ -45,11 +42,11 @@ const handleSquareDrawing = ({
       hasRotatingPoint: false,
       width: pointer.x - origX,
       height: pointer.y - origY,
-      rx: squareModeSettings.rx,
-      ry: squareModeSettings.ry,
-      stroke: squareModeSettings.stroke,
-      strokeWidth: squareModeSettings.strokeWidth,
-      fill: squareModeSettings.background,
+      rx: squareSettings.rx,
+      ry: squareSettings.ry,
+      stroke: squareSettings.stroke,
+      strokeWidth: squareSettings.strokeWidth,
+      fill: squareSettings.background,
     }) as CustomRectI;
 
     // Adding additional properties to the object

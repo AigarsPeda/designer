@@ -3,12 +3,12 @@
     <p class="info">Stroke</p>
     <ColorList
       :colors="COLORS"
-      :selectedColor="canvasStore.getSquareModeSettings.stroke"
+      :selectedColor="canvasStore.getSquareSettings.stroke"
       :handleColorClick="
         (color) =>
-          canvasStore.setSquareModeSettings({
-            squareModeSettings: {
-              ...canvasStore.getSquareModeSettings,
+          canvasStore.setSquareSettings({
+            squareSettings: {
+              ...canvasStore.getSquareSettings,
               stroke: color,
             },
           })
@@ -18,12 +18,12 @@
     <p class="info">Background</p>
     <ColorList
       :colors="BACKGROUND_COLORS"
-      :selectedColor="canvasStore.getSquareModeSettings.background"
+      :selectedColor="canvasStore.getSquareSettings.background"
       :handleColorClick="
         (color) =>
-          canvasStore.setSquareModeSettings({
-            squareModeSettings: {
-              ...canvasStore.getSquareModeSettings,
+          canvasStore.setSquareSettings({
+            squareSettings: {
+              ...canvasStore.getSquareSettings,
               background: color,
             },
           })
@@ -51,7 +51,7 @@ watch(
   () => {
     return {
       getSelectedCanvas: canvasStore.getSelectedCanvas,
-      getSquareModeSettings: canvasStore.getSquareModeSettings,
+      getSquareModeSettings: canvasStore.getSquareSettings,
     };
   },
   (newSate) => {

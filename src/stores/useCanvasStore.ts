@@ -12,7 +12,7 @@ const useCanvasStore = defineStore("design", {
   state: (): StateType => ({
     canvas: [],
     selectedCanvas: null,
-    isTextToObject: false,
+    // isTextToObject: false,
     defaultCanvasSate: {
       drawingSettings: {
         size: 6,
@@ -21,7 +21,7 @@ const useCanvasStore = defineStore("design", {
         streamline: 0.99,
         stroke: COLORS[0],
       },
-      squareModeSettings: {
+      squareSettings: {
         rx: 10,
         ry: 10,
         strokeWidth: 2,
@@ -49,19 +49,12 @@ const useCanvasStore = defineStore("design", {
     getSelectedCanvas({ selectedCanvas }: StateType) {
       return selectedCanvas;
     },
-    getSquareModeSettings({ defaultCanvasSate }: StateType) {
-      return defaultCanvasSate.squareModeSettings;
+    getSquareSettings({ defaultCanvasSate }: StateType) {
+      return defaultCanvasSate.squareSettings;
     },
-    // getSelectedObjInCanvas({ selectedCanvas, selectedObjectIds }: StateType) {
-    //   const canvasObj = selectedCanvas?.getObjects() as CustomObjI[];
-
-    //   return canvasObj.filter((obj) => {
-    //     return selectedObjectIds.includes(obj.id);
-    //   });
+    // getIsTextToObject({ isTextToObject }: StateType) {
+    //   return isTextToObject;
     // },
-    getIsTextToObject({ isTextToObject }: StateType) {
-      return isTextToObject;
-    },
   },
   actions: {
     setCanvas({ id, canva }: { id: string; canva: fabric.Canvas }) {
@@ -80,16 +73,16 @@ const useCanvasStore = defineStore("design", {
     setSelectedCanvas({ selectedCanvas }: { selectedCanvas: fabric.Canvas }) {
       this.selectedCanvas = selectedCanvas;
     },
-    setSquareModeSettings({
-      squareModeSettings,
+    setSquareSettings({
+      squareSettings,
     }: {
-      squareModeSettings: DefaultSquareMode;
+      squareSettings: DefaultSquareMode;
     }) {
-      this.defaultCanvasSate.squareModeSettings = squareModeSettings;
+      this.defaultCanvasSate.squareSettings = squareSettings;
     },
-    setIsTextToObject({ isTextToObject }: { isTextToObject: boolean }) {
-      this.isTextToObject = isTextToObject;
-    },
+    // setIsTextToObject({ isTextToObject }: { isTextToObject: boolean }) {
+    //   this.isTextToObject = isTextToObject;
+    // },
   },
 });
 

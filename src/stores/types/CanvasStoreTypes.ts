@@ -23,7 +23,7 @@ export type DefaultSquareMode = {
 
 //declare state
 export interface StateType {
-  isTextToObject: boolean;
+  // isTextToObject: boolean;
   selectedCanvas: fabric.Canvas | null;
   canvas: {
     id: string;
@@ -31,7 +31,7 @@ export interface StateType {
   }[];
   defaultCanvasSate: {
     drawingSettings: DrawingSettingsType;
-    squareModeSettings: DefaultSquareMode;
+    squareSettings: DefaultSquareMode;
   };
   selectedObjects: CustomObjI[];
 }

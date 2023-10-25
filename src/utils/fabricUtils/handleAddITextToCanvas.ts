@@ -20,7 +20,7 @@ const handleAddITextToCanvas = ({
     left: position.x,
     fontWeight: "bold",
     fontFamily: "Montserrat",
-    fill: fabric.Color.fromHex("#1f2937").toRgba(),
+    fill: fabric.Color.fromHex("#111827").toRgba(),
   }) as CustomITextI;
 
   textObject.id = getUniqueId();

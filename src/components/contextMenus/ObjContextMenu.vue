@@ -108,12 +108,6 @@ watch(
       if (element.type === "rect") {
         const rect = element as CustomRectI;
 
-        // Adding additional properties to the object
-        // rect.myStroke = getSquareModeSettings.stroke;
-        // rect.myFill = getSquareModeSettings.background;
-        // rect.isBackgroundPattern =
-        //   getSquareModeSettings.backgroundPattern !== "none";
-
         updateCanvasRect({
           rect,
           squareSettings: getSquareModeSettings,

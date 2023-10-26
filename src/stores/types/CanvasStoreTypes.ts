@@ -1,5 +1,5 @@
+import type { CustomObjI } from "@/types/fabric.types";
 import { fabric } from "fabric";
-import type { CustomObjI } from "../../types/fabric.types";
 
 export type DrawingSettingsType = {
   size: number;
@@ -18,20 +18,17 @@ export type DefaultSquareMode = {
   background: string;
   strokeWidth: number;
   backgroundPattern: BackGroundPatternTypes;
-  // background: BackGroundTypes;
 };
 
-//declare state
 export interface StateType {
-  // isTextToObject: boolean;
+  selectedObjects: CustomObjI[];
   selectedCanvas: fabric.Canvas | null;
   canvas: {
     id: string;
     canva: fabric.Canvas;
   }[];
   defaultCanvasSate: {
-    drawingSettings: DrawingSettingsType;
     squareSettings: DefaultSquareMode;
+    drawingSettings: DrawingSettingsType;
   };
-  selectedObjects: CustomObjI[];
 }

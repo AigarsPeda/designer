@@ -3,7 +3,6 @@ import type {
   UiStoreStateType,
 } from "@/stores/types/UiStoreTypes";
 import { defineStore } from "pinia";
-import useCanvasStore from "./useCanvasStore";
 
 const useUIStore = defineStore("uiStore", {
   state: (): UiStoreStateType => ({
@@ -32,17 +31,6 @@ const useUIStore = defineStore("uiStore", {
       this.isDotBackground = isDotBackground;
     },
     setCanvasMode({ canvasMode }: { canvasMode: CanvaModeType }) {
-      // const canvasStore = useCanvasStore();
-      // const canvas = canvasStore.getSelectedCanvas;
-
-      // if (canvasMode === "panning" && canvas) {
-      //   canvas.defaultCursor = "grab";
-      // }
-
-      // if (canvasMode !== "panning" && canvas) {
-      //   canvas.defaultCursor = "default";
-      // }
-
       this.canvasMode = canvasMode;
     },
   },

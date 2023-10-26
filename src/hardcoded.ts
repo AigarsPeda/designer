@@ -23,3 +23,5 @@ export const BACKGROUND_COLORS = [
 export const TRANSPARENT_COLOR = "rgb(255, 255, 255, 0.000)";
 
 export const DEFAULT_CANVAS_NAME = "unnamed";
+
+export const SAFETY_MARGIN_FOR_CANVAS = 20;

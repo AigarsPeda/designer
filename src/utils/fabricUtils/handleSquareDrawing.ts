@@ -13,8 +13,6 @@ let origX = 0;
 let origY = 0;
 let isDown = false;
 
-// const debouncedScalingHandler = debounce(scalingObjAndPreservingCorners, 50);
-
 const handleSquareDrawing = ({ canvas, squareSettings }: SquareDrawingArgs) => {
   if (!canvas) {
     return;

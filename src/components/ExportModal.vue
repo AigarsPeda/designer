@@ -22,15 +22,9 @@
           class="button"
           @click="
             downloadCanvasAsPNGorJPEG({
-              fileExtension: 'png',
               canvas: canvas,
+              fileExtension: 'png',
               selectedCanvasName: props.selectedCanvasName,
-              height:
-                storedCanvasMetaData.storedValue[props.selectedCanvasName]
-                  .dimensions.height,
-              width:
-                storedCanvasMetaData.storedValue[props.selectedCanvasName]
-                  .dimensions.width,
             })
           "
         >
@@ -41,15 +35,9 @@
           class="button"
           @click="
             downloadCanvasAsPNGorJPEG({
-              fileExtension: 'jpeg',
               canvas: canvas,
+              fileExtension: 'jpeg',
               selectedCanvasName: props.selectedCanvasName,
-              height:
-                storedCanvasMetaData.storedValue[props.selectedCanvasName]
-                  .dimensions.height,
-              width:
-                storedCanvasMetaData.storedValue[props.selectedCanvasName]
-                  .dimensions.width,
             })
           "
         >
@@ -62,12 +50,6 @@
             downloadCanvasAsSvg({
               canvas: canvas,
               selectedCanvasName: props.selectedCanvasName,
-              height:
-                storedCanvasMetaData.storedValue[props.selectedCanvasName]
-                  .dimensions.height,
-              width:
-                storedCanvasMetaData.storedValue[props.selectedCanvasName]
-                  .dimensions.width,
             })
           "
         >
@@ -82,14 +64,14 @@
 <script setup lang="ts">
 import FabricCanvas from "@/components/FabricCanvas.vue";
 import Switch from "@/components/Switch.vue";
-import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
-import calculateScale from "@/utils/calculateScale";
 import downloadCanvasAsPNGorJPEG from "@/utils/fabricUtils/downloadCanvasAsPNGorJPEG";
 import downloadCanvasAsSvg from "@/utils/fabricUtils/downloadCanvasAsSvg";
 import handleCanvasBackgroundColor from "@/utils/fabricUtils/handleCanvasBackgroundColor";
 import getStoredCanvasStateByName from "@/utils/getStoredCanvasStateByName";
 import { AkDownload, BxArrowBack } from "@kalimahapps/vue-icons";
+import { fabric } from "fabric";
 import { ref, watch } from "vue";
+import { SAFETY_MARGIN_FOR_CANVAS } from "@/hardcoded";
 
 const props = defineProps<{
   selectedCanvasName: string;
@@ -99,7 +81,6 @@ const props = defineProps<{
 const isBackground = ref(false);
 const canvas = ref<fabric.Canvas | null>(null);
 const divRef = ref<HTMLDivElement | null>(null);
-const { storedCanvasMetaData } = useLocalStorageCanvas();
 
 const handleChecked = () => {
   isBackground.value = !isBackground.value;
@@ -115,44 +96,36 @@ const handleCanvasCreated = (fabricCanvas: fabric.Canvas) => {
   isBackground.value =
     fabricCanvas.backgroundColor === "transparent" ? false : true;
 
-  const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
-
-  const scale2 = calculateScale(
-    {
-      width: meta.dimensions.width,
-      height: meta.dimensions.height,
-    },
-    {
-      width: fabricCanvas.getWidth(),
-      height: fabricCanvas.getHeight(),
-    }
-  );
-
-  const scale = Math.min(
-    fabricCanvas.getWidth() / meta.dimensions.width,
-    fabricCanvas.getHeight() / meta.dimensions.height
-  );
-
-  console.log("scale", scale.toFixed(2));
-  console.log("scale2", scale2.toFixed(2));
-
-  // set canvas zoom so that all objects are visible
-
-  // fabricCanvas.setZoom(parseFloat(scale.toFixed(2)));
-  fabricCanvas.setZoom(0.3);
   const state = getStoredCanvasStateByName(props.selectedCanvasName);
 
   if (state && fabricCanvas) {
-    fabricCanvas.loadFromJSON(state, fabricCanvas.renderAll.bind(fabricCanvas));
+    fabricCanvas.loadFromJSON(state, () => {
+      const objects = fabricCanvas.getObjects();
+      const boundingBox = new fabric.Group(objects).getBoundingRect();
 
-    fabricCanvas.forEachObject((obj) => {
-      obj.setOptions({
-        evented: false,
-        selectable: false,
+      for (let i = 0; i < objects.length; i++) {
+        objects[i].set({
+          evented: false,
+          selectable: false,
+        });
+      }
+
+      const newWidth = boundingBox.width + SAFETY_MARGIN_FOR_CANVAS;
+      const newHeight = boundingBox.height + SAFETY_MARGIN_FOR_CANVAS;
+
+      const scale = Math.min(
+        fabricCanvas.getWidth() / newWidth,
+        fabricCanvas.getHeight() / newHeight
+      );
+
+      // move canvas to center so that it is not cropped take into account the zoom
+      fabricCanvas.absolutePan({
+        y: boundingBox.top - SAFETY_MARGIN_FOR_CANVAS / 2,
+        x: boundingBox.left - SAFETY_MARGIN_FOR_CANVAS / 2,
       });
-    });
 
-    fabricCanvas.renderAll();
+      fabricCanvas.setZoom(scale);
+    });
   }
 };
 

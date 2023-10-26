@@ -12,7 +12,6 @@ const useCanvasStore = defineStore("design", {
   state: (): StateType => ({
     canvas: [],
     selectedCanvas: null,
-    // isTextToObject: false,
     defaultCanvasSate: {
       drawingSettings: {
         size: 6,
@@ -52,9 +51,6 @@ const useCanvasStore = defineStore("design", {
     getSquareSettings({ defaultCanvasSate }: StateType) {
       return defaultCanvasSate.squareSettings;
     },
-    // getIsTextToObject({ isTextToObject }: StateType) {
-    //   return isTextToObject;
-    // },
   },
   actions: {
     setCanvas({ id, canva }: { id: string; canva: fabric.Canvas }) {
@@ -80,9 +76,6 @@ const useCanvasStore = defineStore("design", {
     }) {
       this.defaultCanvasSate.squareSettings = squareSettings;
     },
-    // setIsTextToObject({ isTextToObject }: { isTextToObject: boolean }) {
-    //   this.isTextToObject = isTextToObject;
-    // },
   },
 });
 

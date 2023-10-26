@@ -1,48 +1,56 @@
+import { fabric } from "fabric";
+import { SAFETY_MARGIN_FOR_CANVAS } from "@/hardcoded";
+
 type DownloadCanvasAsSVGArgs = {
-  width: number;
-  height: number;
+  // width: number;
+  // height: number;
   selectedCanvasName: string;
   canvas: fabric.Canvas | null;
 };
 
 const downloadCanvasAsSvg = ({
   canvas,
-  width,
-  height,
+  // width,
+  // height,
   selectedCanvasName,
 }: DownloadCanvasAsSVGArgs) => {
   if (!canvas) {
     return;
   }
 
-  // const meta = storedCanvasMetaData.storedValue[props.selectedCanvasName];
+  const objects = canvas.getObjects();
+  const json = canvas.toJSON();
 
-  // const viewBoxWidth = meta.dimensions.width; // Double the width
-  // const viewBoxHeight = meta.dimensions.height;
+  const boundingBox = new fabric.Group(objects).getBoundingRect();
 
-  const svg = canvas.toSVG({
-    viewBox: {
-      x: 0,
-      y: 0,
-      width: width,
-      height: height,
-    },
-    width: width,
-    height: height,
+  const newWidth = boundingBox.width + SAFETY_MARGIN_FOR_CANVAS;
+  const newHeight = boundingBox.height + SAFETY_MARGIN_FOR_CANVAS;
+
+  const tempCanvas = new fabric.Canvas(null, {
+    width: newWidth,
+    height: newHeight,
   });
+  tempCanvas.loadFromJSON(json, () => {
+    tempCanvas.absolutePan({
+      y: boundingBox.top - SAFETY_MARGIN_FOR_CANVAS / 2,
+      x: boundingBox.left - SAFETY_MARGIN_FOR_CANVAS / 2,
+    });
 
-  const encodedSvg = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    const svg = tempCanvas.toSVG({
+      width: newWidth,
+      height: newHeight,
+    });
 
-  // Create an anchor element to trigger the download
-  const a = document.createElement("a");
-  a.href = encodedSvg;
-  a.download = `${selectedCanvasName}.svg`;
+    const encodedSvg = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 
-  // Trigger a click event on the anchor element to initiate the download
-  a.click();
+    // Create an anchor element to trigger the download
+    const a = document.createElement("a");
+    a.href = encodedSvg;
+    a.download = `${selectedCanvasName}.svg`;
 
-  // remove the anchor element from the DOM
-  a.remove();
+    a.click();
+    a.remove();
+  });
 };
 
 export default downloadCanvasAsSvg;

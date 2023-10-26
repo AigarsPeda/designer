@@ -1,6 +1,9 @@
+import { SAFETY_MARGIN_FOR_CANVAS } from "@/hardcoded";
+import { fabric } from "fabric";
+
 type DownloadCanvasAsPNGorJPEGArgs = {
-  width: number;
-  height: number;
+  // width: number;
+  // height: number;
   selectedCanvasName: string;
   canvas: fabric.Canvas | null;
   fileExtension: "png" | "jpeg";
@@ -8,8 +11,8 @@ type DownloadCanvasAsPNGorJPEGArgs = {
 
 const downloadCanvasAsPNGorJPEG = ({
   canvas,
-  width,
-  height,
+  // width,
+  // height,
   fileExtension,
   selectedCanvasName,
 }: DownloadCanvasAsPNGorJPEGArgs) => {
@@ -17,25 +20,40 @@ const downloadCanvasAsPNGorJPEG = ({
     return;
   }
 
-  canvas.setZoom(1);
+  const json = canvas.toJSON();
+  const objects = canvas.getObjects();
 
-  const dataURL = canvas.toDataURL({
-    quality: 1,
-    width: width,
-    height: height,
-    format: fileExtension,
+  const boundingBox = new fabric.Group(objects).getBoundingRect();
+
+  const newWidth = boundingBox.width + SAFETY_MARGIN_FOR_CANVAS;
+  const newHeight = boundingBox.height + SAFETY_MARGIN_FOR_CANVAS;
+
+  const tempCanvas = new fabric.Canvas(null, {
+    width: newWidth,
+    height: newHeight,
   });
+  tempCanvas.loadFromJSON(json, () => {
+    tempCanvas.absolutePan({
+      y: boundingBox.top - SAFETY_MARGIN_FOR_CANVAS / 2,
+      x: boundingBox.left - SAFETY_MARGIN_FOR_CANVAS / 2,
+    });
 
-  // Create an anchor element to trigger the download
-  const a = document.createElement("a");
-  a.href = dataURL;
-  a.download = `${selectedCanvasName}.${fileExtension}`;
+    const dataURL = tempCanvas.toDataURL({
+      quality: 1,
+      format: fileExtension,
+    });
 
-  // Trigger a click event on the anchor element to initiate the download
-  a.click();
+    // Create an anchor element to trigger the download
+    const a = document.createElement("a");
+    a.href = dataURL;
+    a.download = `${selectedCanvasName}.${fileExtension}`;
 
-  // remove the anchor element from the DOM
-  a.remove();
+    // Trigger a click event on the anchor element to initiate the download
+    a.click();
+
+    // remove the anchor element from the DOM
+    a.remove();
+  });
 };
 
 export default downloadCanvasAsPNGorJPEG;

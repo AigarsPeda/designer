@@ -61,7 +61,7 @@ const useLocalStorageCanvas = defineStore("localStorageCanvas", () => {
   }) => {
     const png = canvasStore.getSelectedCanvas?.toDataURL({
       format: "png",
-      quality: 0.5,
+      quality: 1,
     });
 
     if (!png) {

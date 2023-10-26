@@ -15,7 +15,6 @@
           })
       "
     />
-    <!-- <div v-if="uiStore.getCanvasMode === 'square'"> -->
     <p class="info">Background</p>
     <ColorList
       :colors="BACKGROUND_COLORS"
@@ -32,7 +31,6 @@
     />
 
     <SquareOption />
-    <!-- </div> -->
   </nav>
 </template>
 

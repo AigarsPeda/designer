@@ -2,8 +2,6 @@ import { SAFETY_MARGIN_FOR_CANVAS } from "@/hardcoded";
 import { fabric } from "fabric";
 
 type DownloadCanvasAsPNGorJPEGArgs = {
-  // width: number;
-  // height: number;
   selectedCanvasName: string;
   canvas: fabric.Canvas | null;
   fileExtension: "png" | "jpeg";
@@ -11,8 +9,6 @@ type DownloadCanvasAsPNGorJPEGArgs = {
 
 const downloadCanvasAsPNGorJPEG = ({
   canvas,
-  // width,
-  // height,
   fileExtension,
   selectedCanvasName,
 }: DownloadCanvasAsPNGorJPEGArgs) => {

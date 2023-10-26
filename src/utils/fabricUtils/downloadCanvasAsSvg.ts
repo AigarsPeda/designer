@@ -2,16 +2,12 @@ import { fabric } from "fabric";
 import { SAFETY_MARGIN_FOR_CANVAS } from "@/hardcoded";
 
 type DownloadCanvasAsSVGArgs = {
-  // width: number;
-  // height: number;
   selectedCanvasName: string;
   canvas: fabric.Canvas | null;
 };
 
 const downloadCanvasAsSvg = ({
   canvas,
-  // width,
-  // height,
   selectedCanvasName,
 }: DownloadCanvasAsSVGArgs) => {
   if (!canvas) {

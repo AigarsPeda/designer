@@ -26,21 +26,17 @@ const drawStrokeOnCanvas = ({
   drawingSettings,
 }: DrawStrokeOnCanvasArgs) => {
   if (!canvas) {
-    console.error("drawStrokeOnCanvas: canvas is null");
+    console.error("Draw stroke on canvas: canvas is null");
     return;
   }
-
-  // disable this event listener to prevent the canvas from being saved
-  // to local storage when the user is drawing
-  canvas.off("object:added");
-  canvas.off("object:removed");
-  canvas.off("object:modified");
 
   canvas.on("mouse:down", (e) => {
     isMouseDown = true;
     objId = getUniqueId();
+    canvas.off("object:added");
+    canvas.off("object:removed");
+    canvas.off("object:modified");
 
-    canvas.isDrawingMode = true;
     const pointer = canvas.getPointer(e.e);
     position = [[pointer.x, pointer.y]];
   });
@@ -79,10 +75,6 @@ const drawStrokeOnCanvas = ({
 
     path.id = objId;
 
-    // canvas.off("object:added");
-    // canvas.off("object:modified");
-    // canvas.off("object:removed");
-
     const canvasObjects = canvas.getObjects() as CustomObjI[];
     const obj = canvasObjects.filter((o) => o?.id === objId);
 
@@ -99,8 +91,8 @@ const drawStrokeOnCanvas = ({
     if (!isMouseDown) return;
 
     canvas.on("object:added", callback);
-    canvas.on("object:modified", callback);
     canvas.on("object:removed", callback);
+    canvas.on("object:modified", callback);
 
     const obj = canvas.getObjects() as CustomObjI[];
     const objToSelect = obj.filter((o) => o?.id === objId);

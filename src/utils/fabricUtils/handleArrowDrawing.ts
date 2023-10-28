@@ -196,7 +196,7 @@ type HandleArrowDrawingArgs = {
     smoothing: number;
     streamline: number;
   };
-  callback: () => void;
+  callbackForEvents: () => void;
 };
 
 let objId = "";
@@ -205,9 +205,9 @@ let position: number[][] = [[0, 0]];
 
 const handleArrowDrawing = ({
   canvas,
-  callback,
   squareSettings,
   drawingSettings,
+  callbackForEvents,
 }: HandleArrowDrawingArgs) => {
   if (!canvas) {
     console.error("Draw stroke on canvas: canvas is null");
@@ -268,12 +268,9 @@ const handleArrowDrawing = ({
   canvas.on("mouse:up", (e) => {
     if (!isMouseDown) return;
 
-    canvas.on("object:added", callback);
-    canvas.on("object:removed", callback);
-    canvas.on("object:modified", callback);
-
-    const lastPosition = position[position.length - 2];
-    const startPosition = position[Math.floor(position.length * 0.8)]; // get start from last 30% of the stroke
+    canvas.on("object:added", callbackForEvents);
+    canvas.on("object:removed", callbackForEvents);
+    canvas.on("object:modified", callbackForEvents);
 
     const objFound = findCanvasObjById(objId, canvas);
 
@@ -284,8 +281,7 @@ const handleArrowDrawing = ({
     canvas.remove(objFound);
 
     const group = addArrowEnd({
-      lastPosition,
-      startPosition,
+      position,
       squareSettings,
       canvasObjects: objFound,
     });

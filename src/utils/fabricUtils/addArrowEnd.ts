@@ -3,18 +3,19 @@ import calculateArrowAngle from "@/utils/calculateArrowAngle";
 import { fabric } from "fabric";
 
 type AddArrowEndArgs = {
-  lastPosition: number[];
-  startPosition: number[];
+  position: number[][];
   canvasObjects: fabric.Object;
   squareSettings: DefaultSquareMode;
 };
 
 const addArrowEnd = ({
-  lastPosition,
+  position,
   canvasObjects,
-  startPosition,
   squareSettings,
 }: AddArrowEndArgs) => {
+  const lastPosition = position[position.length - 2];
+  const startPosition = position[Math.floor(position.length * 0.8)]; // get start from last 30% of the stroke
+
   const angle = calculateArrowAngle(startPosition, lastPosition);
 
   const lastX = lastPosition[0] ?? 0;

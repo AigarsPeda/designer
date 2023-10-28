@@ -41,7 +41,11 @@ import ColorList from "@/components/ColorList.vue";
 import SquareOption from "@/components/SquareOption.vue";
 import { BACKGROUND_COLORS, COLORS } from "@/hardcoded";
 import useCanvasStore from "@/stores/useCanvasStore";
-import type { CustomITextI, CustomRectI } from "@/types/fabric.types";
+import type {
+  CustomGroupI,
+  CustomITextI,
+  CustomRectI,
+} from "@/types/fabric.types";
 import updateCanvasRect from "@/utils/fabricUtils/updateCanvasRect";
 import { watch } from "vue";
 
@@ -65,18 +69,18 @@ watch(
     for (let i = 0; i < selectedObj.length; i++) {
       const element = selectedObj[i];
 
-      // if (element.type === "group") {
-      //   const group = element as CustomGroupI;
+      if (element.type === "group") {
+        const group = element as CustomGroupI;
 
-      //   for (var j = 0; j < group._objects.length; j++) {
-      //     const obj2 = group._objects[j];
+        for (var j = 0; j < group._objects.length; j++) {
+          const obj2 = group._objects[j];
 
-      //     obj2.set({
-      //       fill: getSquareModeSettings.stroke,
-      //     });
-      //   }
-      //   continue;
-      // }
+          obj2.set({
+            fill: getSquareModeSettings.stroke,
+          });
+        }
+        continue;
+      }
 
       if (element.type === "polyline") {
         const arrow = element;

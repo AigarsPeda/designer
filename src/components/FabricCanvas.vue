@@ -78,19 +78,19 @@ onMounted(() => {
 
   canvas.on("object:modified", (opt) => {
     emit("object-modified", opt);
-    opt.target?.set({
-      opacity: 1, // Set opacity back to 1
-    });
+    // opt.target?.set({
+    //   opacity: 1, // Set opacity back to 1
+    // });
 
-    canvas.renderAll();
+    // canvas.renderAll();
   });
 
-  canvas.on("object:moving", (opt) => {
-    opt.target?.set({
-      opacity: 0.75,
-    });
-    canvas.renderAll();
-  });
+  // canvas.on("object:moving", (opt) => {
+  //   opt.target?.set({
+  //     opacity: 0.75,
+  //   });
+  //   canvas.renderAll();
+  // });
 
   handleCanvasZoom({ canvas });
 

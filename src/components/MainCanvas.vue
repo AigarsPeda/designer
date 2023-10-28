@@ -198,6 +198,8 @@ watch(
         handleArrowDrawing({
           canvas: canvas,
           squareSettings,
+          drawingSettings,
+          callback: saveCanvasToLocalStorage,
         });
         break;
 

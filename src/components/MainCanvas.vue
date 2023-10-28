@@ -21,10 +21,9 @@ import useLocalStorageCanvas from "@/stores/useLocalStorageCanvas";
 import useUIStore from "@/stores/useUIStore";
 import type { CustomITextI } from "@/types/fabric.types";
 import deleteActiveCanvasObjWithBackspace from "@/utils/fabricUtils/deleteActiveCanvasObjWithBackspace";
-import drawStrokeOnCanvas from "@/utils/fabricUtils/drawStrokeOnCanvas";
 import handleAddITextToCanvas from "@/utils/fabricUtils/handleAddITextToCanvas";
-import handleArrowDrawing from "@/utils/fabricUtils/handleArrowDrawing";
 import handleCanvasPanning from "@/utils/fabricUtils/handleCanvasPanning";
+import handleHandDrawing from "@/utils/fabricUtils/handleHandDrawing";
 import handleLineDrawing from "@/utils/fabricUtils/handleLineDrawing";
 import handleSquareDrawing from "@/utils/fabricUtils/handleSquareDrawing";
 import isCanvasObjSelectable from "@/utils/fabricUtils/isCanvasObjSelectable";
@@ -173,10 +172,17 @@ watch(
 
     switch (uiStore.getCanvasMode) {
       case "drawing":
-        drawStrokeOnCanvas({
+        // drawStrokeOnCanvas({
+        //   canvas: canvas,
+        //   drawingSettings,
+        //   callback: saveCanvasToLocalStorage,
+        // });
+        handleHandDrawing({
+          kind: "drawing",
           canvas: canvas,
+          squareSettings,
           drawingSettings,
-          callback: saveCanvasToLocalStorage,
+          callbackForEvents: saveCanvasToLocalStorage,
         });
         break;
       case "panning":
@@ -195,11 +201,12 @@ watch(
         });
         break;
       case "arrow":
-        handleArrowDrawing({
+        handleHandDrawing({
+          kind: "arrow",
           canvas: canvas,
           squareSettings,
           drawingSettings,
-          callback: saveCanvasToLocalStorage,
+          callbackForEvents: saveCanvasToLocalStorage,
         });
         break;
 
@@ -221,3 +228,4 @@ watch(
   justify-content: center;
 }
 </style>
+@/utils/fabricUtils/handleHandDrawing

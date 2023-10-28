@@ -4,15 +4,19 @@ import { fabric } from "fabric";
 
 type AddArrowEndArgs = {
   position: number[][];
+  canvas: fabric.Canvas;
   canvasObjects: fabric.Object;
   squareSettings: DefaultSquareMode;
 };
 
 const addArrowEnd = ({
+  canvas,
   position,
   canvasObjects,
   squareSettings,
 }: AddArrowEndArgs) => {
+  canvas.remove(canvasObjects);
+
   const lastPosition = position[position.length - 2];
   const startPosition = position[Math.floor(position.length * 0.8)]; // get start from last 30% of the stroke
 
@@ -41,6 +45,10 @@ const addArrowEnd = ({
     objectCaching: false,
     hasRotatingPoint: true,
   });
+
+  canvas.add(group);
+  group.setCoords();
+  canvas.setActiveObject(group);
 
   return group;
 };

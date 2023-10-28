@@ -7,7 +7,7 @@
 // import getUniqueId from "@/utils/getUniqueId";
 // import { fabric } from "fabric";
 
-// type HandleArrowDrawingArgs = {
+// type handleHandDrawingArgs = {
 //   canvas: fabric.Canvas | null;
 //   squareSettings: DefaultSquareMode;
 // };
@@ -21,10 +21,10 @@
 
 // const headLength = 5; // arrow head size
 
-// const handleArrowDrawing = ({
+// const handleHandDrawing = ({
 //   canvas,
 //   squareSettings,
-// }: HandleArrowDrawingArgs) => {
+// }: handleHandDrawingArgs) => {
 //   if (!canvas) {
 //     return;
 //   }
@@ -175,7 +175,7 @@
 //   });
 // };
 
-// export default handleArrowDrawing;
+// export default handleHandDrawing;
 
 import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
 import type { CustomPathI } from "@/types/fabric.types";
@@ -186,9 +186,10 @@ import getUniqueId from "@/utils/getUniqueId";
 import { fabric } from "fabric";
 import getStroke from "perfect-freehand";
 
-type HandleArrowDrawingArgs = {
+type HandleHandDrawingArgs = {
   canvas: fabric.Canvas | null;
   squareSettings: DefaultSquareMode;
+  kind: "arrow" | "line" | "drawing";
   drawingSettings: {
     size: number;
     stroke: string;
@@ -203,12 +204,13 @@ let objId = "";
 let isMouseDown = false;
 let position: number[][] = [[0, 0]];
 
-const handleArrowDrawing = ({
+const handleHandDrawing = ({
+  kind,
   canvas,
   squareSettings,
   drawingSettings,
   callbackForEvents,
-}: HandleArrowDrawingArgs) => {
+}: HandleHandDrawingArgs) => {
   if (!canvas) {
     console.error("Draw stroke on canvas: canvas is null");
     return;
@@ -280,20 +282,25 @@ const handleArrowDrawing = ({
 
     canvas.remove(objFound);
 
-    const group = addArrowEnd({
-      position,
-      squareSettings,
-      canvasObjects: objFound,
-    });
+    if (kind === "arrow") {
+      addArrowEnd({
+        canvas,
+        position,
+        squareSettings,
+        canvasObjects: objFound,
+      });
+    }
+
+    if (kind === "drawing") {
+      canvas.remove(objFound);
+      objFound.setCoords();
+      canvas.add(objFound);
+    }
 
     objId = "";
     isMouseDown = false;
     position = [[0, 0]];
-
-    canvas.add(group);
-    group.setCoords();
-    canvas.setActiveObject(group);
   });
 };
 
-export default handleArrowDrawing;
+export default handleHandDrawing;

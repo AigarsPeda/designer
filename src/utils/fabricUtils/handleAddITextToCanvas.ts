@@ -18,7 +18,6 @@ const handleAddITextToCanvas = ({
     cornerSize: 6,
     top: position.y,
     left: position.x,
-    // fontWeight: "bold",
     fontFamily: "Kalam",
     fill: fabric.Color.fromHex("#111827").toRgba(),
   }) as CustomITextI;

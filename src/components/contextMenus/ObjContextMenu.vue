@@ -104,7 +104,7 @@ watch(
       if (element.type === "path") {
         const path = element as CustomRectI;
         path.setOptions({
-          fill: getSquareModeSettings.background,
+          fill: getSquareModeSettings.stroke,
         });
         continue;
       }
@@ -123,14 +123,13 @@ watch(
       if (element.type === "i-text") {
         const text = element as CustomITextI;
         text.setOptions({
-          // fill: getSquareModeSettings.stroke,
           fill: getSquareModeSettings.stroke,
         });
 
         continue;
       }
 
-      getSelectedCanvas?.add(element);
+      // getSelectedCanvas?.add(element);
     }
 
     getSelectedCanvas?.fire("object:modified");

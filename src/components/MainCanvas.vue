@@ -172,11 +172,6 @@ watch(
 
     switch (uiStore.getCanvasMode) {
       case "drawing":
-        // drawStrokeOnCanvas({
-        //   canvas: canvas,
-        //   drawingSettings,
-        //   callback: saveCanvasToLocalStorage,
-        // });
         handleHandDrawing({
           kind: "drawing",
           canvas: canvas,
@@ -199,6 +194,13 @@ watch(
           canvas: canvas,
           squareSettings,
         });
+        // handleHandDrawing({
+        //   kind: "line",
+        //   canvas: canvas,
+        //   squareSettings,
+        //   drawingSettings,
+        //   callbackForEvents: saveCanvasToLocalStorage,
+        // });
         break;
       case "arrow":
         handleHandDrawing({

@@ -62,13 +62,9 @@ const handleLineDrawing = ({
 
     const pointer = canvas.getPointer(o.e);
     const obj = canvas.getObjects() as CustomLineI[];
-    const objToSelect = obj.filter((o) => o?.id === id);
+    const objToSelect = obj.find((o) => o?.id === id);
 
-    for (let i = 0; i < objToSelect.length; i++) {
-      const element = objToSelect[i];
-
-      element?.setOptions({ x2: pointer.x, y2: pointer.y });
-    }
+    objToSelect?.setOptions({ x2: pointer.x, y2: pointer.y });
 
     canvas.renderAll();
   });

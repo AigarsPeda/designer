@@ -21,7 +21,6 @@
 <script setup lang="ts">
 import MainMenu from "@/components/MainMenu.vue";
 import SettingsModal from "@/components/SettingsModal.vue";
-import DrawingMenu from "@/components/contextMenus/DrawingMenu.vue";
 import ObjContextMenu from "@/components/contextMenus/ObjContextMenu.vue";
 import SquareMenu from "@/components/contextMenus/SquareMenu.vue";
 import useMenuOptions from "@/composables/useMenuOptions";
@@ -102,16 +101,14 @@ watch(
 
     if (getCanvasMode === "mainMenu") {
       activeComponent.value = MainMenu;
-    } else if (
-      getCanvasMode === "square" ||
-      getCanvasMode === "arrow" ||
-      getCanvasMode === "line"
-    ) {
-      activeComponent.value = SquareMenu;
-    } else if (getCanvasMode === "drawing") {
-      activeComponent.value = DrawingMenu;
-    } else if (getCanvasMode === "ObjContextMenu") {
+    }
+
+    if (getCanvasMode === "ObjContextMenu") {
       activeComponent.value = ObjContextMenu;
+    }
+
+    if (getCanvasMode !== "mainMenu" && getCanvasMode !== "ObjContextMenu") {
+      activeComponent.value = SquareMenu;
     }
   }
 );

@@ -3,7 +3,7 @@ import { fabric } from "fabric";
 
 export type DrawingSettingsType = {
   size: number;
-  stroke: string;
+  // stroke: string;
   thinning: number;
   smoothing: number;
   streamline: number;

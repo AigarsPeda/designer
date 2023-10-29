@@ -177,7 +177,10 @@
 
 // export default handleHandDrawing;
 
-import type { DefaultSquareMode } from "@/stores/types/CanvasStoreTypes";
+import type {
+  DefaultSquareMode,
+  DrawingSettingsType,
+} from "@/stores/types/CanvasStoreTypes";
 import type { CustomPathI } from "@/types/fabric.types";
 import addArrowEnd from "@/utils/fabricUtils/addArrowEnd";
 import findCanvasObjById from "@/utils/fabricUtils/findCanvasObjById";
@@ -190,13 +193,7 @@ type HandleHandDrawingArgs = {
   canvas: fabric.Canvas | null;
   squareSettings: DefaultSquareMode;
   kind: "arrow" | "line" | "drawing";
-  drawingSettings: {
-    size: number;
-    stroke: string;
-    thinning: number;
-    smoothing: number;
-    streamline: number;
-  };
+  drawingSettings: DrawingSettingsType;
   callbackForEvents: () => void;
 };
 
@@ -236,6 +233,7 @@ const handleHandDrawing = ({
 
     const outlinePoints = getStroke(position, {
       ...drawingSettings,
+      simulatePressure: true,
       easing(t) {
         // Cubic equation for linear easing
         t = Math.max(0, Math.min(1, t));

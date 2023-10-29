@@ -18,7 +18,7 @@ const useCanvasStore = defineStore("design", {
         thinning: 0.3,
         smoothing: 0.99,
         streamline: 0.99,
-        stroke: COLORS[0],
+        // stroke: COLORS[0],
       },
       squareSettings: {
         rx: 10,

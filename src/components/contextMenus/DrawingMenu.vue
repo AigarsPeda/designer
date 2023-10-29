@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <nav>
     <div class="nav-buttons">
       <MenuBackButton />
@@ -87,4 +87,4 @@ li {
     cursor: pointer;
   }
 }
-</style>
+</style> -->
